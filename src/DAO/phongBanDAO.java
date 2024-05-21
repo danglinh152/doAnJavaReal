@@ -471,8 +471,7 @@ public class phongBanDAO implements DAOinterface<phongBan> {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			errView errView = new errView();
-			errView.setVisible(true);
+
 			// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
 			// đang trực thuộc phòng ban này!");
 		}

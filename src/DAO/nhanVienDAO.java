@@ -55,6 +55,42 @@ public class nhanVienDAO implements DAOinterface<nhanVien> {
 		return nhanVienQuery;
 	}
 
+	public ArrayList<nhanVien> selectByEmail(String txt) {
+		ArrayList<nhanVien> nhanVienQuery = new ArrayList<>();
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "SELECT * FROM NHANVIEN NV INNER JOIN PHONGBAN PB ON NV.MAPB = PB.MAPB WHERE NV.EMAIL = ? ORDER BY MANV DESC";
+			PreparedStatement st = c.prepareStatement(sql);
+			st.setString(1, txt);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				int maNV = rs.getInt("MANV");
+				String hoTen = rs.getString("HOTEN");
+				String gioiTinh = rs.getString("GIOITINH");
+				Date ngSinh = rs.getDate("NGSINH");
+				String sdt = rs.getString("SDT");
+				String email = rs.getString("EMAIL");
+				String diaChi = rs.getString("DIACHI");
+				String cccd = rs.getString("CCCD");
+				String capBac = rs.getString("CAPBAC");
+
+				phongBan phongBanReal = new phongBan(rs.getInt("MAPB"), rs.getString("TENPB"), rs.getDate("NGTHANHLAP"),
+						rs.getInt("MATRUONGPHONG"), rs.getDate("NGAYNHANCHUC"));
+
+				nhanVien nv = new nhanVien(maNV, hoTen, gioiTinh, ngSinh, sdt, email, diaChi, cccd, capBac,
+						phongBanReal);
+				nhanVienQuery.add(nv);
+			}
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return nhanVienQuery;
+	}
+
 	public ArrayList<nhanVien> selectSortByMANVDESC() {
 		ArrayList<nhanVien> nhanVienQuery = new ArrayList<>();
 		try {
@@ -592,8 +628,33 @@ public class nhanVienDAO implements DAOinterface<nhanVien> {
 
 	@Override
 	public int updateT(nhanVien t) {
-		// TODO Auto-generated method stub
-		return 0;
+		int cnt = 0;
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "UPDATE NHANVIEN SET HOTEN = ?, GIOITINH = ?, NGSINH = ?, SDT = ?, EMAIL = ?, DIACHI = ?, CCCD = ?, CAPBAC = ?, MAPB = ? WHERE MANV = ?";
+			PreparedStatement st = c.prepareStatement(sql);
+			st.setString(1, t.getHoTen());
+			st.setString(2, t.getGioiTinh());
+			st.setDate(3, t.getNgSinh());
+			st.setString(4, t.getSoDienThoai());
+			st.setString(5, t.getEmail());
+			st.setString(6, t.getDiaChi());
+			st.setString(7, t.getCccd());
+			st.setString(8, t.getCapBac());
+			st.setInt(9, t.getPhongBan().getMaPB());
+			st.setInt(10, t.getMaNV());
+			st.execute();
+			cnt = 1;
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+			// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
+			// đang trực thuộc phòng ban này!");
+		}
+		return cnt;
 	}
 
 	@Override

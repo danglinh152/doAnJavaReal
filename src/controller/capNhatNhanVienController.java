@@ -4,8 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Date;
 
+import DAO.nhanVienDAO;
+import DAO.phongBanDAO;
+import model.nhanVien;
+import model.phongBan;
 import view.capNhatNhanVienView;
+import view.errView;
 import view.mainView;
 
 public class capNhatNhanVienController implements ActionListener, KeyListener {
@@ -23,6 +29,36 @@ public class capNhatNhanVienController implements ActionListener, KeyListener {
 			mainView.setTabNhanVien();
 			this.capNhatNhanVienView.dispose();
 			mainView.setVisible(true);
+		} else if (e.getActionCommand().equals("Cập nhật")) {
+
+			try {
+				String email = this.capNhatNhanVienView.getEmailTF().getText();
+				nhanVien nhanVien = nhanVienDAO.getInstance().selectByEmail(email).get(0);
+				nhanVienDAO.getInstance().updateT(nhanVien);
+
+				mainView mainView = new mainView();
+				mainView.setTabPhongBan();
+
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Cập nhật thành công");
+
+				this.capNhatNhanVienView.dispose();
+
+				mainView.setVisible(true);
+				errView.setVisible(true);
+			} catch (Exception e2) {
+				// TODO: handle exception
+				mainView mainView = new mainView();
+				mainView.setTabPhongBan();
+
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Cập nhật thất bại");
+
+				this.capNhatNhanVienView.dispose();
+
+				mainView.setVisible(true);
+				errView.setVisible(true);
+			}
 		}
 	}
 

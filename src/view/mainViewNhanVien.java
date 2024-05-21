@@ -233,28 +233,16 @@ public class mainViewNhanVien extends JFrame {
 		return tabbedPane;
 	}
 
-	public void setTabPhongBan() {
+	public void setTabNhanVien() {
 		tabbedPane.setSelectedIndex(1);
 	}
 
-	public void setTabNhanVien() {
+	public void setTabChamCong() {
 		tabbedPane.setSelectedIndex(2);
 	}
 
-	public void setTabChamCong() {
-		tabbedPane.setSelectedIndex(3);
-	}
-
-	public void setTabTrinhDo() {
-		tabbedPane.setSelectedIndex(4);
-	}
-
-	public void setTabHopDong() {
-		tabbedPane.setSelectedIndex(5);
-	}
-
 	public void setTabTaiKhoan() {
-		tabbedPane.setSelectedIndex(6);
+		tabbedPane.setSelectedIndex(3);
 	}
 
 	public void setTabbedPane(JTabbedPane tabbedPane) {

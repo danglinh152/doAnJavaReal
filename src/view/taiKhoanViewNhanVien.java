@@ -170,6 +170,7 @@ public class taiKhoanViewNhanVien {
 		tab7.add(lblNewLabel_2_6);
 
 		textField = new JTextField();
+		textField.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getHoTen());
 		textField.setFocusable(false);
 		textField.setDisabledTextColor(new Color(255, 255, 255));
 		textField.setEditable(false);
@@ -180,6 +181,7 @@ public class taiKhoanViewNhanVien {
 		textField.setColumns(10);
 
 		textField_1 = new JTextField();
+		textField_1.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getGioiTinh());
 		textField_1.setFocusable(false);
 		textField_1.setDisabledTextColor(new Color(255, 255, 255));
 		textField_1.setEditable(false);
@@ -190,6 +192,7 @@ public class taiKhoanViewNhanVien {
 		tab7.add(textField_1);
 
 		textField_2 = new JTextField();
+		textField_2.setText(String.valueOf(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getNgSinh()));
 		textField_2.setFocusable(false);
 		textField_2.setDisabledTextColor(new Color(255, 255, 255));
 		textField_2.setEditable(false);
@@ -200,6 +203,7 @@ public class taiKhoanViewNhanVien {
 		tab7.add(textField_2);
 
 		textField_3 = new JTextField();
+		textField_3.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getSoDienThoai());
 		textField_3.setFocusable(false);
 		textField_3.setDisabledTextColor(new Color(255, 255, 255));
 		textField_3.setEditable(false);
@@ -210,6 +214,7 @@ public class taiKhoanViewNhanVien {
 		tab7.add(textField_3);
 
 		textField_4 = new JTextField();
+		textField_4.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getEmail());
 		textField_4.setFocusable(false);
 		textField_4.setDisabledTextColor(new Color(255, 255, 255));
 		textField_4.setEditable(false);
@@ -220,6 +225,7 @@ public class taiKhoanViewNhanVien {
 		tab7.add(textField_4);
 
 		textField_5 = new JTextField();
+		textField_5.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getDiaChi());
 		textField_5.setFocusable(false);
 		textField_5.setDisabledTextColor(new Color(255, 255, 255));
 		textField_5.setEditable(false);
@@ -230,6 +236,7 @@ public class taiKhoanViewNhanVien {
 		tab7.add(textField_5);
 
 		textField_6 = new JTextField();
+		textField_6.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getCccd());
 		textField_6.setFocusable(false);
 		textField_6.setDisabledTextColor(new Color(255, 255, 255));
 		textField_6.setEditable(false);
@@ -240,6 +247,7 @@ public class taiKhoanViewNhanVien {
 		tab7.add(textField_6);
 
 		textField_7 = new JTextField();
+		textField_7.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getCapBac());
 		textField_7.setFocusable(false);
 		textField_7.setDisabledTextColor(new Color(255, 255, 255));
 		textField_7.setEditable(false);
@@ -255,6 +263,7 @@ public class taiKhoanViewNhanVien {
 			}
 		});
 		btnNewButton.setFocusable(false);
+		btnNewButton.addActionListener(ac);
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -356,5 +365,77 @@ public class taiKhoanViewNhanVien {
 
 	public void setTaiKhoanData(ArrayList<taiKhoan> taiKhoanData) {
 		this.taiKhoanData = taiKhoanData;
+	}
+
+	public mainViewNhanVien getMainViewNhanVien() {
+		return mainViewNhanVien;
+	}
+
+	public void setMainViewNhanVien(mainViewNhanVien mainViewNhanVien) {
+		this.mainViewNhanVien = mainViewNhanVien;
+	}
+
+	public JTextField getTextField() {
+		return textField;
+	}
+
+	public void setTextField(JTextField textField) {
+		this.textField = textField;
+	}
+
+	public JTextField getTextField_1() {
+		return textField_1;
+	}
+
+	public void setTextField_1(JTextField textField_1) {
+		this.textField_1 = textField_1;
+	}
+
+	public JTextField getTextField_2() {
+		return textField_2;
+	}
+
+	public void setTextField_2(JTextField textField_2) {
+		this.textField_2 = textField_2;
+	}
+
+	public JTextField getTextField_3() {
+		return textField_3;
+	}
+
+	public void setTextField_3(JTextField textField_3) {
+		this.textField_3 = textField_3;
+	}
+
+	public JTextField getTextField_4() {
+		return textField_4;
+	}
+
+	public void setTextField_4(JTextField textField_4) {
+		this.textField_4 = textField_4;
+	}
+
+	public JTextField getTextField_5() {
+		return textField_5;
+	}
+
+	public void setTextField_5(JTextField textField_5) {
+		this.textField_5 = textField_5;
+	}
+
+	public JTextField getTextField_6() {
+		return textField_6;
+	}
+
+	public void setTextField_6(JTextField textField_6) {
+		this.textField_6 = textField_6;
+	}
+
+	public JTextField getTextField_7() {
+		return textField_7;
+	}
+
+	public void setTextField_7(JTextField textField_7) {
+		this.textField_7 = textField_7;
 	}
 }

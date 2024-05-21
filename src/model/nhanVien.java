@@ -113,4 +113,11 @@ public class nhanVien {
 		this.phongBan = phongBan;
 	}
 
+	@Override
+	public String toString() {
+		return "nhanVien [maNV=" + maNV + ", hoTen=" + hoTen + ", gioiTinh=" + gioiTinh + ", ngSinh=" + ngSinh
+				+ ", soDienThoai=" + soDienThoai + ", email=" + email + ", diaChi=" + diaChi + ", cccd=" + cccd
+				+ ", capBac=" + capBac + ", phongBan=" + phongBan + "]";
+	}
+
 }
