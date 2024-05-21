@@ -56,7 +56,7 @@ public class guiYeuCauViewNhanVien {
 	private ActionListener ac;
 	private KeyListener ke;
 	private MouseListener mo;
-	private ArrayList<yeuCau> yeuCauData = yeuCauDAO.getInstance().selectAll();
+	private ArrayList<yeuCau> yeuCauData;
 	private JLabel lblNewLabel;
 	private JComboBox thuTuComboBox;
 	private JComboBox thuocTinhComboBox;
@@ -132,6 +132,9 @@ public class guiYeuCauViewNhanVien {
 				}
 			}
 		});
+
+		yeuCauData = yeuCauDAO.getInstance()
+				.selectAll(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getMaNV());
 
 		ArrayList<String[]> data = new ArrayList<>();
 		int size = 3;

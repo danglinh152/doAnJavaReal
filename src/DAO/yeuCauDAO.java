@@ -60,6 +60,39 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 		return arr_yc;
 	}
 
+	public ArrayList<yeuCau> selectAll(int manv) {
+		// TODO Auto-generated method stub
+		ArrayList<yeuCau> arr_yc = new ArrayList<>();
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "SELECT * FROM YEUCAU WHERE MANV = ? ORDER BY MAYC ASC";
+			PreparedStatement st = c.prepareStatement(sql);
+			st.setInt(1, manv);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				int maYC = rs.getInt(1);
+				int maNV = rs.getInt(2);
+				String noiDung = rs.getString(3);
+				int trangThai_int = rs.getInt(4);
+				boolean trangThai = false;
+				if (trangThai_int == 1) {
+					trangThai = true;
+				} else {
+					trangThai = false;
+				}
+				yeuCau yc = new yeuCau(maYC, maNV, noiDung, trangThai);
+				arr_yc.add(yc);
+			}
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return arr_yc;
+	}
+
 	@Override
 	public int insertT(yeuCau t) {
 		// TODO Auto-generated method stub

@@ -78,7 +78,7 @@ public class mainViewNhanVien extends JFrame {
 		panel_7.setBorder(null);
 		panel_7.setForeground(new Color(25, 25, 112));
 		panel_7.setBackground(new Color(255, 255, 255));
-		panel_7.setBounds(0, 0, 220, 225);
+		panel_7.setBounds(0, 0, 220, 235);
 		contentPane.add(panel_7);
 		panel_7.setLayout(null);
 
@@ -209,8 +209,9 @@ public class mainViewNhanVien extends JFrame {
 		panel_7.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("xxx");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
-		lblNewLabel_1.setBounds(10, 183, 210, 42);
+		lblNewLabel_1.setBounds(0, 183, 220, 52);
 		lblNewLabel_1.setText(taiKhoanHienTai.getNhanVien().getHoTen());
 		panel_7.add(lblNewLabel_1);
 		btnNewButton.addActionListener(new ActionListener() {
