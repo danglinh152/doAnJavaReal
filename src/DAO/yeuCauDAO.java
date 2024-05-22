@@ -217,8 +217,25 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 
 	@Override
 	public int updateT(yeuCau t) {
-		// TODO Auto-generated method stub
-		return 0;
+		int cnt = 0;
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "UPDATE YEUCAU SET TRANGTHAI = 1 WHERE MAYC = ?";
+			PreparedStatement st = c.prepareStatement(sql);
+			st.setInt(1, t.getMaYC());
+			if (st.execute()) {
+				cnt = 1;
+			} else {
+				cnt = 0;
+			}
+
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+
+		}
+		return cnt;
 	}
 
 	@Override

@@ -104,6 +104,9 @@ public class mainView extends JFrame {
 		taiKhoanView taiKhoanView = new taiKhoanView(this);
 		tabbedPane.addTab("New tab", null, taiKhoanView.tab7, null);
 
+		yeuCauView yeuCauView = new yeuCauView(this);
+		tabbedPane.addTab("New tab", null, yeuCauView.tab8, null);
+
 		JButton btnNewButton = new JButton("TRANG CHỦ");
 		btnNewButton.setOpaque(false);
 		btnNewButton.setFocusTraversalKeysEnabled(false);
@@ -243,7 +246,7 @@ public class mainView extends JFrame {
 		btnTiKhon.setFocusable(false);
 		btnTiKhon.setBorder(null);
 		btnTiKhon.setBackground(new Color(255, 255, 255));
-		btnTiKhon.setBounds(0, 299, 218, 50);
+		btnTiKhon.setBounds(0, 349, 218, 50);
 		panel.add(btnTiKhon);
 
 		JButton btnngXut = new JButton("ĐĂNG XUẤT");
@@ -261,6 +264,26 @@ public class mainView extends JFrame {
 		btnngXut.setBackground(new Color(102, 205, 170));
 		btnngXut.setBounds(0, 400, 218, 47);
 		panel.add(btnngXut);
+
+		JButton btnHpng_1 = new JButton("NGHỈ PHÉP");
+		btnHpng_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnHpng_1.setIcon(new ImageIcon(mainView.class.getResource("/img/notes.png")));
+		btnHpng_1.setOpaque(false);
+		btnHpng_1.setIconTextGap(18);
+		btnHpng_1.setForeground(Color.BLACK);
+		btnHpng_1.setFont(new Font("Dialog", Font.BOLD, 14));
+		btnHpng_1.setFocusable(false);
+		btnHpng_1.setFocusTraversalKeysEnabled(false);
+		btnHpng_1.setFocusPainted(false);
+		btnHpng_1.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
+		btnHpng_1.setBackground(Color.WHITE);
+		btnHpng_1.setBounds(0, 300, 218, 50);
+		btnHpng_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tabbedPane.setSelectedIndex(7);
+			}
+		});
+		panel.add(btnHpng_1);
 
 		JLabel lblNewLabel = new JLabel("HRM SOFTWARE");
 		lblNewLabel.setVerticalTextPosition(SwingConstants.TOP);
@@ -319,5 +342,4 @@ public class mainView extends JFrame {
 	public void setTabbedPane(JTabbedPane tabbedPane) {
 		this.tabbedPane = tabbedPane;
 	}
-
 }
