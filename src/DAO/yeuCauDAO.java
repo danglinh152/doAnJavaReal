@@ -95,8 +95,28 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 
 	@Override
 	public int insertT(yeuCau t) {
-		// TODO Auto-generated method stub
-		return 0;
+		int cnt = 0;
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "INSERT INTO YEUCAU VALUES (?, ?, ?, ?)";
+			PreparedStatement st = c.prepareStatement(sql);
+			st.setInt(1, t.getMaYC());
+			st.setInt(2, t.getMaNV());
+			st.setString(3, t.getNoiDung());
+			if (t.isTrangThai()) {
+				st.setInt(4, 1);
+			} else {
+				st.setInt(4, 0);
+			}
+			st.execute();
+			cnt = 1;
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cnt;
 	}
 
 	@Override
@@ -113,8 +133,23 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 
 	@Override
 	public int seq_num() {
-		// TODO Auto-generated method stub
-		return 0;
+		int cnt = 0;
+
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+			String sql = "SELECT * FROM YEUCAU";
+			PreparedStatement st = c.prepareStatement(sql);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				cnt += 1;
+			}
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return cnt;
 	}
 
 }

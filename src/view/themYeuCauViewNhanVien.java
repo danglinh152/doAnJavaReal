@@ -25,6 +25,7 @@ import com.datechooser.*;
 import javax.swing.JTextField;
 
 import DAO.phongBanDAO;
+import controller.themYeuCauNhanVienController;
 //import controller.themNhanVienController;
 import model.phongBan;
 import model.taiKhoan;
@@ -36,18 +37,17 @@ import javax.swing.JTextArea;
 public class themYeuCauViewNhanVien extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField tenNVTF;
 	private JButton okButton;
 	private JButton cancelButton;
 	private ActionListener ac;
 	private DateChooser ngSinhNV = new DateChooser();
 	private KeyListener ke;
 	private taiKhoan tkht;
+	private JTextArea textArea;
 
 	public themYeuCauViewNhanVien(taiKhoan tkht) {
 		this.tkht = tkht;
-		// ac = new themNhanVienNhanVienController(this);
-		// ke = new themNhanVienNhanVienController(this);
+		ac = new themYeuCauNhanVienController(this);
 
 		getContentPane().setBackground(new Color(255, 255, 255));
 		setBounds(100, 100, 803, 635);
@@ -75,32 +75,20 @@ public class themYeuCauViewNhanVien extends JDialog {
 		headerLabel.setFont(new Font("JetBrains Mono", Font.PLAIN, 19));
 		headerLabel.setBounds(10, 10, 259, 30);
 		header.add(headerLabel);
-
-		JLabel hoTenNV = new JLabel("Mã NV:");
-		hoTenNV.setFont(new Font("JetBrains Mono", Font.PLAIN, 15));
-		hoTenNV.setBounds(38, 92, 127, 38);
-		formPanel.add(hoTenNV);
-
-		tenNVTF = new JTextField();
-		tenNVTF.setBorder(new LineBorder(new Color(0, 0, 0)));
-		tenNVTF.setFont(new Font("JetBrains Mono", Font.PLAIN, 15));
-		tenNVTF.setBounds(187, 92, 321, 38);
-		formPanel.add(tenNVTF);
-		tenNVTF.setColumns(10);
 		ngSinhNV.setForeground(new Color(255, 69, 0));
 
 		String gioiTinh[] = { "Nam", "Nữ" };
 
 		JLabel lblCccd = new JLabel("Nội dung:");
 		lblCccd.setFont(new Font("JetBrains Mono", Font.PLAIN, 15));
-		lblCccd.setBounds(38, 140, 127, 38);
+		lblCccd.setBounds(38, 99, 127, 38);
 		formPanel.add(lblCccd);
 
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		textArea.setLineWrap(true);
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 15));
 		textArea.setBorder(new LineBorder(new Color(0, 0, 0)));
-		textArea.setBounds(187, 143, 321, 299);
+		textArea.setBounds(187, 102, 321, 299);
 		formPanel.add(textArea);
 
 		JButton btnNewButton = new JButton("Gửi");
@@ -108,7 +96,7 @@ public class themYeuCauViewNhanVien extends JDialog {
 		btnNewButton.setFocusable(false);
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
-		btnNewButton.setBounds(423, 451, 85, 28);
+		btnNewButton.setBounds(423, 410, 85, 28);
 		btnNewButton.setBackground(new Color(102, 205, 170));
 		btnNewButton.setFont(new Font("JetBrains Mono", Font.PLAIN, 14));
 		formPanel.add(btnNewButton);
@@ -140,8 +128,8 @@ public class themYeuCauViewNhanVien extends JDialog {
 			buttonPane.setOpaque(false);
 			buttonPane.setBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)));
 			{
-				okButton = new JButton("Thêm");
-				okButton.addActionListener(ac);
+				okButton = new JButton("Gửi");
+
 				okButton.setFocusable(false);
 				okButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				okButton.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
@@ -151,6 +139,7 @@ public class themYeuCauViewNhanVien extends JDialog {
 				buttonPane.setLayout(null);
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
+				okButton.setVisible(false);
 			}
 			{
 				cancelButton = new JButton("Hủy");
@@ -199,14 +188,6 @@ public class themYeuCauViewNhanVien extends JDialog {
 
 	}
 
-	public JTextField getTenNVTF() {
-		return tenNVTF;
-	}
-
-	public void setTenNVTF(JTextField tenNVTF) {
-		this.tenNVTF = tenNVTF;
-	}
-
 	public JButton getOkButton() {
 		return okButton;
 	}
@@ -221,5 +202,53 @@ public class themYeuCauViewNhanVien extends JDialog {
 
 	public void setCancelButton(JButton cancelButton) {
 		this.cancelButton = cancelButton;
+	}
+
+	public ActionListener getAc() {
+		return ac;
+	}
+
+	public void setAc(ActionListener ac) {
+		this.ac = ac;
+	}
+
+	public DateChooser getNgSinhNV() {
+		return ngSinhNV;
+	}
+
+	public void setNgSinhNV(DateChooser ngSinhNV) {
+		this.ngSinhNV = ngSinhNV;
+	}
+
+	public KeyListener getKe() {
+		return ke;
+	}
+
+	public void setKe(KeyListener ke) {
+		this.ke = ke;
+	}
+
+	public taiKhoan getTkht() {
+		return tkht;
+	}
+
+	public void setTkht(taiKhoan tkht) {
+		this.tkht = tkht;
+	}
+
+	public JTextArea getTextArea() {
+		return textArea;
+	}
+
+	public void setTextArea(JTextArea textArea) {
+		this.textArea = textArea;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public JPanel getContentPanel() {
+		return contentPanel;
 	}
 }

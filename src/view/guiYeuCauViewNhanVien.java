@@ -66,6 +66,8 @@ public class guiYeuCauViewNhanVien {
 	 */
 	public guiYeuCauViewNhanVien(mainViewNhanVien mainViewNhanVien) {
 		this.mainViewNhanVien = mainViewNhanVien;
+		yeuCauData = yeuCauDAO.getInstance()
+				.selectAll(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getMaNV());
 		ac = new nhanVienNhanVienController(this);
 		ke = new nhanVienNhanVienController(this);
 		mo = new nhanVienNhanVienController(this);
@@ -132,9 +134,6 @@ public class guiYeuCauViewNhanVien {
 				}
 			}
 		});
-
-		yeuCauData = yeuCauDAO.getInstance()
-				.selectAll(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getMaNV());
 
 		ArrayList<String[]> data = new ArrayList<>();
 		int size = 3;
