@@ -4,11 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Date;
 
 import DAO.nhanVienDAO;
+import DAO.phongBanDAO;
 import model.nhanVien;
+import model.phongBan;
 import view.capNhatThongTinViewNhanVien;
 import view.errView;
+import view.loginView;
 import view.mainView;
 import view.mainViewNhanVien;
 
@@ -30,21 +34,33 @@ public class capNhatThongTinNhanVienController implements ActionListener, KeyLis
 			mainViewNhanVien.setVisible(true);
 		} else if (e.getActionCommand().equals("Cập nhật")) {
 			try {
+				System.out
+						.println(String.valueOf(this.capNhatThongTinViewNhanVien.getMaPBComboBox().getSelectedItem()));
 				String email = this.capNhatThongTinViewNhanVien.getEmailTF().getText();
 				nhanVien nhanVien = nhanVienDAO.getInstance().selectByEmail(email).get(0);
-				nhanVienDAO.getInstance().updateT(nhanVien); // fix that, lấy textfield vào update lấy manv thôi
-
-				mainViewNhanVien mainViewNhanVien = new mainViewNhanVien(this.capNhatThongTinViewNhanVien
-						.getTaiKhoanViewNhanVien().getMainViewNhanVien().getTaiKhoanHienTai());
-				mainViewNhanVien.setTabTaiKhoan();
+				phongBan phongBan = phongBanDAO.getInstance()
+						.selectByID(new phongBan(
+								Integer.parseInt(
+										(String) this.capNhatThongTinViewNhanVien.getMaPBComboBox().getSelectedItem()),
+								"", null, 0, null));
+				nhanVien nhanVienNew = new nhanVien(0, this.capNhatThongTinViewNhanVien.getTenNVTF().getText(),
+						String.valueOf(this.capNhatThongTinViewNhanVien.getGioiTinhComboBox().getSelectedItem()),
+						Date.valueOf(this.capNhatThongTinViewNhanVien.getNgSinhTF().getText()),
+						this.capNhatThongTinViewNhanVien.getSdtTF().getText(),
+						this.capNhatThongTinViewNhanVien.getEmailTF().getText(),
+						this.capNhatThongTinViewNhanVien.getDiaChiTF().getText(),
+						this.capNhatThongTinViewNhanVien.getCccdTF().getText(),
+						String.valueOf(this.capNhatThongTinViewNhanVien.getCapBacComboBox().getSelectedItem()),
+						phongBan);
+				nhanVienDAO.getInstance().updateT(nhanVienNew, nhanVien.getMaNV());
 
 				errView errView = new errView();
-				errView.getLblNewLabel().setText("Cập nhật thành công");
+				errView.getLblNewLabel().setText("Cập nhật thành công, Vui lòng đăng nhập lại");
 
 				this.capNhatThongTinViewNhanVien.dispose();
-
-				mainViewNhanVien.setVisible(true);
+				new loginView();
 				errView.setVisible(true);
+
 			} catch (Exception e2) {
 				// TODO: handle exception
 				e2.printStackTrace();
@@ -81,4 +97,7 @@ public class capNhatThongTinNhanVienController implements ActionListener, KeyLis
 
 	}
 
+//	public void changeData(nhanVien nv) {
+//
+//	}
 }

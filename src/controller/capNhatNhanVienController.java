@@ -12,7 +12,9 @@ import model.nhanVien;
 import model.phongBan;
 import view.capNhatNhanVienView;
 import view.errView;
+import view.loginView;
 import view.mainView;
+import view.mainViewNhanVien;
 
 public class capNhatNhanVienController implements ActionListener, KeyListener {
 	private capNhatNhanVienView capNhatNhanVienView;
@@ -32,24 +34,34 @@ public class capNhatNhanVienController implements ActionListener, KeyListener {
 		} else if (e.getActionCommand().equals("Cập nhật")) {
 
 			try {
+				System.out.println(String.valueOf(this.capNhatNhanVienView.getMaPBComboBox().getSelectedItem()));
 				String email = this.capNhatNhanVienView.getEmailTF().getText();
 				nhanVien nhanVien = nhanVienDAO.getInstance().selectByEmail(email).get(0);
-				nhanVienDAO.getInstance().updateT(nhanVien);
-
-				mainView mainView = new mainView();
-				mainView.setTabPhongBan();
+				phongBan phongBan = phongBanDAO.getInstance()
+						.selectByID(new phongBan(
+								Integer.parseInt((String) this.capNhatNhanVienView.getMaPBComboBox().getSelectedItem()),
+								"", null, 0, null));
+				nhanVien nhanVienNew = new nhanVien(0, this.capNhatNhanVienView.getTenNVTF().getText(),
+						String.valueOf(this.capNhatNhanVienView.getGioiTinhComboBox().getSelectedItem()),
+						Date.valueOf(this.capNhatNhanVienView.getNgSinhTF().getText()),
+						this.capNhatNhanVienView.getSdtTF().getText(), this.capNhatNhanVienView.getEmailTF().getText(),
+						this.capNhatNhanVienView.getDiaChiTF().getText(),
+						this.capNhatNhanVienView.getCccdTF().getText(),
+						String.valueOf(this.capNhatNhanVienView.getCapBacComboBox().getSelectedItem()), phongBan);
+				nhanVienDAO.getInstance().updateT(nhanVienNew, nhanVien.getMaNV());
 
 				errView errView = new errView();
-				errView.getLblNewLabel().setText("Cập nhật thành công");
+				errView.getLblNewLabel().setText("Cập nhật thành công, Vui lòng đăng nhập lại");
 
 				this.capNhatNhanVienView.dispose();
-
-				mainView.setVisible(true);
+				new loginView();
 				errView.setVisible(true);
+
 			} catch (Exception e2) {
 				// TODO: handle exception
+				e2.printStackTrace();
 				mainView mainView = new mainView();
-				mainView.setTabPhongBan();
+				mainView.setTabTaiKhoan();
 
 				errView errView = new errView();
 				errView.getLblNewLabel().setText("Cập nhật thất bại");

@@ -219,7 +219,7 @@ public class capNhatThongTinViewNhanVien extends JDialog {
 			maPB[i] = String.valueOf(arr_pb.get(i).getMaPB());
 		}
 		maPB[arr_pb.size()] = "---";
-		JComboBox maPBComboBox = new JComboBox(maPB);
+		maPBComboBox = new JComboBox(maPB);
 		maPBComboBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		maPBComboBox.setFont(new Font("JetBrains Mono", Font.PLAIN, 15));
 		maPBComboBox.setFocusable(false);

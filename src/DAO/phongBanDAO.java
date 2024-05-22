@@ -373,7 +373,7 @@ public class phongBanDAO implements DAOinterface<phongBan> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "SELECT * FROM PHONGBAN";
+			String sql = "SELECT * FROM PHONGBAN ORDER BY MAPB ASC";
 			PreparedStatement st = c.prepareStatement(sql);
 			ResultSet rs = st.executeQuery();
 
