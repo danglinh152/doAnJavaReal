@@ -180,6 +180,7 @@ public class xetDuyetCapBacView extends JDialog {
 			buttonPane.setBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)));
 			{
 				okButton = new JButton("Thêm");
+				okButton.setVisible(false);
 				okButton.addActionListener(ac);
 				okButton.setFocusable(false);
 				okButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

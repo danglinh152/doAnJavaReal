@@ -63,7 +63,7 @@ public class themHopDongView extends JDialog {
 		JPanel header = new JPanel();
 		header.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		header.setBackground(new Color(102, 205, 170));
-		header.setBounds(38, 0, 170, 49);
+		header.setBounds(38, 0, 200, 49);
 		formPanel.add(header);
 		header.setLayout(null);
 
