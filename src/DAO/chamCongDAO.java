@@ -24,6 +24,37 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		return null;
 	}
 
+	public ArrayList<chamCongClass> selectAllByID(int id) {
+		ArrayList<chamCongClass> chamCongQuery = new ArrayList<>();
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "SELECT * FROM CHAMCONG CC INNER JOIN NHANVIEN NV ON CC.MANV = NV.MANV WHERE NV.MANV = ? ORDER BY CC.MACC";
+			PreparedStatement st = c.prepareStatement(sql);
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				int maCC = rs.getInt("MACC");
+				int maNV = rs.getInt("MANV");
+				String hoTen = rs.getString("HOTEN");
+				int thangLamViec = rs.getInt("THANGLAMVIEC");
+				int soNgayLamViec = rs.getInt("SONGAYLAMVIEC");
+				int soNgayNghi = rs.getInt("SONGAYNGHI");
+				double soGioTangCa = rs.getInt("SOGIOTANGCA");
+				int soNgayDiTre = rs.getInt("SONGAYDITRE");
+				chamCongClass chamCongClass = new chamCongClass(maCC, maNV, hoTen, thangLamViec, soNgayLamViec,
+						soNgayNghi, soGioTangCa, soNgayDiTre);
+				chamCongQuery.add(chamCongClass);
+			}
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return chamCongQuery;
+	}
+
 	@Override
 	public ArrayList<chamCongClass> selectAll() {
 		ArrayList<chamCongClass> chamCongQuery = new ArrayList<>();

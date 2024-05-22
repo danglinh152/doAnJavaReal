@@ -40,12 +40,10 @@ public class chamCongNhanVienController implements ActionListener, KeyListener {
 		String tennv = chamCongViewNhanVien.getTenNVTF().getText();
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (!tennv.equals("Nhập mã nhân viên") || !tennv.trim().equals("")) {
-				ArrayList<nhanVien> arr_nv = nhanVienDAO.getInstance().selectNVCCBYTENNV(tennv);
+
 				ArrayList<chamCongClass> arr_cc = chamCongDAO.getInstance().selectByTENNV(tennv);
 
-				changeTableData(arr_cc, arr_nv);
-			} else if (tennv.equals("Nhập mã nhân viên") || tennv.trim().equals("")) {
-				changeTableData(chamCongViewNhanVien.getChamCongData(), chamCongViewNhanVien.getNhanVienData());
+				changeTableData(arr_cc);
 			}
 
 		}
@@ -78,17 +76,14 @@ public class chamCongNhanVienController implements ActionListener, KeyListener {
 		} else if (e.getActionCommand().equals("")) {
 			String tennv = chamCongViewNhanVien.getTenNVTF().getText();
 			if (!tennv.equals("Nhập mã nhân viên") || !tennv.trim().equals("")) {
-				ArrayList<nhanVien> arr_nv = nhanVienDAO.getInstance().selectNVCCBYTENNV(tennv);
 				ArrayList<chamCongClass> arr_cc = chamCongDAO.getInstance().selectByTENNV(tennv);
 
-				changeTableData(arr_cc, arr_nv);
-			} else if (tennv.equals("Nhập mã nhân viên") || tennv.trim().equals("")) {
-				changeTableData(chamCongViewNhanVien.getChamCongData(), chamCongViewNhanVien.getNhanVienData());
+				changeTableData(arr_cc);
 			}
 		}
 	}
 
-	public void changeTableData(ArrayList<chamCongClass> arr_cc, ArrayList<nhanVien> arr_nv) {
+	public void changeTableData(ArrayList<chamCongClass> arr_cc) {
 		ArrayList<String[]> data_cc = new ArrayList<>();
 		int size_cc = 8;
 
@@ -120,29 +115,6 @@ public class chamCongNhanVienController implements ActionListener, KeyListener {
 			chamCongViewNhanVien.getTableModel_cc().addRow(row);
 		}
 		chamCongViewNhanVien.getChamCongtable().setModel(chamCongViewNhanVien.getTableModel_cc());
-
-		ArrayList<String[]> data_nv = new ArrayList<>();
-		int size_nv = 7;
-
-		for (int i = 0; i < arr_nv.size(); i++) {
-			String[] tmp = new String[size_nv];
-			tmp[0] = String.valueOf(arr_nv.get(i).getMaNV());
-			tmp[1] = String.valueOf(arr_nv.get(i).getHoTen());
-			tmp[2] = String.valueOf(arr_nv.get(i).getEmail());
-			tmp[3] = String.valueOf(arr_nv.get(i).getDiaChi());
-			tmp[4] = String.valueOf(arr_nv.get(i).getCccd());
-			tmp[5] = String.valueOf(arr_nv.get(i).getCapBac());
-			tmp[6] = String.valueOf(arr_nv.get(i).getPhongBan().getMaPB());
-			data_nv.add(tmp);
-		}
-
-		String[] columnNames_nv = { "Mã NV", "Họ Tên", "Email", "Địa chỉ", "CCCD", "Cấp bậc", "Mã PB" };
-		chamCongViewNhanVien.setTableModel_nv(new DefaultTableModel(columnNames_nv, 0));
-		for (String[] row : data_nv) {
-			chamCongViewNhanVien.getTableModel_nv().addRow(row);
-		}
-		// table.getTableHeader().addMouseListener(nhanVienController);
-		chamCongViewNhanVien.getNvTable().setModel(chamCongViewNhanVien.getTableModel_nv());
 
 	}
 

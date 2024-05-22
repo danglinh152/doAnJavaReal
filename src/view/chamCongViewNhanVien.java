@@ -42,7 +42,6 @@ import java.awt.Component;
 public class chamCongViewNhanVien {
 	public JPanel tab4;
 	private JTextField tenNVTF;
-	private JTable nvTable;
 	private JButton tenNVbutton;
 	private JPanel panel_1;
 	private JPanel panel_2;
@@ -51,22 +50,21 @@ public class chamCongViewNhanVien {
 	private JMenuItem menuItem1;
 	private JMenuItem menuItem2;
 	private JMenuItem menuItem3;
-	private JScrollPane bangNhanVienScrollPane;
 	private JLabel lblNewLabel_3;
 	private DefaultTableModel tableModel_nv;
 	private DefaultTableModel tableModel_cc;
 	private JTable chamCongtable;
-	private JLabel lblNewLabel_3_2;
-	private ArrayList<nhanVien> nhanVienData = nhanVienDAO.getInstance().selectNVCC();
-	private ArrayList<chamCongClass> chamCongData = chamCongDAO.getInstance().selectAll();
+
+	private ArrayList<chamCongClass> chamCongData;
 	private ActionListener ac;
 	private KeyListener ke;
 	private mainViewNhanVien mainViewNhanVien;
 	private JButton btnInPhiuChm;
 
 	public chamCongViewNhanVien(mainViewNhanVien mainViewNhanVien) {
-
 		this.mainViewNhanVien = mainViewNhanVien;
+		chamCongData = chamCongDAO.getInstance()
+				.selectAllByID(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getMaNV());
 
 		ac = new chamCongNhanVienController(this);
 		ke = new chamCongNhanVienController(this);
@@ -152,62 +150,8 @@ public class chamCongViewNhanVien {
 		bangChamCongcrollPane_1.setFont(new Font("JetBrains Mono", Font.PLAIN, 18));
 		bangChamCongcrollPane_1.setBorder(null);
 		bangChamCongcrollPane_1.setAutoscrolls(true);
-		bangChamCongcrollPane_1.setBounds(31, 328, 871, 233);
+		bangChamCongcrollPane_1.setBounds(28, 62, 871, 233);
 		panel_1.add(bangChamCongcrollPane_1);
-
-		nvTable = new JTable();
-		nvTable.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		nvTable.setShowVerticalLines(false);
-		nvTable.setShowHorizontalLines(false);
-		nvTable.setRowMargin(0);
-		nvTable.setFillsViewportHeight(true);
-		nvTable.setOpaque(false);
-		nvTable.setEnabled(true);
-		nvTable.setGridColor(new Color(0, 0, 0));
-		nvTable.setFont(new Font("JetBrains Mono", Font.PLAIN, 13));
-		nvTable.setSelectionBackground(Color.LIGHT_GRAY);
-		nvTable.setRowHeight(35);
-		nvTable.setBorder(null);
-		nvTable.getTableHeader().setFont(new Font("JetBrains Mono", Font.PLAIN, 13));
-		nvTable.getTableHeader().setBackground(new Color(102, 205, 170));
-		nvTable.getTableHeader().setResizingAllowed(false);
-		nvTable.getTableHeader().setBorder(new LineBorder(Color.BLACK, 2));
-		nvTable.setBackground(new Color(255, 255, 255));
-		nvTable.getTableHeader().setReorderingAllowed(false);
-		nvTable.setDefaultEditor(Object.class, null);
-		nvTable.setFocusable(false);
-
-		ArrayList<String[]> data_nv = new ArrayList<>();
-		int size_nv = 7;
-
-		for (int i = 0; i < nhanVienData.size(); i++) {
-			String[] tmp = new String[size_nv];
-			tmp[0] = String.valueOf(nhanVienData.get(i).getMaNV());
-			tmp[1] = String.valueOf(nhanVienData.get(i).getHoTen());
-			tmp[2] = String.valueOf(nhanVienData.get(i).getEmail());
-			tmp[3] = String.valueOf(nhanVienData.get(i).getDiaChi());
-			tmp[4] = String.valueOf(nhanVienData.get(i).getCccd());
-			tmp[5] = String.valueOf(nhanVienData.get(i).getCapBac());
-			tmp[6] = String.valueOf(nhanVienData.get(i).getPhongBan().getMaPB());
-			data_nv.add(tmp);
-		}
-
-		String[] columnNames_nv = { "Mã NV", "Họ Tên", "Email", "Địa chỉ", "CCCD", "Cấp bậc", "Mã PB" };
-		tableModel_nv = new DefaultTableModel(columnNames_nv, 0);
-		for (String[] row : data_nv) {
-			tableModel_nv.addRow(row);
-		}
-		// table.getTableHeader().addMouseListener(nhanVienController);
-		nvTable.setModel(tableModel_nv);
-
-		nvTable.setBounds(0, 0, 1, 1);
-		bangNhanVienScrollPane = new JScrollPane(nvTable);
-		bangNhanVienScrollPane.setBounds(31, 10, 871, 233);
-		panel_1.add(bangNhanVienScrollPane);
-		bangNhanVienScrollPane.setFont(new Font("JetBrains Mono", Font.PLAIN, 18));
-		bangNhanVienScrollPane.setBorder(null);
-		bangNhanVienScrollPane.setViewportBorder(null);
-		bangNhanVienScrollPane.setAutoscrolls(true);
 
 		JLabel lblNewLabel_3_1 = new JLabel("BẢNG CHẤM CÔNG:");
 		lblNewLabel_3_1.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -216,7 +160,7 @@ public class chamCongViewNhanVien {
 		lblNewLabel_3_1.setFont(new Font("JetBrains Mono", Font.PLAIN, 18));
 		lblNewLabel_3_1.setBorder(null);
 		lblNewLabel_3_1.setBackground(Color.BLACK);
-		lblNewLabel_3_1.setBounds(31, 276, 177, 45);
+		lblNewLabel_3_1.setBounds(28, 10, 177, 45);
 		panel_1.add(lblNewLabel_3_1);
 
 		btnInPhiuChm = new JButton("In phiếu chấm công");
@@ -224,7 +168,7 @@ public class chamCongViewNhanVien {
 		btnInPhiuChm.addActionListener(ac);
 		btnInPhiuChm.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnInPhiuChm.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnInPhiuChm.setBounds(216, 285, 177, 25);
+		btnInPhiuChm.setBounds(213, 19, 177, 25);
 		panel_1.add(btnInPhiuChm);
 
 		panel_2 = new JPanel();
@@ -276,16 +220,6 @@ public class chamCongViewNhanVien {
 		tenNVbutton.setIcon(new ImageIcon(mainView.class.getResource("/img/search (1).png")));
 		tenNVbutton.setBounds(891, 82, 33, 37);
 		tab4.add(tenNVbutton);
-
-		lblNewLabel_3_2 = new JLabel("BẢNG NHÂN VIÊN:");
-		lblNewLabel_3_2.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblNewLabel_3_2.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_3_2.setForeground(Color.BLACK);
-		lblNewLabel_3_2.setFont(new Font("JetBrains Mono", Font.PLAIN, 18));
-		lblNewLabel_3_2.setBorder(null);
-		lblNewLabel_3_2.setBackground(Color.BLACK);
-		lblNewLabel_3_2.setBounds(50, 82, 268, 45);
-		tab4.add(lblNewLabel_3_2);
 	}
 
 	public JPanel getTab4() {
@@ -302,14 +236,6 @@ public class chamCongViewNhanVien {
 
 	public void setTenNVTF(JTextField tenNVTF) {
 		this.tenNVTF = tenNVTF;
-	}
-
-	public JTable getNvTable() {
-		return nvTable;
-	}
-
-	public void setNvTable(JTable nvTable) {
-		this.nvTable = nvTable;
 	}
 
 	public JButton getTenNVbutton() {
@@ -376,14 +302,6 @@ public class chamCongViewNhanVien {
 		this.menuItem3 = menuItem3;
 	}
 
-	public JScrollPane getBangNhanVienScrollPane() {
-		return bangNhanVienScrollPane;
-	}
-
-	public void setBangNhanVienScrollPane(JScrollPane bangNhanVienScrollPane) {
-		this.bangNhanVienScrollPane = bangNhanVienScrollPane;
-	}
-
 	public JLabel getLblNewLabel_3() {
 		return lblNewLabel_3;
 	}
@@ -414,22 +332,6 @@ public class chamCongViewNhanVien {
 
 	public void setChamCongtable(JTable chamCongtable) {
 		this.chamCongtable = chamCongtable;
-	}
-
-	public JLabel getLblNewLabel_3_2() {
-		return lblNewLabel_3_2;
-	}
-
-	public void setLblNewLabel_3_2(JLabel lblNewLabel_3_2) {
-		this.lblNewLabel_3_2 = lblNewLabel_3_2;
-	}
-
-	public ArrayList<nhanVien> getNhanVienData() {
-		return nhanVienData;
-	}
-
-	public void setNhanVienData(ArrayList<nhanVien> nhanVienData) {
-		this.nhanVienData = nhanVienData;
 	}
 
 	public ArrayList<chamCongClass> getChamCongData() {
