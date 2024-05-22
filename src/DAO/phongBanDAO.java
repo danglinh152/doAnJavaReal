@@ -497,9 +497,7 @@ public class phongBanDAO implements DAOinterface<phongBan> {
 			databaseConnection.closeDatabaseConnection(c);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			errView errView = new errView();
-			errView.setVisible(true);
-			errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên đang trực thuộc phòng ban này!");
+
 		}
 		return cnt;
 	}

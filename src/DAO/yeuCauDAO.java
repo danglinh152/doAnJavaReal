@@ -1,6 +1,7 @@
 package DAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,16 +9,111 @@ import java.util.ArrayList;
 
 import database.databaseConnection;
 import model.nhanVien;
+import model.phongBan;
 import model.taiKhoan;
 import model.yeuCau;
+import view.errView;
 
 public class yeuCauDAO implements DAOinterface<yeuCau> {
 	public static yeuCauDAO getInstance() {
 		return new yeuCauDAO();
 	}
 
-	public ArrayList<yeuCau> selectByLike(String txt) {
-		return null;
+	public ArrayList<yeuCau> selectSortByMAYCASC() {
+		ArrayList<yeuCau> arr_yc = new ArrayList<>();
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "SELECT * FROM YEUCAU ORDER BY MAYC ASC";
+			PreparedStatement st = c.prepareStatement(sql);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				int maYC = rs.getInt(1);
+				int maNV = rs.getInt(2);
+				String noiDung = rs.getString(3);
+				int trangThai_int = rs.getInt(4);
+				boolean trangThai = false;
+				if (trangThai_int == 1) {
+					trangThai = true;
+				} else {
+					trangThai = false;
+				}
+				yeuCau yc = new yeuCau(maYC, maNV, noiDung, trangThai);
+				arr_yc.add(yc);
+			}
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return arr_yc;
+	}
+
+	public ArrayList<yeuCau> selectSortByMAYCDESC() {
+		ArrayList<yeuCau> arr_yc = new ArrayList<>();
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "SELECT * FROM YEUCAU ORDER BY MAYC DESC";
+			PreparedStatement st = c.prepareStatement(sql);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				int maYC = rs.getInt(1);
+				int maNV = rs.getInt(2);
+				String noiDung = rs.getString(3);
+				int trangThai_int = rs.getInt(4);
+				boolean trangThai = false;
+				if (trangThai_int == 1) {
+					trangThai = true;
+				} else {
+					trangThai = false;
+				}
+				yeuCau yc = new yeuCau(maYC, maNV, noiDung, trangThai);
+				arr_yc.add(yc);
+			}
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return arr_yc;
+	}
+
+	public ArrayList<yeuCau> selectByLike(String t) {
+		ArrayList<yeuCau> yeuCauQuery = new ArrayList<>();
+		try {
+			t = t.toUpperCase();
+			t = "%" + t + "%";
+
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "SELECT * FROM YEUCAU WHERE UPPER(NOIDUNG) LIKE ?";
+			PreparedStatement st = c.prepareStatement(sql);
+			st.setString(1, t);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				int maYC = rs.getInt(1);
+				int maNV = rs.getInt(2);
+				String noiDung = rs.getString(3);
+				int trangThai_int = rs.getInt(4);
+				boolean trangThai = false;
+				if (trangThai_int == 1) {
+					trangThai = true;
+				} else {
+					trangThai = false;
+				}
+				yeuCau yc = new yeuCau(maYC, maNV, noiDung, trangThai);
+				yeuCauQuery.add(yc);
+			}
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return yeuCauQuery;
 
 	}
 
@@ -127,8 +223,25 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 
 	@Override
 	public int deleteT(yeuCau t) {
-		// TODO Auto-generated method stub
-		return 0;
+		int cnt = 0;
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "DELETE FROM YEUCAU WHERE MAYC = ?";
+			PreparedStatement st = c.prepareStatement(sql);
+			st.setInt(1, t.getMaYC());
+			if (st.execute()) {
+				cnt = 1;
+			} else {
+				cnt = 0;
+			}
+
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+
+		}
+		return cnt;
 	}
 
 	@Override

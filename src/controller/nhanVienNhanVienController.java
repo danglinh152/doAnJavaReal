@@ -3,6 +3,7 @@ package controller;
 import view.capNhatPhongBanView;
 import view.errView;
 import view.guiYeuCauViewNhanVien;
+import view.rendererTableGuiYC;
 import view.themNhanVienView;
 import view.themYeuCauViewNhanVien;
 
@@ -132,6 +133,24 @@ public class nhanVienNhanVienController implements ActionListener, MouseListener
 		} else if (e.getActionCommand().equals("+ Thêm yêu cầu")) {
 			new themYeuCauViewNhanVien(this.nhanVienViewNhanVien.getMainViewNhanVien().getTaiKhoanHienTai());
 			this.nhanVienViewNhanVien.getMainViewNhanVien().dispose();
+		} else if (e.getActionCommand().equals("Xóa")) {
+			TableModel model = nhanVienViewNhanVien.getTable().getModel();
+
+			int maYC = Integer
+					.parseInt((String) model.getValueAt(nhanVienViewNhanVien.getTable().getSelectedRows()[0], 0));
+			yeuCau yeuCau = new yeuCau(maYC, 0, "", false);
+			yeuCauDAO.getInstance().deleteT(yeuCau);
+			ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectSortByMAYCASC();
+			changeTableData(arr_yc);
+		}
+		String thuocTinh = (String) this.nhanVienViewNhanVien.getThuocTinhComboBox().getSelectedItem();
+		String thuTu = (String) this.nhanVienViewNhanVien.getThuTuComboBox().getSelectedItem();
+		if (thuocTinh.equals("Mã Yêu Cầu") && thuTu.equals("Tăng dần")) {
+			ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectSortByMAYCASC();
+			changeTableData(arr_yc);
+		} else if (thuocTinh.equals("Mã Yêu Cầu") && thuTu.equals("Giảm dần")) {
+			ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectSortByMAYCDESC();
+			changeTableData(arr_yc);
 		}
 
 	}
@@ -188,6 +207,13 @@ public class nhanVienNhanVienController implements ActionListener, MouseListener
 		}
 
 		nhanVienViewNhanVien.getTable().setModel(nhanVienViewNhanVien.getTableModel());
+
+		nhanVienViewNhanVien.getTable().getColumnModel().getColumn(1).setPreferredWidth(600);
+
+		// Set custom renderer cho cột "Nội Dung"
+		nhanVienViewNhanVien.getTable().getColumnModel().getColumn(1).setCellRenderer(new rendererTableGuiYC());
+
+		// nhanVienViewNhanVien.getTable().setBounds(0, 0, 1, 1);
 	}
 
 }

@@ -33,7 +33,7 @@ public class sendMail {
 		final String user = "22520756@gm.uit.edu.vn";// gmail người gửi
 		final String pass = "agdj nkne hovq ezyf";
 		String sub = "OTP HRM";
-		String msg = str + " là mật khẩu mới của tài khoản";
+		String msg = str + " là mã OTP của bạn";
 		Properties props = System.getProperties();
 		props.put("mail.debug", "true");
 		props.put("mail.smtp.starttls.required", "true");

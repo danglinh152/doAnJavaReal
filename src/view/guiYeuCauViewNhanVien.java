@@ -115,11 +115,8 @@ public class guiYeuCauViewNhanVien {
 		menuItem1 = new JMenuItem("Xóa");
 		menuItem1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menuItem1.addActionListener(ac); // add ac
-		menuItem2 = new JMenuItem("Cập nhật");
-		menuItem2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		menuItem2.addActionListener(ac); // add ac
+
 		popupMenu.add(menuItem1);
-		popupMenu.add(menuItem2);
 
 		// Thêm MouseListener vào JTable
 		table.addMouseListener(new MouseAdapter() {
@@ -206,11 +203,11 @@ public class guiYeuCauViewNhanVien {
 		txtTnPhngBan.setBounds(614, 115, 259, 37);
 		tab3.add(txtTnPhngBan);
 		txtTnPhngBan.setColumns(10);
-		txtTnPhngBan.setText("Nhập tiêu đề yêu cầu");
+		txtTnPhngBan.setText("Nhập nội dung");
 		txtTnPhngBan.setForeground(Color.GRAY);
 		txtTnPhngBan.addFocusListener(new java.awt.event.FocusAdapter() {
 			public void focusGained(java.awt.event.FocusEvent evt) {
-				if (txtTnPhngBan.getText().equals("Nhập tên nhân viên")) {
+				if (txtTnPhngBan.getText().equals("Nhập nội dung")) {
 					txtTnPhngBan.setText("");
 					txtTnPhngBan.setForeground(Color.BLACK);
 				}
@@ -218,7 +215,7 @@ public class guiYeuCauViewNhanVien {
 
 			public void focusLost(java.awt.event.FocusEvent evt) {
 				if (txtTnPhngBan.getText().isEmpty()) {
-					txtTnPhngBan.setText("Nhập tên nhân viên");
+					txtTnPhngBan.setText("Nhập nội dung");
 					txtTnPhngBan.setForeground(Color.GRAY);
 				}
 			}
@@ -243,7 +240,7 @@ public class guiYeuCauViewNhanVien {
 		btnNewButton_2.setBounds(53, 115, 181, 37);
 		tab3.add(btnNewButton_2);
 
-		String thuocTinh[] = { "Mã Yêu Cầu", "Nội Dung", "Trạng Thái" };
+		String thuocTinh[] = { "Mã Yêu Cầu" };
 		thuocTinhComboBox = new JComboBox(thuocTinh);
 		thuocTinhComboBox.addActionListener(ac);
 		thuocTinhComboBox.setBounds(53, 184, 119, 25);

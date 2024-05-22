@@ -59,6 +59,7 @@ public class capNhatThongTinNhanVienController implements ActionListener, KeyLis
 
 				this.capNhatThongTinViewNhanVien.dispose();
 				new loginView();
+
 				errView.setVisible(true);
 
 			} catch (Exception e2) {
