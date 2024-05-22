@@ -265,7 +265,7 @@ public class mainView extends JFrame {
 		btnngXut.setBounds(0, 400, 230, 47);
 		panel.add(btnngXut);
 
-		JButton btnHpng_1 = new JButton("NGHỈ PHÉP");
+		JButton btnHpng_1 = new JButton("DANH SÁCH YÊU CẦU");
 		btnHpng_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnHpng_1.setIcon(new ImageIcon(mainView.class.getResource("/img/notes.png")));
 		btnHpng_1.setOpaque(false);

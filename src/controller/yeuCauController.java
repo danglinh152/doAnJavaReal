@@ -112,8 +112,9 @@ public class yeuCauController implements ActionListener, KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			String txt = yeuCauView.getTxtTnPhngBan().getText();
 
-			if (txt.trim().equals("") || txt == null) {
-				changeTableData(yeuCauView.getYeuCauData());
+			if (txt.equals("") || txt == null) {
+				ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectSortByMAYCASC();
+				changeTableData(arr_yc);
 			} else {
 				ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectByLike(txt);
 				changeTableData(arr_yc);

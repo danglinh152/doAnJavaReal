@@ -657,12 +657,7 @@ public class nhanVienDAO implements DAOinterface<nhanVien> {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			mainView mainView = new mainView();
-			mainView.setTabNhanVien();
-			mainView.setVisible(true);
-			errView errView = new errView();
-			errView.getLblNewLabel().setText("Thêm thất bại");
-			errView.setVisible(true);
+			
 
 		}
 		return cnt;

@@ -109,6 +109,8 @@ public class nhanVienController implements ActionListener, MouseListener, KeyLis
 			String txt = nhanVienView.getTxtTnPhngBan().getText();
 
 			if (txt.equals("") || txt == null) {
+				ArrayList<nhanVien> nhanVienData = nhanVienDAO.getInstance().selectSortByMANVASC();
+				nhanVienView.setNhanVienData(nhanVienData);
 				changeTableData(nhanVienView.getNhanVienData());
 			} else {
 				ArrayList<nhanVien> arr_pb = nhanVienDAO.getInstance().selectByLike(txt);
@@ -200,6 +202,8 @@ public class nhanVienController implements ActionListener, MouseListener, KeyLis
 			String txt = nhanVienView.getTxtTnPhngBan().getText();
 
 			if (txt.trim().equals("") || txt == null) {
+				ArrayList<nhanVien> nhanVienData = nhanVienDAO.getInstance().selectSortByMANVASC();
+				nhanVienView.setNhanVienData(nhanVienData);
 				changeTableData(nhanVienView.getNhanVienData());
 			} else {
 				ArrayList<nhanVien> arr_pb = nhanVienDAO.getInstance().selectByLike(txt);

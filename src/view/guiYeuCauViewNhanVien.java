@@ -34,6 +34,8 @@ import controller.nhanVienNhanVienController;
 import model.nhanVien;
 import model.yeuCau;
 
+import model.taiKhoan;
+
 import javax.swing.border.MatteBorder;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
@@ -61,11 +63,14 @@ public class guiYeuCauViewNhanVien {
 	private JComboBox thuTuComboBox;
 	private JComboBox thuocTinhComboBox;
 
+	private taiKhoan taiKhoan;
+
 	/**
 	 * Create the application.
 	 */
 	public guiYeuCauViewNhanVien(mainViewNhanVien mainViewNhanVien) {
 		this.mainViewNhanVien = mainViewNhanVien;
+		this.taiKhoan = this.mainViewNhanVien.getTaiKhoanHienTai();
 		yeuCauData = yeuCauDAO.getInstance()
 				.selectAll(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getMaNV());
 		ac = new nhanVienNhanVienController(this);
@@ -187,7 +192,7 @@ public class guiYeuCauViewNhanVien {
 		tab3.add(panel_2);
 		panel_2.setLayout(null);
 
-		lblNewLabel_3 = new JLabel("GỬI YÊU CẦU NGHỈ PHÉP");
+		lblNewLabel_3 = new JLabel("GỬI YÊU CẦU");
 		lblNewLabel_3.setBounds(54, 10, 903, 45);
 		panel_2.add(lblNewLabel_3);
 		lblNewLabel_3.setForeground(Color.BLACK);
@@ -433,4 +438,13 @@ public class guiYeuCauViewNhanVien {
 	public void setThuocTinhComboBox(JComboBox thuocTinhComboBox) {
 		this.thuocTinhComboBox = thuocTinhComboBox;
 	}
+
+	public taiKhoan getTaiKhoan() {
+		return taiKhoan;
+	}
+
+	public void setTaiKhoan(taiKhoan taiKhoan) {
+		this.taiKhoan = taiKhoan;
+	}
+
 }

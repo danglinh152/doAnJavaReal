@@ -52,16 +52,28 @@ public class themPhongBanController implements ActionListener {
 					errView.setVisible(true);
 
 				} else {
-					phongBanDAO.getInstance().insertT(new phongBan(phongBanDAO.getInstance().seq_num() + 1, tenPB,
-							ngayThanhLap, maTP, ngayNhanChuc));
-					mainView mainView = new mainView();
-					mainView.setTabPhongBan();
-					errView errView = new errView();
-					errView.getLblNewLabel().setText("Thêm thành công");
-					this.themPhongBanView.dispose();
+					try {
+						phongBanDAO.getInstance().insertT(new phongBan(phongBanDAO.getInstance().seq_num() + 1, tenPB,
+								ngayThanhLap, maTP, ngayNhanChuc));
+						mainView mainView = new mainView();
+						mainView.setTabPhongBan();
+//						errView errView = new errView();
+//						errView.getLblNewLabel().setText("Thêm thành công");
+						this.themPhongBanView.dispose();
 
-					mainView.setVisible(true);
-					errView.setVisible(true);
+						mainView.setVisible(true);
+						// errView.setVisible(true);
+					} catch (Exception e2) {
+						// TODO: handle exception
+						mainView mainView = new mainView();
+						mainView.setTabPhongBan();
+						errView errView = new errView();
+						errView.getLblNewLabel().setText("Thêm thất bại");
+						this.themPhongBanView.dispose();
+
+						mainView.setVisible(true);
+						errView.setVisible(true);
+					}
 				}
 			} catch (Exception e2) {
 				// TODO: handle exception

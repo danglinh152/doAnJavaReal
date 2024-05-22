@@ -49,7 +49,7 @@ public class capNhatHopDongController implements ActionListener {
 				mainView mainView = new mainView();
 				mainView.setTabHopDong();
 				errView errView = new errView();
-				errView.getLblNewLabel().setText("Lỗi cập nhật");
+				errView.getLblNewLabel().setText("Cập nhật thất bại");
 
 				this.capNhatHopDongView.dispose();
 

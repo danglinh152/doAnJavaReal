@@ -191,7 +191,9 @@ public class capNhatThongTinViewNhanVien extends JDialog {
 
 		String capBacNV[] = { "Fresher", "Junior", "Senior", "Leader" };
 		capBacComboBox = new JComboBox(capBacNV);
-		capBacComboBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		capBacComboBox.setEnabled(false);
+		capBacComboBox.setEditable(true);
+		capBacComboBox.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		capBacComboBox.setFont(new Font("JetBrains Mono", Font.PLAIN, 15));
 		capBacComboBox.setFocusable(false);
 		capBacComboBox.setBorder(null);
@@ -206,6 +208,8 @@ public class capNhatThongTinViewNhanVien extends JDialog {
 		} else if (nhanVien.getCapBac().equals("Leader")) {
 			capBacComboBox.setSelectedIndex(3);
 		}
+		capBacComboBox.setFocusable(false);
+
 		formPanel.add(capBacComboBox);
 
 		JLabel maPhongBan = new JLabel("Mã phòng:");
@@ -220,13 +224,17 @@ public class capNhatThongTinViewNhanVien extends JDialog {
 		}
 		maPB[arr_pb.size()] = "---";
 		maPBComboBox = new JComboBox(maPB);
+		maPBComboBox.setEnabled(false);
+		maPBComboBox.setEditable(true);
 		maPBComboBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		maPBComboBox.setFont(new Font("JetBrains Mono", Font.PLAIN, 15));
 		maPBComboBox.setFocusable(false);
 		maPBComboBox.setBorder(null);
 		maPBComboBox.setBackground(Color.WHITE);
 		maPBComboBox.setBounds(187, 466, 89, 21);
-		maPBComboBox.setSelectedIndex(arr_pb.size());
+		maPBComboBox.setSelectedIndex(this.taiKhoanViewNhanVien.getMainViewNhanVien().getTaiKhoanHienTai().getNhanVien()
+				.getPhongBan().getMaPB());
+		maPBComboBox.setFocusable(false);
 		formPanel.add(maPBComboBox);
 		{
 			JPanel imgPanel = new JPanel();

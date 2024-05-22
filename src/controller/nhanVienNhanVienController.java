@@ -102,7 +102,9 @@ public class nhanVienNhanVienController implements ActionListener, MouseListener
 			String txt = nhanVienViewNhanVien.getTxtTnPhngBan().getText();
 
 			if (txt.equals("") || txt == null) {
-				changeTableData(nhanVienViewNhanVien.getYeuCauData());
+				ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance()
+						.selectAll(this.nhanVienViewNhanVien.getTaiKhoan().getNhanVien().getMaNV());
+				changeTableData(arr_yc);
 			} else {
 				ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectByLike(txt);
 				changeTableData(arr_yc);
@@ -140,16 +142,19 @@ public class nhanVienNhanVienController implements ActionListener, MouseListener
 					.parseInt((String) model.getValueAt(nhanVienViewNhanVien.getTable().getSelectedRows()[0], 0));
 			yeuCau yeuCau = new yeuCau(maYC, 0, "", false);
 			yeuCauDAO.getInstance().deleteT(yeuCau);
-			ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectSortByMAYCASC();
+			ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance()
+					.selectAll(this.nhanVienViewNhanVien.getTaiKhoan().getNhanVien().getMaNV());
 			changeTableData(arr_yc);
 		}
 		String thuocTinh = (String) this.nhanVienViewNhanVien.getThuocTinhComboBox().getSelectedItem();
 		String thuTu = (String) this.nhanVienViewNhanVien.getThuTuComboBox().getSelectedItem();
 		if (thuocTinh.equals("Mã Yêu Cầu") && thuTu.equals("Tăng dần")) {
-			ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectSortByMAYCASC();
+			ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance()
+					.selectAll(this.nhanVienViewNhanVien.getTaiKhoan().getNhanVien().getMaNV());
 			changeTableData(arr_yc);
 		} else if (thuocTinh.equals("Mã Yêu Cầu") && thuTu.equals("Giảm dần")) {
-			ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectSortByMAYCDESC();
+			ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance()
+					.selectAllDESC(this.nhanVienViewNhanVien.getTaiKhoan().getNhanVien().getMaNV());
 			changeTableData(arr_yc);
 		}
 
@@ -168,7 +173,9 @@ public class nhanVienNhanVienController implements ActionListener, MouseListener
 			String txt = nhanVienViewNhanVien.getTxtTnPhngBan().getText();
 
 			if (txt.trim().equals("") || txt == null) {
-				changeTableData(nhanVienViewNhanVien.getYeuCauData());
+				ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance()
+						.selectAll(this.nhanVienViewNhanVien.getTaiKhoan().getNhanVien().getMaNV());
+				changeTableData(arr_yc);
 			} else {
 				ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectByLike(txt);
 				changeTableData(arr_yc);

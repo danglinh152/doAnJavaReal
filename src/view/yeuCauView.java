@@ -186,7 +186,7 @@ public class yeuCauView {
 		tab8.add(panel_2);
 		panel_2.setLayout(null);
 
-		lblNewLabel_3 = new JLabel("YÊU CẦU NGHỈ PHÉP");
+		lblNewLabel_3 = new JLabel("DANH SÁCH CÁC YÊU CẦU");
 		lblNewLabel_3.setBounds(54, 10, 903, 45);
 		panel_2.add(lblNewLabel_3);
 		lblNewLabel_3.setForeground(Color.BLACK);

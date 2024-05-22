@@ -37,31 +37,21 @@ public class capNhatPhongBanController implements ActionListener {
 
 					phongBanDAO.getInstance().updateT(new phongBan(maPB, tenPB, ngayThanhLap, 0, null));
 
-					mainView mainView = new mainView();
-					mainView.setTabPhongBan();
-
-					errView errView = new errView();
-					errView.getLblNewLabel().setText("Cập nhật thành công");
-
-					this.capNhatPhongBanView.dispose();
-
-					mainView.setVisible(true);
-					errView.setVisible(true);
 				} else {
 					phongBanDAO.getInstance().updateT(
 							new phongBan(maPB, tenPB, ngayThanhLap, Integer.parseInt(maTP), Date.valueOf(ngNhanChuc)));
 
-					mainView mainView = new mainView();
-					mainView.setTabPhongBan();
-
-					errView errView = new errView();
-					errView.getLblNewLabel().setText("Cập nhật thành công");
-
-					this.capNhatPhongBanView.dispose();
-
-					mainView.setVisible(true);
-					errView.setVisible(true);
 				}
+				mainView mainView = new mainView();
+				mainView.setTabPhongBan();
+
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Cập nhật thành công");
+
+				this.capNhatPhongBanView.dispose();
+
+				mainView.setVisible(true);
+				errView.setVisible(true);
 			} catch (Exception e2) {
 				// TODO: handle exception
 				e2.printStackTrace();

@@ -66,22 +66,20 @@ public class themNhanVienController implements ActionListener, KeyListener {
 
 				nhanVien nhanVien = new nhanVien(maNV, hoTen, gioiTinh, ngSinh, soDienThoai, email, diaChi, cccd,
 						capBac, phongBan);
-
-				if (nhanVienDAO.getInstance().insertT(nhanVien) != 0) {
-					mainView mainView = new mainView();
-					mainView.setTabNhanVien();
-					errView errView = new errView();
-					errView.getLblNewLabel().setText("Thêm thành công");
-					this.themNhanVienView.dispose();
-					mainView.setVisible(true);
-					errView.setVisible(true);
-				} else {
-					this.themNhanVienView.dispose();
-				}
-
+				mainView mainView = new mainView();
+				mainView.setTabNhanVien();
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Thêm thành công");
+				this.themNhanVienView.dispose();
+				mainView.setVisible(true);
 			} catch (Exception e2) {
 				// TODO: handle exception
-
+				mainView mainView = new mainView();
+				mainView.setTabNhanVien();
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Thêm thất bại");
+				this.themNhanVienView.dispose();
+				mainView.setVisible(true);
 			}
 		}
 
