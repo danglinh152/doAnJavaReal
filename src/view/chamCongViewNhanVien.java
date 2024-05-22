@@ -85,27 +85,9 @@ public class chamCongViewNhanVien {
 		tab4.add(panel_1);
 		panel_1.setLayout(null);
 
-		popupMenu = new JPopupMenu();
-		popupMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		menuItem1 = new JMenuItem("Chấm công");
-		menuItem1.addActionListener(ac); // add ac
-		menuItem1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		popupMenu.add(menuItem1);
-
 		// Tạo bảng và gắn dữ liệu vào
 		String[] columnNames = { "Mã NV", "Họ Tên", "Email", "Địa chỉ", "CCCD", "Cấp bậc", "Mã PB" };
 		tableModel_nv = new DefaultTableModel(columnNames, 0);
-
-		popupMenu2 = new JPopupMenu();
-		popupMenu2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		menuItem2 = new JMenuItem("Sửa");
-		menuItem2.addActionListener(ac); // add ac
-		menuItem2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		popupMenu2.add(menuItem2);
-		menuItem3 = new JMenuItem("Xóa");
-		menuItem3.addActionListener(ac); // add ac
-		menuItem3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		popupMenu2.add(menuItem3);
 
 		chamCongtable = new JTable();
 		chamCongtable.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -128,19 +110,6 @@ public class chamCongViewNhanVien {
 		chamCongtable.getTableHeader().setReorderingAllowed(false);
 		chamCongtable.setDefaultEditor(Object.class, null);
 		chamCongtable.setFocusable(false);
-
-		chamCongtable.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON3) { // Bấm chuột phải
-					int row = chamCongtable.rowAtPoint(e.getPoint());
-					if (row != -1) {
-						chamCongtable.setRowSelectionInterval(row, row);
-						popupMenu2.show(chamCongtable, e.getX(), e.getY());
-					}
-				}
-			}
-		});
 
 		ArrayList<String[]> data_cc = new ArrayList<>();
 		int size_cc = 8;
@@ -207,19 +176,6 @@ public class chamCongViewNhanVien {
 		nvTable.getTableHeader().setReorderingAllowed(false);
 		nvTable.setDefaultEditor(Object.class, null);
 		nvTable.setFocusable(false);
-
-		nvTable.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON3) { // Bấm chuột phải
-					int row = nvTable.rowAtPoint(e.getPoint());
-					if (row != -1) {
-						nvTable.setRowSelectionInterval(row, row);
-						popupMenu.show(nvTable, e.getX(), e.getY());
-					}
-				}
-			}
-		});
 
 		ArrayList<String[]> data_nv = new ArrayList<>();
 		int size_nv = 7;
