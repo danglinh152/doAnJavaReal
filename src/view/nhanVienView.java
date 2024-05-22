@@ -56,6 +56,7 @@ public class nhanVienView {
 	private JLabel lblNewLabel;
 	private JComboBox thuTuComboBox;
 	private JComboBox thuocTinhComboBox;
+	private JButton btnXtDuytCp;
 
 	/**
 	 * Create the application.
@@ -224,7 +225,7 @@ public class nhanVienView {
 		btnNewButton_2.setFocusable(false);
 		btnNewButton_2.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 		btnNewButton_2.setBackground(new Color(255, 255, 255));
-		btnNewButton_2.setFont(new Font("JetBrains Mono", Font.PLAIN, 15));
+		btnNewButton_2.setFont(new Font("Dialog", Font.BOLD, 15));
 		btnNewButton_2.setBounds(53, 115, 181, 37);
 		tab3.add(btnNewButton_2);
 
@@ -246,12 +247,29 @@ public class nhanVienView {
 		tab3.add(lblNewLabel);
 
 		JButton btnNewButton = new JButton("Xuất file excel");
+		btnNewButton.setFocusPainted(false);
+		btnNewButton.setContentAreaFilled(false);
+		btnNewButton.setBorderPainted(false);
+		btnNewButton.setBackground(new Color(255, 255, 255));
+		btnNewButton.setBorder(null);
 		btnNewButton.setFocusable(false);
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.addActionListener(ac);
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnNewButton.setBounds(250, 125, 163, 21);
+		btnNewButton.setBounds(395, 116, 131, 37);
 		tab3.add(btnNewButton);
+
+		btnXtDuytCp = new JButton("Xét duyệt cấp bậc");
+		btnXtDuytCp.setFocusPainted(false);
+		btnXtDuytCp.setContentAreaFilled(false);
+		btnXtDuytCp.setBorderPainted(false);
+		btnXtDuytCp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnXtDuytCp.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnXtDuytCp.setFocusable(false);
+		btnXtDuytCp.setBorder(null);
+		btnXtDuytCp.setBackground(Color.WHITE);
+		btnXtDuytCp.setBounds(250, 115, 131, 37);
+		tab3.add(btnXtDuytCp);
 	}
 
 	public JPanel gettab3() {

@@ -262,7 +262,7 @@ public class mainView extends JFrame {
 		btnngXut.setFocusable(false);
 		btnngXut.setBorder(null);
 		btnngXut.setBackground(new Color(102, 205, 170));
-		btnngXut.setBounds(0, 400, 218, 47);
+		btnngXut.setBounds(0, 400, 230, 47);
 		panel.add(btnngXut);
 
 		JButton btnHpng_1 = new JButton("NGHỈ PHÉP");

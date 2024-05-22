@@ -81,7 +81,7 @@ public class yeuCauView {
 		panel_1 = new JPanel();
 		panel_1.setBorder(new EmptyBorder(0, 1, 1, 1));
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(22, 215, 926, 469);
+		panel_1.setBounds(20, 197, 926, 469);
 		tab8.add(panel_1);
 		panel_1.setLayout(null);
 
@@ -232,18 +232,18 @@ public class yeuCauView {
 		String thuocTinh[] = { "Mã Yêu Cầu" };
 		thuocTinhComboBox = new JComboBox(thuocTinh);
 		thuocTinhComboBox.addActionListener(ac);
-		thuocTinhComboBox.setBounds(53, 184, 119, 25);
+		thuocTinhComboBox.setBounds(51, 166, 119, 25);
 		tab8.add(thuocTinhComboBox);
 
 		String thuTu[] = { "Tăng dần", "Giảm dần" };
 		thuTuComboBox = new JComboBox(thuTu);
 		thuTuComboBox.addActionListener(ac);
-		thuTuComboBox.setBounds(291, 184, 90, 25);
+		thuTuComboBox.setBounds(289, 166, 90, 25);
 		tab8.add(thuTuComboBox);
 
 		lblNewLabel = new JLabel("sắp xếp theo:");
 		lblNewLabel.setFont(new Font("JetBrains Mono", Font.PLAIN, 13));
-		lblNewLabel.setBounds(182, 184, 104, 25);
+		lblNewLabel.setBounds(180, 166, 104, 25);
 		tab8.add(lblNewLabel);
 	}
 
