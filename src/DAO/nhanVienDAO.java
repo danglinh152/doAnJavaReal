@@ -20,6 +20,49 @@ public class nhanVienDAO implements DAOinterface<nhanVien> {
 		return new nhanVienDAO();
 	}
 
+	public ArrayList<nhanVien> xetDuyetCapBac() {
+		ArrayList<nhanVien> nhanVienQuery = new ArrayList<>();
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "SELECT DISTINCT NV.MANV, NV.HOTEN, NV.GIOITINH, NV.CAPBAC, NV.NGSINH, NV.SDT, NV.EMAIL, NV.DIACHI, NV.CCCD\n"
+					+ "FROM NHANVIEN NV\n" + "INNER JOIN HOPDONG HD ON NV.MANV = HD.MANV\n"
+					+ "INNER JOIN NHANVIEN_KYNANG NVKN ON NVKN.MANV = NV.MANV\n"
+					+ "WHERE (TRUNC(SYSDATE) - TRUNC(NGAYBDHD) > 365\n" + "AND (\n"
+					+ "(NVKN.MAKN = 1 AND NVKN.CAPBAC IN ('B'))\n"
+					+ "OR (NVKN.MAKN = 2 AND NVKN.CAPBAC IN ('C2', 'C1', 'B2', 'B1'))\n" + ")\n"
+					+ "AND NV.CAPBAC = 'Fresher')\n" + "\n" + "OR (\n" + "TRUNC(SYSDATE) - TRUNC(NGAYBDHD) > 1825\n"
+					+ "AND (\n" + "(NVKN.MAKN = 1 AND NVKN.CAPBAC IN ('C'))\n"
+					+ "OR (NVKN.MAKN = 2 AND NVKN.CAPBAC IN ('C2', 'C1', 'B2'))\n" + ")\n"
+					+ "AND NV.CAPBAC = 'Junior')\n" + "\n" + "OR (\n" + "TRUNC(SYSDATE) - TRUNC(NGAYBDHD) > 2555\n"
+					+ "AND (\n" + "(NVKN.MAKN = 1 AND NVKN.CAPBAC IN ('C'))\n"
+					+ "OR (NVKN.MAKN = 2 AND NVKN.CAPBAC IN ('C2', 'C1', 'B2'))\n" + ")\n"
+					+ "AND NV.CAPBAC = 'Senior')";
+			PreparedStatement st = c.prepareStatement(sql);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				int maNV = rs.getInt("MANV");
+				String hoTen = rs.getString("HOTEN");
+				String gioiTinh = rs.getString("GIOITINH");
+				String capBac = rs.getString("CAPBAC");
+				Date ngSinh = rs.getDate("NGSINH");
+				String sdt = rs.getString("SDT");
+				String email = rs.getString("EMAIL");
+				String diaChi = rs.getString("DIACHI");
+				String cccd = rs.getString("CCCD");
+
+				nhanVien nv = new nhanVien(maNV, hoTen, gioiTinh, ngSinh, sdt, email, diaChi, cccd, capBac, null);
+				nhanVienQuery.add(nv);
+			}
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return nhanVienQuery;
+	}
+
 	public ArrayList<nhanVien> selectSortByMANVASC() {
 		ArrayList<nhanVien> nhanVienQuery = new ArrayList<>();
 		try {
@@ -644,6 +687,35 @@ public class nhanVienDAO implements DAOinterface<nhanVien> {
 			st.setString(8, t.getCapBac());
 			st.setInt(9, t.getPhongBan().getMaPB());
 			st.setInt(10, t.getMaNV());
+			st.execute();
+			cnt = 1;
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+			// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
+			// đang trực thuộc phòng ban này!");
+		}
+		return cnt;
+	}
+
+	public int updateTCAPBAC(nhanVien t, String capBac) {
+		int cnt = 0;
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "UPDATE NHANVIEN SET CAPBAC = ? WHERE MANV = ?";
+			PreparedStatement st = c.prepareStatement(sql);
+			if (capBac.equals("Fresher")) {
+				capBac = "Junior";
+			} else if (capBac.equals("Junior")) {
+				capBac = "Senior";
+			} else if (capBac.equals("Senior")) {
+				capBac = "Leader";
+			}
+			st.setString(1, capBac);
+			st.setInt(2, t.getMaNV());
 			st.execute();
 			cnt = 1;
 			databaseConnection.closeDatabaseConnection(c);

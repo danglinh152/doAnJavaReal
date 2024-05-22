@@ -49,12 +49,13 @@ public class capNhatNhanVienController implements ActionListener, KeyListener {
 						this.capNhatNhanVienView.getCccdTF().getText(),
 						String.valueOf(this.capNhatNhanVienView.getCapBacComboBox().getSelectedItem()), phongBan);
 				nhanVienDAO.getInstance().updateT(nhanVienNew, nhanVien.getMaNV());
-
+				mainView mainView = new mainView();
+				mainView.setTabNhanVien();
 				errView errView = new errView();
-				errView.getLblNewLabel().setText("Cập nhật thành công, Vui lòng đăng nhập lại");
+				errView.getLblNewLabel().setText("Cập nhật thành công");
 
 				this.capNhatNhanVienView.dispose();
-				new loginView();
+				mainView.setVisible(true);
 				errView.setVisible(true);
 
 			} catch (Exception e2) {

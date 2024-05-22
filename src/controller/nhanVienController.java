@@ -5,6 +5,7 @@ import view.capNhatPhongBanView;
 import view.errView;
 import view.nhanVienView;
 import view.themNhanVienView;
+import view.xetDuyetCapBacView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -137,6 +138,10 @@ public class nhanVienController implements ActionListener, MouseListener, KeyLis
 			this.nhanVienView.getMainView().dispose();
 		} else if (e.getActionCommand().equals("+ Thêm nhân viên")) {
 			new themNhanVienView();
+			this.nhanVienView.getMainView().dispose();
+		} else if (e.getActionCommand().equals("Xét duyệt cấp bậc")) {
+			System.out.println("test");
+			new xetDuyetCapBacView();
 			this.nhanVienView.getMainView().dispose();
 		}
 

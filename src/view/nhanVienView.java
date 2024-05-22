@@ -260,6 +260,7 @@ public class nhanVienView {
 		tab3.add(btnNewButton);
 
 		btnXtDuytCp = new JButton("Xét duyệt cấp bậc");
+		btnXtDuytCp.addActionListener(ac);
 		btnXtDuytCp.setFocusPainted(false);
 		btnXtDuytCp.setContentAreaFilled(false);
 		btnXtDuytCp.setBorderPainted(false);
