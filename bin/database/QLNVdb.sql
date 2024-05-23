@@ -9,12 +9,14 @@ drop table taikhoan
 drop table hopdong
 /
 alter table nhanvien
-drop constraint nhanvien_mapb_fk
+drop constraint nhanvien_fk
 /
 alter table phongban
-drop constraint phongban_matruongphong_fk
+drop constraint phongban_fk
 /
 drop table phongban
+/
+drop table yeucau
 /
 drop table nhanvien
 /
@@ -22,87 +24,95 @@ ALTER SESSION set NLS_DATE_FORMAT = 'DD-MM-YYYY';
 set feedback ON
 set serveroutput on;
 
+create table phongban (
+mapb            number(4),
+tenpb           nvarchar2(50) not null,
+ngthanhlap      date not null,
+matruongphong   number(4),
+ngaynhanchuc    date,
+constraint phongban_pk primary key (mapb),
+constraint taikhoan_tenpb_uk unique (tenpb)
+);
 
 create table nhanvien (
 MANV            number(4),
-HOTEN           Nvarchar2(30),
-GIOITINH        Nvarchar2(3),
-NGSINH          date,
-SDT             varchar(15),
-EMAIL           varchar(30),
-DIACHI          varchar(50),
-CCCD            varchar(12),
-CAPBAC          varchar(10),
-MAPB            number(4),
-constraint nhanvien_pk primary key (manv),
-constraint nhanvien_sdt_uk unique (sdt),
-constraint nhanvien_email_uk unique (email),
-constraint nhanvien_cccd_uk unique (cccd),
-constraint nhanvien_gioitinh_ck check (gioitinh in ('nam', N'n?'))
-)
+HOTEN           Nvarchar2(50) not null,
+GIOITINH        Nvarchar2(3) not null,
+NGSINH          date not null,
+SDT             varchar(15) not null,
+EMAIL           varchar(50) not null,
+DIACHI          varchar(150),
+CCCD            varchar(12) not null,
+CAPBAC          varchar(10) not null,
+MAPB            number(4) not null,
+constraint nhanvien_pk primary key (MANV),
+constraint nhanvien_fk foreign key (MAPB) references PHONGBAN (MAPB),
+constraint nhanvien_sdt_uk unique (SDT),
+constraint nhanvien_email_uk unique (EMAIL),
+constraint nhanvien_cccd_uk unique (CCCD),
+constraint nhanvien_gioitinh_ck check (gioitinh in ('Nam', N'Nữ'))
+);
 /
 
 create table hopdong (
 mahd            number(4),
-manv            number(4),
-ngaybdhd        date,
-ngaykthd        date
-)
+manv            number(4) not null,
+ngaybdhd        date not null,
+ngaykthd        date,
+constraint hopdong_pk primary key (mahd),
+constraint hopdong_fk foreign key (manv) references NHANVIEN (manv)
+);
 /
-
-create table phongban (
-mapb            number(4),
-tenpb           nvarchar2(20),
-ngthanhlap      date,
-matruongphong   number(4),
-ngaynhanchuc    date,
-constraint phongban_pk primary key (mapb)
-)
-/
+ALTER TABLE PHONGBAN ADD CONSTRAINT phongban_fk foreign key (matruongphong) references NHANVIEN (manv);
 
 create table taikhoan (
 matk            number(4),
 manv            number(4),
-tentk           nvarchar2(10),
-matkhau         nvarchar2(10),
-loaitaikhoan    nvarchar2(10),
+tentk           nvarchar2(50) not null,
+matkhau         nvarchar2(50) not null,
+loaitaikhoan    nvarchar2(10) not null,
 constraint taikhoan_pk primary key (matk),
+constraint taikhoan_fk foreign key (manv) references NHANVIEN (manv) ,
 constraint taikhoan_tentk_uk unique (tentk),
-constraint taikhoan_loaitk_ck check (loaitaikhoan in (N'qu?n l�', N'nh�n vi�n'))
-)
+constraint taikhoan_loaitk_ck check (loaitaikhoan in (N'quản lý', N'nhân viên'))
+);
 /
 
 create table kynang (
 makn            number(4),
-tenkn           nvarchar2(20),
+tenkn           nvarchar2(20) not null,
 constraint kynang_pk primary key (makn),
-constraint kynang_tenkn check (tenkn in (N'tin h?c', N'ngo?i ng?'))
-)
+constraint kynang_ck check (tenkn in (N'tin học', N'ngoại ngữ')),
+constraint tenkn_uk unique (tenkn)
+);
 /
 
 create table nhanvien_kynang (
 makn            number(4),
 manv            number(4),
-capbac          char(1),
+capbac          char(3) not null,
 constraint nhanvien_kynang_pk primary key (makn, manv),
-constraint nhanvien_kynang_capbac_ck check (capbac in ('A', 'B', 'C', '1', '2', '3'))
-)
+constraint nhanvien_kynang_fk_kn foreign key (makn) references KYNANG (makn),
+constraint nhanvien_kynang_fk_nv foreign key (manv) references NHANVIEN (manv),
+constraint nhanvien_kynang_capbac_ck check (capbac in ('A', 'B', 'C', 'A1', 'A2', 'B1', 'B2' , 'C1' , 'C2'))
+);
 /
 
 create table chamcong (
 macc            number(4),
-manv            number(4),
-thanglamviec    number(2),
-songaylamviec   number(2),
-songaynghi      number(2),
-sogiotangca     number(2),
-songayditre     number(2),
+manv            number(4) not null,
+thanglamviec    number(2) not null,
+songaylamviec   number(2) not null,
+songaynghi      number(2) not null,
+sogiotangca     number(2) not null,
+songayditre     number(2) not null,
 constraint chamcong_pk primary key (macc),
+constraint chamcong_fk foreign key (manv) references NHANVIEN (manv),
 constraint chamcong_thanglamviec_ck check (thanglamviec >=1 and thanglamviec <= 12),
 constraint chamcong_songaylamviec_ck check (songaylamviec > 0 and songaylamviec <= 31),
 constraint chamcong_songaynghi_ck check (songaynghi > 0 and songaynghi <= 31),
 constraint chamcong_sogiotangca_ck check (sogiotangca > 0 and sogiotangca <= 48)
-)
+);
 /
 
 
@@ -110,33 +120,12 @@ constraint chamcong_sogiotangca_ck check (sogiotangca > 0 and sogiotangca <= 48)
 
 
 
-ALTER TABLE hopdong 
-   ADD CONSTRAINT hopdong_manv_fk
-   FOREIGN KEY (manv) REFERENCES nhanvien (manv);
-ALTER TABLE nhanvien 
-   ADD CONSTRAINT nhanvien_mapb_fk
-   FOREIGN KEY (mapb) REFERENCES phongban (mapb);
-ALTER TABLE phongban
-   ADD CONSTRAINT phongban_matruongphong_fk
-   FOREIGN KEY (matruongphong) REFERENCES nhanvien (manv);
-ALTER TABLE taikhoan
-   ADD CONSTRAINT taikhoan_manv_fk
-   FOREIGN KEY (manv) REFERENCES nhanvien (manv);
-ALTER TABLE nhanvien_kynang
-   ADD CONSTRAINT nhanvien_kynang_manv_fk
-   FOREIGN KEY (manv) REFERENCES nhanvien (manv);
-ALTER TABLE nhanvien_kynang
-   ADD CONSTRAINT nhanvien_kynang_makn_fk
-   FOREIGN KEY (makn) REFERENCES kynang (makn);
-ALTER TABLE chamcong
-   ADD CONSTRAINT chamcong_manv_fk
-   FOREIGN KEY (manv) REFERENCES nhanvien (manv);
 
 
 
 
 
---Trigger Ng� y nh?n ch?c c?a tr??ng phòng ph?i l?n h?n ng� y sinh c?a ng??i ?ó
+--Trigger Ng� y nh?n ch?c c?a tr??ng phòng ph?i l?n h?n ng� y sinh c?a ng??i ?ó
 CREATE OR REPLACE TRIGGER TRG_NGNHANCHUC_NGSINH
 BEFORE INSERT OR UPDATE ON PHONGBAN
 FOR EACH ROW
@@ -154,7 +143,7 @@ BEGIN
     END IF;
 END;
 
---Trigger Ng� y nh?n ch?c c?a tr??ng phòng ph?i l?n h?n ho?c b?ng ng� y th� nh l?p c?a phòng ban ?ó
+--Trigger Ng� y nh?n ch?c c?a tr??ng phòng ph?i l?n h?n ho?c b?ng ng� y th� nh l?p c?a phòng ban ?ó
 CREATE OR REPLACE TRIGGER TRG_NGNHANCHUC_NGTHANHLAP
 BEFORE INSERT OR UPDATE ON PHONGBAN
 FOR EACH ROW
@@ -162,7 +151,7 @@ BEGIN
     IF :NEW.NGAYNHANCHUC < :NEW.NGAYTHANHLAP THEN
         RAISE_APPLICATION_ERROR(-20001, 'Ngay nhan chuc phai lon hon hoac bang ngay thanh lap cua phong ban');
     ELSE 
-        DBMS_OUTPUT.PUT_LINE('Thêm/s?a d? li?u th� nh công');
+        DBMS_OUTPUT.PUT_LINE('Thêm/s?a d? li?u th� nh công');
     END IF;
 END;
 
@@ -179,7 +168,7 @@ BEGIN
     
     IF(count_skill >= 10) THEN
     DBMS_OUTPUT.PUT_LINE('M?i nhân viên không có quá 10 k? n?ng');
-    ELSE DBMS_OUTPUT.PUT_LINE('Thêm/s?a d? li?u th� nh công');
+    ELSE DBMS_OUTPUT.PUT_LINE('Thêm/s?a d? li?u th� nh công');
     END IF;
 END;
 
@@ -197,10 +186,10 @@ BEFORE INSERT OR UPDATE ON NHANVIEN
         END;     
 
 
---S? ng� y ?i l� m, ?i tr?, v?ng không ???c quá
--- N?u tháng có 30 ng� y: không ???c quá 30 ng� y
--- N?u tháng có 31 ng� y: không ???c quá 31 ng� y
--- N?u tháng 2: không ???c quá 29 ng� y
+--S? ng� y ?i l� m, ?i tr?, v?ng không ???c quá
+-- N?u tháng có 30 ng� y: không ???c quá 30 ng� y
+-- N?u tháng có 31 ng� y: không ???c quá 31 ng� y
+-- N?u tháng 2: không ???c quá 29 ng� y
 CREATE OR REPLACE TRIGGER TG_2
 BEFORE INSERT OR UPDATE ON CHAMCONG
     FOR EACH ROW
@@ -217,7 +206,7 @@ BEFORE INSERT OR UPDATE ON CHAMCONG
     END;   
     
     
---Thu?c tính NGSINH c?a NHANVIEN ph?i nh? h?n ho?c b?ng ng� y hi?n t?i
+--Thu?c tính NGSINH c?a NHANVIEN ph?i nh? h?n ho?c b?ng ng� y hi?n t?i
 CREATE OR REPLACE TRIGGER TG_3
 BEFORE INSERT OR UPDATE ON NHANVIEN
     FOR EACH ROW
@@ -231,7 +220,7 @@ BEFORE INSERT OR UPDATE ON NHANVIEN
             
             
         
---M?i tr??ng phòng ch? l� m tr??ng phòng duy nh?t 1 phòng ban
+--M?i tr??ng phòng ch? l� m tr??ng phòng duy nh?t 1 phòng ban
 CREATE OR REPLACE TRIGGER TG_4
 BEFORE INSERT OR UPDATE ON PHONGBAN
     FOR EACH ROW
@@ -290,7 +279,7 @@ END;
 --END;
 
 
---trigger nhân viên v� o l� m ph?i t? ?? 18 tu?i
+--trigger nhân viên v� o l� m ph?i t? ?? 18 tu?i
 CREATE OR REPLACE TRIGGER CHECK_NHANVIEN_AGE
 BEFORE INSERT OR UPDATE ON NHANVIEN
 FOR EACH ROW
@@ -302,8 +291,7 @@ BEGIN
 
     -- Ki?m tra n?u tu?i c?a nhân viên m?i d??i 18
     IF v_tuoi < 18 THEN
-        RAISE_APPLICATION_ERROR(-20003, 'Nhân viên ph?i t? ?? 18 tu?i ?? v� o l� m.');
+        RAISE_APPLICATION_ERROR(-20003, 'Nhân viên ph?i t? ?? 18 tu?i ?? v� o l� m.');
     END IF;
 END;
-
 
