@@ -404,20 +404,20 @@ public class phongBanDAO implements DAOinterface<phongBan> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "INSERT INTO PHONGBAN VALUES (?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, ?, ?, ?, ?)";
 			PreparedStatement st = c.prepareStatement(sql);
 			if (t.getMaTruongPhong() == 0 || t.getNgNhanChuc() == null) {
-				st.setInt(1, t.getMaPB());
-				st.setString(2, t.getTenPB());
-				st.setDate(3, t.getNgThanhLap());
-				st.setObject(4, null);
-				st.setDate(5, null);
+				// st.setInt(1, t.getMaPB());
+				st.setString(1, t.getTenPB());
+				st.setDate(2, t.getNgThanhLap());
+				st.setObject(3, null);
+				st.setDate(4, null);
 			} else {
-				st.setInt(1, t.getMaPB());
-				st.setString(2, t.getTenPB());
-				st.setDate(3, t.getNgThanhLap());
-				st.setInt(4, t.getMaTruongPhong());
-				st.setDate(5, t.getNgNhanChuc());
+				// st.setInt(1, t.getMaPB());
+				st.setString(1, t.getTenPB());
+				st.setDate(2, t.getNgThanhLap());
+				st.setInt(3, t.getMaTruongPhong());
+				st.setDate(4, t.getNgNhanChuc());
 			}
 			if (st.execute()) {
 				cnt = 1;

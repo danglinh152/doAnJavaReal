@@ -228,15 +228,15 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "INSERT INTO YEUCAU VALUES (?, ?, ?, ?)";
+			String sql = "INSERT INTO YEUCAU VALUES (my_sequence_yeucau.NEXTVAL, ?, ?, ?)";
 			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getMaYC());
-			st.setInt(2, t.getMaNV());
-			st.setString(3, t.getNoiDung());
+			// st.setInt(1, t.getMaYC());
+			st.setInt(1, t.getMaNV());
+			st.setString(2, t.getNoiDung());
 			if (t.isTrangThai()) {
-				st.setInt(4, 1);
+				st.setInt(3, 1);
 			} else {
-				st.setInt(4, 0);
+				st.setInt(3, 0);
 			}
 			st.execute();
 			cnt = 1;

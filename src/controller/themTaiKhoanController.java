@@ -31,7 +31,7 @@ public class themTaiKhoanController implements ActionListener {
 			mainView.setVisible(true);
 		} else if (e.getActionCommand().equals("Thêm")) {
 			try {
-				int maTK = hopDongDAO.getInstance().seq_num() + 1;
+				int maTK = 1;
 				int maNV = Integer.parseInt(this.themTaiKhoanView.getMaNVTF().getText());
 				nhanVien nhanVien = nhanVienDAO.getInstance()
 						.selectByID(new nhanVien(maNV, "", "", null, "", "", "", "", "", null));

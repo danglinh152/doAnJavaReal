@@ -59,12 +59,12 @@ public class hopDongDAO implements DAOinterface<hopDong> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "INSERT INTO HOPDONG VALUES (?, ?, ?, ?)";
+			String sql = "INSERT INTO HOPDONG VALUES (my_sequence_hopdong.NEXTVAL, ?, ?, ?)";
 			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getMaHD());
-			st.setInt(2, t.getNhanVien().getMaNV());
-			st.setDate(3, t.getNgayBDHD());
-			st.setDate(4, t.getNgayKTHD());
+			// st.setInt(1, t.getMaHD());
+			st.setInt(1, t.getNhanVien().getMaNV());
+			st.setDate(2, t.getNgayBDHD());
+			st.setDate(3, t.getNgayKTHD());
 			st.execute();
 			cnt = 1;
 

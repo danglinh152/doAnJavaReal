@@ -156,15 +156,15 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "INSERT INTO CHAMCONG VALUES (?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO CHAMCONG VALUES (my_sequence_chamcong.NEXTVAL, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getMaCC());
-			st.setInt(2, t.getMaNV());
-			st.setInt(3, t.getThangLamViec());
-			st.setInt(4, t.getSoNgayLamViec());
-			st.setInt(5, t.getSoNgayNghi());
-			st.setDouble(6, t.getSoGioTangCa());
-			st.setInt(7, t.getSoNgayDiTre());
+			// st.setInt(1, t.getMaCC());
+			st.setInt(1, t.getMaNV());
+			st.setInt(2, t.getThangLamViec());
+			st.setInt(3, t.getSoNgayLamViec());
+			st.setInt(4, t.getSoNgayNghi());
+			st.setDouble(5, t.getSoGioTangCa());
+			st.setInt(6, t.getSoNgayDiTre());
 			st.execute();
 			cnt = 1;
 

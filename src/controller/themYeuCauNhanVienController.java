@@ -24,8 +24,8 @@ public class themYeuCauNhanVienController implements ActionListener {
 			try {
 				errView errView = new errView();
 				errView.getLblNewLabel().setText("Đã gửi yêu cầu!");
-				yeuCau yeuCau = new yeuCau(yeuCauDAO.getInstance().seq_num() + 1,
-						this.themYC.getTkht().getNhanVien().getMaNV(), this.themYC.getTextArea().getText(), false);
+				yeuCau yeuCau = new yeuCau(1, this.themYC.getTkht().getNhanVien().getMaNV(),
+						this.themYC.getTextArea().getText(), false);
 				yeuCauDAO.getInstance().insertT(yeuCau);
 				mainViewNhanVien mainViewNhanVien = new mainViewNhanVien(this.themYC.getTkht());
 				mainViewNhanVien.setTabNhanVien();

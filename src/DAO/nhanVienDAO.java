@@ -637,18 +637,18 @@ public class nhanVienDAO implements DAOinterface<nhanVien> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "INSERT INTO NHANVIEN VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getMaNV());
-			st.setString(2, t.getHoTen());
-			st.setString(3, t.getGioiTinh());
-			st.setDate(4, t.getNgSinh());
-			st.setString(5, t.getSoDienThoai());
-			st.setString(6, t.getEmail());
-			st.setString(7, t.getDiaChi());
-			st.setString(8, t.getCccd());
-			st.setString(9, t.getCapBac());
-			st.setInt(10, t.getPhongBan().getMaPB());
+			// st.setInt(1, t.getMaNV());
+			st.setString(1, t.getHoTen());
+			st.setString(2, t.getGioiTinh());
+			st.setDate(3, t.getNgSinh());
+			st.setString(4, t.getSoDienThoai());
+			st.setString(5, t.getEmail());
+			st.setString(6, t.getDiaChi());
+			st.setString(7, t.getCccd());
+			st.setString(8, t.getCapBac());
+			st.setInt(9, t.getPhongBan().getMaPB());
 
 			st.execute();
 			cnt = 1;
@@ -657,7 +657,6 @@ public class nhanVienDAO implements DAOinterface<nhanVien> {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
 
 		}
 		return cnt;

@@ -49,7 +49,7 @@ public class themNhanVienController implements ActionListener, KeyListener {
 			mainView.setVisible(true);
 		} else if (e.getActionCommand().equals("Thêm")) {
 			try {
-				int maNV = nhanVienDAO.getInstance().seq_num() + 1;
+				int maNV = 1;
 				String hoTen = this.themNhanVienView.getTenNVTF().getText();
 				String gioiTinh = String.valueOf(this.themNhanVienView.getGioiTinhComboBox().getSelectedItem());
 				Date ngSinh = Date.valueOf(this.themNhanVienView.getNgSinhTF().getText());

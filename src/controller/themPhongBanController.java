@@ -53,7 +53,7 @@ public class themPhongBanController implements ActionListener {
 
 				} else {
 					try {
-						phongBanDAO.getInstance().insertT(new phongBan(phongBanDAO.getInstance().seq_num() + 1, tenPB,
+						phongBanDAO.getInstance().insertT(new phongBan(1, tenPB,
 								ngayThanhLap, maTP, ngayNhanChuc));
 						mainView mainView = new mainView();
 						mainView.setTabPhongBan();

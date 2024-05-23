@@ -176,16 +176,17 @@ INCREMENT BY 1;
 /
 
 --Insert
-INSERT INTO PHONGBAN VALUES (1, 'IT', '2024-05-23', null, null);
+INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'IT', '2024-05-23', null, null);
 
-INSERT INTO NHANVIEN VALUES (1, 'Đặng Quang Khánh Linh', 'Nam', '2004-02-15', '0355662648', '22520756@gm.uit.edu.vn', '1401/4, tổ 17, ấp Phước Hòa, xã Long Phước, huyện Long Thành, tỉnh Đồng Nai', '075204005999', 'Fresher', 1);
-INSERT INTO NHANVIEN VALUES (2, 'Nguyễn Văn Hòa', 'Nam', '2004-02-15', '0355662777', '22520454@gm.uit.edu.vn', 'Rạch Giá, Kiên Giang', '075204005888', 'Fresher', 1);
+INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Đặng Quang Khánh Linh', 'Nam', '2004-02-15', '0355662648', '22520756@gm.uit.edu.vn', '1401/4, tổ 17, ấp Phước Hòa, xã Long Phước, huyện Long Thành, tỉnh Đồng Nai', '075204005999', 'Fresher', 1);
+INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Nguyễn Văn Hòa', 'Nam', '2004-02-15', '0355662777', '22520454@gm.uit.edu.vn', 'Rạch Giá, Kiên Giang', '075204005888', 'Fresher', 1);
+INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Nguyễn Văn Đạt', 'Nam', '2004-02-15', '0355662757', '222222@gm.uit.edu.vn', 'Rạch Giá, Kiên Giang', '075204015888', 'Fresher', 1);
 
-INSERT INTO TAIKHOAN VALUES (1, 1, 'admin', 'admin', 'quản lý');
-INSERT INTO TAIKHOAN VALUES (2, 2, 'honloa', 'cc', 'nhân viên');
+INSERT INTO TAIKHOAN VALUES (my_sequence_taikhoan.NEXTVAL, 1, 'admin', 'admin', 'quản lý');
+INSERT INTO TAIKHOAN VALUES (my_sequence_taikhoan.NEXTVAL, 2, 'honloa', 'cc', 'nhân viên');
 
-INSERT INTO KYNANG VALUES (1, 'tin học');
-INSERT INTO KYNANG VALUES (2, 'ngoại ngữ');
+INSERT INTO KYNANG VALUES (my_sequence_kynang.NEXTVAL, 'tin học');
+INSERT INTO KYNANG VALUES (my_sequence_kynang.NEXTVAL, 'ngoại ngữ');
 
 
 

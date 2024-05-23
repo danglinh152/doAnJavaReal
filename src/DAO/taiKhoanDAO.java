@@ -173,13 +173,13 @@ public class taiKhoanDAO implements DAOinterface<taiKhoan> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "INSERT INTO TAIKHOAN VALUES (?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO TAIKHOAN VALUES (my_sequence_taikhoan.NEXTVAL, ?, ?, ?, ?)";
 			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getMaTK());
-			st.setInt(2, t.getNhanVien().getMaNV());
-			st.setString(3, t.getTenTK());
-			st.setString(4, t.getMatKhau());
-			st.setString(5, t.getLoaiTK());
+			// st.setInt(1, t.getMaTK());
+			st.setInt(1, t.getNhanVien().getMaNV());
+			st.setString(2, t.getTenTK());
+			st.setString(3, t.getMatKhau());
+			st.setString(4, t.getLoaiTK());
 			st.execute();
 			cnt = 1;
 
