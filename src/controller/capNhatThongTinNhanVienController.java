@@ -33,6 +33,8 @@ public class capNhatThongTinNhanVienController implements ActionListener, KeyLis
 			this.capNhatThongTinViewNhanVien.dispose();
 			mainViewNhanVien.setVisible(true);
 		} else if (e.getActionCommand().equals("Cập nhật")) {
+			System.out.println(this.capNhatThongTinViewNhanVien.getTaiKhoanViewNhanVien().getMainViewNhanVien()
+					.getTaiKhoanHienTai().getNhanVien().getPhongBan().getMaPB());
 			try {
 				System.out
 						.println(String.valueOf(this.capNhatThongTinViewNhanVien.getMaPBComboBox().getSelectedItem()));

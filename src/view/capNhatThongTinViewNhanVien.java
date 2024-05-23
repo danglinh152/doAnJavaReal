@@ -233,7 +233,7 @@ public class capNhatThongTinViewNhanVien extends JDialog {
 		maPBComboBox.setBackground(Color.WHITE);
 		maPBComboBox.setBounds(187, 466, 89, 21);
 		maPBComboBox.setSelectedIndex(this.taiKhoanViewNhanVien.getMainViewNhanVien().getTaiKhoanHienTai().getNhanVien()
-				.getPhongBan().getMaPB());
+				.getPhongBan().getMaPB() - 1);
 		maPBComboBox.setFocusable(false);
 		formPanel.add(maPBComboBox);
 		{
