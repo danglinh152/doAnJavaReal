@@ -86,13 +86,20 @@ public class yeuCauController implements ActionListener, KeyListener {
 //			this.nhanVienViewNhanVien.getMainViewNhanVien().dispose();
 //		}
 		} else if (e.getActionCommand().equals("Duyệt")) {
-			TableModel model = yeuCauView.getTable().getModel();
+			try {
+				TableModel model = yeuCauView.getTable().getModel();
 
-			int maYC = Integer.parseInt((String) model.getValueAt(yeuCauView.getTable().getSelectedRows()[0], 0));
-			yeuCau yeuCau = new yeuCau(maYC, 0, "", false);
-			yeuCauDAO.getInstance().updateT(yeuCau);
-			ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectSortByMAYCASC();
-			changeTableData(arr_yc);
+				int maYC = Integer.parseInt((String) model.getValueAt(yeuCauView.getTable().getSelectedRows()[0], 0));
+				yeuCau yeuCau = new yeuCau(maYC, 0, "", false);
+				yeuCauDAO.getInstance().updateT(yeuCau);
+				ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectSortByMAYCASC();
+				changeTableData(arr_yc);
+			} catch (Exception e2) {
+				// TODO: handle exception
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Không thể duyệt lúc này!");
+				errView.setVisible(true);
+			}
 		}
 		String thuocTinh = (String) this.yeuCauView.getThuocTinhComboBox().getSelectedItem();
 		String thuTu = (String) this.yeuCauView.getThuTuComboBox().getSelectedItem();

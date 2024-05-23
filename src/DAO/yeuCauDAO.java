@@ -262,7 +262,7 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 //			} else {
 //				cnt = 0;
 //			}
-			System.out.println(t.getMaNV() + " " + t.getMaYC());
+			// System.out.println(t.getMaNV() + " " + t.getMaYC());
 			String sql = " Begin quanly_pro(?); end; ";
 			PreparedStatement st = c.prepareStatement(sql);
 			st.setInt(1, t.getMaYC());
@@ -272,7 +272,9 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 			// databaseConnection.closeDatabaseConnection(c);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-
+			errView errView = new errView();
+			errView.getLblNewLabel().setText("Không thể duyệt lúc này!");
+			errView.setVisible(true);
 		}
 		return cnt;
 	}
