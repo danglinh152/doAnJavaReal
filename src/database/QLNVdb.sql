@@ -139,37 +139,37 @@ INSERT INTO TAIKHOAN VALUES (1, 1, 'admin', 'admin', 'quản lý');
 
 
 
-CREATE OR REPLACE TRIGGER TRG_NGNHANCHUC_NGSINH
-BEFORE INSERT OR UPDATE ON PHONGBAN
-FOR EACH ROW
-DECLARE OUT_NGNHANCHUC PHONGBAN.NGAYNHANCHUC%TYPE;
-        OUT_NGAYSINH NHANVIEN.NGSINH%TYPE;
-BEGIN
-    SELECT :NEW.NGAYNHANCHUC, NV.NGSINH
-    INTO OUT_NGNHANCHUC, OUT_NGAYSINH
-    FROM  NHANVIEN NV
-    WHERE :NEW.MATRUONGPHONG = NV.MANV;
-    
-    IF (OUT_NGNHANCHUC < OUT_NGAYSINH) THEN
-    RAISE_APPLICATION_ERROR(-20001, 'Ngay nhan chuc phai lon hon ngay sinh');
-    ELSE DBMS_OUTPUT.PUT_LINE('Them/sua du lieu thanh cong');
-    END IF;
-END;
-/
+--CREATE OR REPLACE TRIGGER TRG_NGNHANCHUC_NGSINH
+--BEFORE INSERT OR UPDATE ON PHONGBAN
+--FOR EACH ROW
+--DECLARE OUT_NGNHANCHUC PHONGBAN.NGAYNHANCHUC%TYPE;
+--        OUT_NGAYSINH NHANVIEN.NGSINH%TYPE;
+--BEGIN
+--    SELECT :NEW.NGAYNHANCHUC, NV.NGSINH
+--    INTO OUT_NGNHANCHUC, OUT_NGAYSINH
+--    FROM  NHANVIEN NV
+--    WHERE :NEW.MATRUONGPHONG = NV.MANV;
+--    
+--    IF (OUT_NGNHANCHUC < OUT_NGAYSINH) THEN
+--    RAISE_APPLICATION_ERROR(-20001, 'Ngay nhan chuc phai lon hon ngay sinh');
+--    ELSE DBMS_OUTPUT.PUT_LINE('Them/sua du lieu thanh cong');
+--    END IF;
+--END;
+--/
 
 
 
-CREATE OR REPLACE TRIGGER TRG_NGNHANCHUC_NGTHANHLAP
-BEFORE INSERT OR UPDATE ON PHONGBAN
-FOR EACH ROW
-BEGIN
-    IF :NEW.NGAYNHANCHUC < :NEW.NGTHANHLAP THEN
-        RAISE_APPLICATION_ERROR(-20001, 'Ngay nhan chuc phai lon hon hoac bang ngay thanh lap cua phong ban');
-    ELSE 
-        DBMS_OUTPUT.PUT_LINE('Thêm/s?a d? li?u th� nh công');
-    END IF;
-END;
-/
+--CREATE OR REPLACE TRIGGER TRG_NGNHANCHUC_NGTHANHLAP
+--BEFORE INSERT OR UPDATE ON PHONGBAN
+--FOR EACH ROW
+--BEGIN
+--    IF :NEW.NGAYNHANCHUC < :NEW.NGTHANHLAP THEN
+--        RAISE_APPLICATION_ERROR(-20001, 'Ngay nhan chuc phai lon hon hoac bang ngay thanh lap cua phong ban');
+--    ELSE 
+--        DBMS_OUTPUT.PUT_LINE('Thêm/s?a d? li?u th� nh công');
+--    END IF;
+--END;
+--/
 
 --Trigger M?i nhân viên không có quá 10 k? n?ng
 CREATE OR REPLACE TRIGGER TRG_NV_KN
@@ -222,24 +222,24 @@ BEFORE INSERT OR UPDATE ON NHANVIEN
 /            
             
         
---M?i tr??ng phòng ch? l� m tr??ng phòng duy nh?t 1 phòng ban
-CREATE OR REPLACE TRIGGER TG_4
-BEFORE INSERT OR UPDATE ON PHONGBAN
-    FOR EACH ROW
-    DECLARE NUMBER_OF_TRP NUMBER;
-        BEGIN 
-            SELECT COUNT(*) INTO NUMBER_OF_TRP
-            FROM PHONGBAN P 
-            INNER JOIN NHANVIEN N
-            ON P.MATRUONGPHONG = N.MANV            
-            WHERE MATRUONGPHONG = :NEW.MATRUONGPHONG;
-            IF(NUMBER_OF_TRP > 0) THEN
-                RAISE_APPLICATION_ERROR(-20001, 'L?i');
-            ELSE
-                DBMS_OUTPUT.PUT_LINE('THANHCONG');
-            END IF;
-        END;
-/
+----M?i tr??ng phòng ch? l� m tr??ng phòng duy nh?t 1 phòng ban
+--CREATE OR REPLACE TRIGGER TG_4
+--BEFORE INSERT OR UPDATE ON PHONGBAN
+--    FOR EACH ROW
+--    DECLARE NUMBER_OF_TRP NUMBER;
+--        BEGIN 
+--            SELECT COUNT(*) INTO NUMBER_OF_TRP
+--            FROM PHONGBAN P 
+--            INNER JOIN NHANVIEN N
+--            ON P.MATRUONGPHONG = N.MANV            
+--            WHERE MATRUONGPHONG = :NEW.MATRUONGPHONG;
+--            IF(NUMBER_OF_TRP > 0) THEN
+--                RAISE_APPLICATION_ERROR(-20001, 'L?i');
+--            ELSE
+--                DBMS_OUTPUT.PUT_LINE('THANHCONG');
+--            END IF;
+--        END;
+--/
 
 --trigger m?i phòng ban có t?i ?a 200 nhân viên
 CREATE OR REPLACE TRIGGER TRG_NV_TOIDA
