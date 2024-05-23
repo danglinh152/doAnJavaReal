@@ -23,6 +23,23 @@ drop table nhanvien
 ALTER SESSION set NLS_DATE_FORMAT = 'YYYY-MM-DD';
 set feedback ON
 set serveroutput on;
+/
+drop sequence my_sequence_chamcong;
+/
+drop sequence my_sequence_hopdong;
+/
+drop sequence my_sequence_kynang;
+/
+drop sequence my_sequence_nhanvien;
+/
+drop sequence my_sequence_nhanvien_kynang;
+/
+drop sequence my_sequence_phongban;
+/
+drop sequence my_sequence_taikhoan;
+/
+drop sequence my_sequence_yeucau;
+/
 
 create table phongban (
 mapb            number(4),
@@ -124,6 +141,39 @@ constraint yeucau_pk primary key (mayc),
 constraint yeucau_fk foreign key (manv) references NHANVIEN (manv),
 constraint yeucau_ck check (trangthai IN (0,1))
 );
+/
+CREATE SEQUENCE my_sequence_chamcong
+START WITH 1
+INCREMENT BY 1;
+/
+CREATE SEQUENCE my_sequence_hopdong
+START WITH 1
+INCREMENT BY 1;
+/
+CREATE SEQUENCE my_sequence_kynang
+START WITH 1
+INCREMENT BY 1;
+/
+CREATE SEQUENCE my_sequence_nhanvien
+START WITH 1
+INCREMENT BY 1;
+/
+CREATE SEQUENCE my_sequence_nhanvien_kynang
+START WITH 1
+INCREMENT BY 1;
+/
+CREATE SEQUENCE my_sequence_phongban
+START WITH 1
+INCREMENT BY 1;
+/
+CREATE SEQUENCE my_sequence_taikhoan
+START WITH 1
+INCREMENT BY 1;
+/
+CREATE SEQUENCE my_sequence_yeucau
+START WITH 1
+INCREMENT BY 1;
+/
 
 --Insert
 INSERT INTO PHONGBAN VALUES (1, 'IT', '2024-05-23', null, null);
@@ -216,6 +266,7 @@ BEGIN
     END IF;
 END;
 /
+
 
 
 
