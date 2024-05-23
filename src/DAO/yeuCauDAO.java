@@ -254,16 +254,22 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "UPDATE YEUCAU SET TRANGTHAI = 1 WHERE MAYC = ?";
+//			String sql = "UPDATE YEUCAU SET TRANGTHAI = 1 WHERE MAYC = ?";
+//			PreparedStatement st = c.prepareStatement(sql);
+//			st.setInt(1, t.getMaYC());
+//			if (st.execute()) {
+//				cnt = 1;
+//			} else {
+//				cnt = 0;
+//			}
+			System.out.println(t.getMaNV() + " " + t.getMaYC());
+			String sql = " Begin quanly_pro(?); end; ";
 			PreparedStatement st = c.prepareStatement(sql);
 			st.setInt(1, t.getMaYC());
-			if (st.execute()) {
-				cnt = 1;
-			} else {
-				cnt = 0;
-			}
+			st.execute();
+			cnt = 1;
 
-			databaseConnection.closeDatabaseConnection(c);
+			// databaseConnection.closeDatabaseConnection(c);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 
@@ -276,17 +282,15 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "UPDATE YEUCAU SET NOIDUNG = ?, TRANGTHAI = 0 WHERE MAYC = ?";
+			String sql = " begin nhanvien_pro(?, ?, ?); end;";
 			PreparedStatement st = c.prepareStatement(sql);
-			st.setString(1, t.getNoiDung());
+			st.setInt(1, t.getMaNV());
 			st.setInt(2, t.getMaYC());
-			if (st.execute()) {
-				cnt = 1;
-			} else {
-				cnt = 0;
-			}
+			st.setString(3, t.getNoiDung());
+			st.execute();
+			cnt = 1;
 
-			databaseConnection.closeDatabaseConnection(c);
+			// databaseConnection.closeDatabaseConnection(c);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 
