@@ -271,6 +271,29 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 		return cnt;
 	}
 
+	public int updateYeuCau(yeuCau t) {
+		int cnt = 0;
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "UPDATE YEUCAU SET NOIDUNG = ?, TRANGTHAI = 0 WHERE MAYC = ?";
+			PreparedStatement st = c.prepareStatement(sql);
+			st.setString(1, t.getNoiDung());
+			st.setInt(2, t.getMaYC());
+			if (st.execute()) {
+				cnt = 1;
+			} else {
+				cnt = 0;
+			}
+
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+
+		}
+		return cnt;
+	}
+
 	@Override
 	public int deleteT(yeuCau t) {
 		int cnt = 0;

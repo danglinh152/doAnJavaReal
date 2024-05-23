@@ -1,6 +1,7 @@
 package controller;
 
 import view.capNhatPhongBanView;
+import view.capNhatYeuCauViewNhanVien;
 import view.errView;
 import view.guiYeuCauViewNhanVien;
 import view.rendererTableGuiYC;
@@ -145,7 +146,17 @@ public class nhanVienNhanVienController implements ActionListener, MouseListener
 			ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance()
 					.selectAll(this.nhanVienViewNhanVien.getTaiKhoan().getNhanVien().getMaNV());
 			changeTableData(arr_yc);
+		} else if (e.getActionCommand().equals("Sửa yêu cầu")) {
+			int selectedRow = this.nhanVienViewNhanVien.getTable().getSelectedRow();
+			Object[] rowData = new Object[this.nhanVienViewNhanVien.getTable().getColumnCount()];
+			for (int i = 0; i < this.nhanVienViewNhanVien.getTable().getColumnCount(); i++) {
+				rowData[i] = this.nhanVienViewNhanVien.getTable().getValueAt(selectedRow, i);
+			}
+			new capNhatYeuCauViewNhanVien(this.nhanVienViewNhanVien.getTaiKhoan(), this.nhanVienViewNhanVien,
+					new yeuCau(Integer.parseInt(String.valueOf(rowData[0])), 0, "", false));
+			this.nhanVienViewNhanVien.getMainViewNhanVien().dispose();
 		}
+
 		String thuocTinh = (String) this.nhanVienViewNhanVien.getThuocTinhComboBox().getSelectedItem();
 		String thuTu = (String) this.nhanVienViewNhanVien.getThuTuComboBox().getSelectedItem();
 		if (thuocTinh.equals("Mã Yêu Cầu") && thuTu.equals("Tăng dần")) {

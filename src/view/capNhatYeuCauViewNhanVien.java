@@ -25,16 +25,19 @@ import com.datechooser.*;
 import javax.swing.JTextField;
 
 import DAO.phongBanDAO;
+import controller.capNhatYeuCauNhanVienController;
 import controller.themYeuCauNhanVienController;
 //import controller.themNhanVienController;
 import model.phongBan;
 import model.taiKhoan;
+import model.yeuCau;
 
 import java.awt.Cursor;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
-public class themYeuCauViewNhanVien extends JDialog {
+public class capNhatYeuCauViewNhanVien extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JButton okButton;
@@ -44,10 +47,12 @@ public class themYeuCauViewNhanVien extends JDialog {
 	private KeyListener ke;
 	private taiKhoan tkht;
 	private JTextArea textArea;
+	private guiYeuCauViewNhanVien guiYeuCauViewNhanVien;
+	private JLabel lblNewLabel;
 
-	public themYeuCauViewNhanVien(taiKhoan tkht) {
+	public capNhatYeuCauViewNhanVien(taiKhoan tkht, guiYeuCauViewNhanVien guiYeuCauViewNhanVien, yeuCau yeuCau) {
 		this.tkht = tkht;
-		ac = new themYeuCauNhanVienController(this);
+		ac = new capNhatYeuCauNhanVienController(this);
 
 		getContentPane().setBackground(new Color(255, 255, 255));
 		setBounds(100, 100, 803, 635);
@@ -71,7 +76,7 @@ public class themYeuCauViewNhanVien extends JDialog {
 		formPanel.add(header);
 		header.setLayout(null);
 
-		JLabel headerLabel = new JLabel("GỬI YÊU CẦU");
+		JLabel headerLabel = new JLabel("SỬA YÊU CẦU");
 		headerLabel.setFont(new Font("JetBrains Mono", Font.PLAIN, 19));
 		headerLabel.setBounds(10, 10, 259, 30);
 		header.add(headerLabel);
@@ -81,25 +86,37 @@ public class themYeuCauViewNhanVien extends JDialog {
 
 		JLabel lblCccd = new JLabel("Nội dung:");
 		lblCccd.setFont(new Font("JetBrains Mono", Font.PLAIN, 15));
-		lblCccd.setBounds(38, 99, 127, 38);
+		lblCccd.setBounds(38, 134, 127, 38);
 		formPanel.add(lblCccd);
 
 		textArea = new JTextArea();
 		textArea.setLineWrap(true);
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 15));
 		textArea.setBorder(new LineBorder(new Color(0, 0, 0)));
-		textArea.setBounds(187, 102, 321, 299);
+		textArea.setBounds(187, 137, 321, 299);
 		formPanel.add(textArea);
 
-		JButton btnNewButton = new JButton("Gửi");
+		JButton btnNewButton = new JButton("Sửa");
 		btnNewButton.addActionListener(ac);
 		btnNewButton.setFocusable(false);
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
-		btnNewButton.setBounds(423, 410, 85, 28);
+		btnNewButton.setBounds(423, 445, 85, 28);
 		btnNewButton.setBackground(new Color(102, 205, 170));
 		btnNewButton.setFont(new Font("JetBrains Mono", Font.PLAIN, 14));
 		formPanel.add(btnNewButton);
+
+		JLabel lblMYuCu = new JLabel("Mã yêu cầu:");
+		lblMYuCu.setFont(new Font("Dialog", Font.PLAIN, 15));
+		lblMYuCu.setBounds(38, 76, 127, 38);
+		formPanel.add(lblMYuCu);
+
+		lblNewLabel = new JLabel("xxx");
+		lblNewLabel.setText(String.valueOf(yeuCau.getMaYC()));
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(187, 76, 322, 51);
+		formPanel.add(lblNewLabel);
 
 		String capBacNV[] = { "Fresher", "Junior", "Senior", "Leader" };
 
@@ -250,5 +267,21 @@ public class themYeuCauViewNhanVien extends JDialog {
 
 	public JPanel getContentPanel() {
 		return contentPanel;
+	}
+
+	public guiYeuCauViewNhanVien getGuiYeuCauViewNhanVien() {
+		return guiYeuCauViewNhanVien;
+	}
+
+	public void setGuiYeuCauViewNhanVien(guiYeuCauViewNhanVien guiYeuCauViewNhanVien) {
+		this.guiYeuCauViewNhanVien = guiYeuCauViewNhanVien;
+	}
+
+	public JLabel getLblNewLabel() {
+		return lblNewLabel;
+	}
+
+	public void setLblNewLabel(JLabel lblNewLabel) {
+		this.lblNewLabel = lblNewLabel;
 	}
 }

@@ -120,8 +120,12 @@ public class guiYeuCauViewNhanVien {
 		menuItem1 = new JMenuItem("Xóa");
 		menuItem1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menuItem1.addActionListener(ac); // add ac
+		menuItem2 = new JMenuItem("Sửa yêu cầu");
+		menuItem2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		menuItem2.addActionListener(ac); // add ac
 
 		popupMenu.add(menuItem1);
+		popupMenu.add(menuItem2);
 
 		// Thêm MouseListener vào JTable
 		table.addMouseListener(new MouseAdapter() {
