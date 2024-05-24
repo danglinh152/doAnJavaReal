@@ -46,6 +46,9 @@ public class capNhatTrinhDoView extends JDialog {
 	private JComboBox capBacComboBox;
 
 	public capNhatTrinhDoView(nhanVien_kyNang nhanVien_kyNang) {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 		this.nhanVien_kyNang = nhanVien_kyNang;
 
 		ac = new capNhatTrinhDoController(this);

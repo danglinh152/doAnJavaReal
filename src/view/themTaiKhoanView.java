@@ -44,6 +44,9 @@ public class themTaiKhoanView extends JDialog {
 	private JComboBox loaiTKComboBox;
 
 	public themTaiKhoanView() {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 		ac = new themTaiKhoanController(this);
 
 		getContentPane().setBackground(new Color(255, 255, 255));

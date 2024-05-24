@@ -42,6 +42,9 @@ public class themPhongBanView extends JDialog {
 	private ActionListener ac;
 
 	public themPhongBanView() {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 
 		ac = new themPhongBanController(this);
 

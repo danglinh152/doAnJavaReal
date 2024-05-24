@@ -51,6 +51,9 @@ public class capNhatYeuCauViewNhanVien extends JDialog {
 	private JLabel lblNewLabel;
 
 	public capNhatYeuCauViewNhanVien(taiKhoan tkht, guiYeuCauViewNhanVien guiYeuCauViewNhanVien, yeuCau yeuCau) {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 		this.tkht = tkht;
 		ac = new capNhatYeuCauNhanVienController(this);
 

@@ -43,6 +43,9 @@ public class themHopDongView extends JDialog {
 	private DateChooser ngKetThuc = new DateChooser();
 
 	public themHopDongView() {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 		ac = new themHopDongController(this);
 
 		getContentPane().setBackground(new Color(255, 255, 255));

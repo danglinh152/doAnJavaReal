@@ -54,6 +54,9 @@ public class capNhatThongTinViewNhanVien extends JDialog {
 	private taiKhoanViewNhanVien taiKhoanViewNhanVien;
 
 	public capNhatThongTinViewNhanVien(taiKhoanViewNhanVien taiKhoanViewNhanVien_ref, nhanVien nhanVien) {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 		ac = new capNhatThongTinNhanVienController(this);
 		taiKhoanViewNhanVien = taiKhoanViewNhanVien_ref;
 		getContentPane().setBackground(new Color(255, 255, 255));

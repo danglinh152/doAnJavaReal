@@ -46,6 +46,9 @@ public class themYeuCauViewNhanVien extends JDialog {
 	private JTextArea textArea;
 
 	public themYeuCauViewNhanVien(taiKhoan tkht) {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 		this.tkht = tkht;
 		ac = new themYeuCauNhanVienController(this);
 

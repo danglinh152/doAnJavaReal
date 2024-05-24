@@ -46,6 +46,9 @@ public class capNhatChamCongView extends JDialog {
 	private JTextField thangLamViecTF;
 
 	public capNhatChamCongView(chamCongClass chamCongClass) {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 		ac = new capNhatChamCongController(this);
 
 		maCC = new JTextField();

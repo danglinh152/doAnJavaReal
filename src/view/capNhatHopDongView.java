@@ -48,6 +48,9 @@ public class capNhatHopDongView extends JDialog {
 	private JTextField maHDTF;
 
 	public capNhatHopDongView(hopDong hopDong) {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 		this.hopDong = hopDong;
 
 		ac = new capNhatHopDongController(this);

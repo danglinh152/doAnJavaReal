@@ -50,6 +50,9 @@ public class themNhanVienView extends JDialog {
 	private KeyListener ke;
 
 	public themNhanVienView() {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 
 		ac = new themNhanVienController(this);
 		ke = new themNhanVienController(this);

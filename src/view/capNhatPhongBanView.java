@@ -44,6 +44,9 @@ public class capNhatPhongBanView extends JDialog {
 	private JTextField maPBPhongBanTextField;
 
 	public capNhatPhongBanView(phongBan phongBan) {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 		ac = new capNhatPhongBanController(this);
 
 		getContentPane().setBackground(new Color(255, 255, 255));

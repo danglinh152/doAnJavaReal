@@ -44,7 +44,9 @@ public class themChamCongView extends JDialog {
 	private JTextField thangLamViecTF;
 
 	public themChamCongView() {
-
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 		ac = new themChamCongController(this);
 
 		getContentPane().setBackground(new Color(255, 255, 255));

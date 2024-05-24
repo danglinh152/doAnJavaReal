@@ -45,6 +45,9 @@ public class capNhatTaiKhoanView extends JDialog {
 	private int maTK;
 
 	public capNhatTaiKhoanView(taiKhoan taiKhoan) {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 		ac = new capNhatTaiKhoanController(this);
 
 		maTK = taiKhoan.getMaTK();

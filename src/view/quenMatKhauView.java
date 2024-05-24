@@ -56,7 +56,9 @@ public class quenMatKhauView {
 	 */
 	public quenMatKhauView() {
 		frame = new JFrame();
-
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		frame.setIconImage(favicon.getImage());
+		frame.setTitle("HRM_TENPM");
 		ac = new quenMatKhauController(this);
 		ke = new quenMatKhauController(this);
 

@@ -43,6 +43,9 @@ public class themTrinhDoView extends JDialog {
 	private JComboBox kyNangComboBox_1;
 
 	public themTrinhDoView(trinhDoView trinhDoView) {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 		this.trinhDoView = trinhDoView;
 
 		ac = new themTrinhDoController(this);

@@ -52,6 +52,9 @@ public class capNhatNhanVienView extends JDialog {
 	private JComboBox maPBComboBox;
 
 	public capNhatNhanVienView(nhanVien nhanVien) {
+		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
+		setIconImage(favicon.getImage());
+		setTitle("HRM_TENPM");
 		ac = new capNhatNhanVienController(this);
 		getContentPane().setBackground(new Color(255, 255, 255));
 		setBounds(100, 100, 803, 635);
