@@ -66,6 +66,7 @@ public class themNhanVienController implements ActionListener, KeyListener {
 
 				nhanVien nhanVien = new nhanVien(maNV, hoTen, gioiTinh, ngSinh, soDienThoai, email, diaChi, cccd,
 						capBac, phongBan);
+				nhanVienDAO.getInstance().insertT(nhanVien);
 				mainView mainView = new mainView();
 				mainView.setTabNhanVien();
 				errView errView = new errView();
