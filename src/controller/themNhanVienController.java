@@ -48,6 +48,7 @@ public class themNhanVienController implements ActionListener, KeyListener {
 			this.themNhanVienView.dispose();
 			mainView.setVisible(true);
 		} else if (e.getActionCommand().equals("Thêm")) {
+			nhanVien nhanVien = null;
 			try {
 				int maNV = 1;
 				String hoTen = this.themNhanVienView.getTenNVTF().getText();
@@ -64,15 +65,8 @@ public class themNhanVienController implements ActionListener, KeyListener {
 										String.valueOf(this.themNhanVienView.getMaPBComboBox().getSelectedItem())),
 								"", null, 0, null));
 
-				nhanVien nhanVien = new nhanVien(maNV, hoTen, gioiTinh, ngSinh, soDienThoai, email, diaChi, cccd,
-						capBac, phongBan);
-				nhanVienDAO.getInstance().insertT(nhanVien);
-				mainView mainView = new mainView();
-				mainView.setTabNhanVien();
-				errView errView = new errView();
-				errView.getLblNewLabel().setText("Thêm thành công");
-				this.themNhanVienView.dispose();
-				mainView.setVisible(true);
+				nhanVien = new nhanVien(maNV, hoTen, gioiTinh, ngSinh, soDienThoai, email, diaChi, cccd, capBac,
+						phongBan);
 			} catch (Exception e2) {
 				// TODO: handle exception
 				mainView mainView = new mainView();
@@ -81,7 +75,10 @@ public class themNhanVienController implements ActionListener, KeyListener {
 				errView.getLblNewLabel().setText("Thêm thất bại");
 				this.themNhanVienView.dispose();
 				mainView.setVisible(true);
+				errView.setVisible(true);
 			}
+			nhanVienDAO.getInstance().insertT(nhanVien);
+			this.themNhanVienView.dispose();
 		}
 
 	}

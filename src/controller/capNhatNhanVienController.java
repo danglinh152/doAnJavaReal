@@ -32,46 +32,34 @@ public class capNhatNhanVienController implements ActionListener, KeyListener {
 			this.capNhatNhanVienView.dispose();
 			mainView.setVisible(true);
 		} else if (e.getActionCommand().equals("Cập nhật")) {
-
+			nhanVien nhanVienNew = null;
+			nhanVien nhanVien = null;
 			try {
-				System.out.println(String.valueOf(this.capNhatNhanVienView.getMaPBComboBox().getSelectedItem()));
 				String email = this.capNhatNhanVienView.getEmailTF().getText();
-				nhanVien nhanVien = nhanVienDAO.getInstance().selectByEmail(email).get(0);
+				nhanVien = nhanVienDAO.getInstance().selectByEmail(email).get(0);
 				phongBan phongBan = phongBanDAO.getInstance()
 						.selectByID(new phongBan(
 								Integer.parseInt((String) this.capNhatNhanVienView.getMaPBComboBox().getSelectedItem()),
 								"", null, 0, null));
-				nhanVien nhanVienNew = new nhanVien(0, this.capNhatNhanVienView.getTenNVTF().getText(),
+				nhanVienNew = new nhanVien(0, this.capNhatNhanVienView.getTenNVTF().getText(),
 						String.valueOf(this.capNhatNhanVienView.getGioiTinhComboBox().getSelectedItem()),
 						Date.valueOf(this.capNhatNhanVienView.getNgSinhTF().getText()),
 						this.capNhatNhanVienView.getSdtTF().getText(), this.capNhatNhanVienView.getEmailTF().getText(),
 						this.capNhatNhanVienView.getDiaChiTF().getText(),
 						this.capNhatNhanVienView.getCccdTF().getText(),
 						String.valueOf(this.capNhatNhanVienView.getCapBacComboBox().getSelectedItem()), phongBan);
-				nhanVienDAO.getInstance().updateT(nhanVienNew, nhanVien.getMaNV());
+			} catch (Exception e2) {
+				// TODO: handle exception
 				mainView mainView = new mainView();
 				mainView.setTabNhanVien();
 				errView errView = new errView();
-				errView.getLblNewLabel().setText("Cập nhật thành công");
-
-				this.capNhatNhanVienView.dispose();
-				mainView.setVisible(true);
-				errView.setVisible(true);
-
-			} catch (Exception e2) {
-				// TODO: handle exception
-				e2.printStackTrace();
-				mainView mainView = new mainView();
-				mainView.setTabTaiKhoan();
-
-				errView errView = new errView();
 				errView.getLblNewLabel().setText("Cập nhật thất bại");
-
 				this.capNhatNhanVienView.dispose();
-
 				mainView.setVisible(true);
 				errView.setVisible(true);
 			}
+			nhanVienDAO.getInstance().updateT(nhanVienNew, nhanVien.getMaNV());
+			this.capNhatNhanVienView.dispose();
 		}
 	}
 

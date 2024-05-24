@@ -654,9 +654,20 @@ public class nhanVienDAO implements DAOinterface<nhanVien> {
 			cnt = 1;
 
 			databaseConnection.closeDatabaseConnection(c);
+			mainView mainView = new mainView();
+			mainView.setTabNhanVien();
+			errView errView = new errView();
+			errView.getLblNewLabel().setText("Thêm thành công");
+			mainView.setVisible(true);
+			errView.setVisible(true);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			mainView mainView = new mainView();
+			mainView.setTabNhanVien();
+			errView errView = new errView();
+			errView.getLblNewLabel().setText("Thêm thất bại");
+			mainView.setVisible(true);
+			errView.setVisible(true);
 
 		}
 		return cnt;
@@ -743,9 +754,22 @@ public class nhanVienDAO implements DAOinterface<nhanVien> {
 			st.execute();
 			cnt = 1;
 			databaseConnection.closeDatabaseConnection(c);
+			mainView mainView = new mainView();
+			mainView.setTabNhanVien();
+			errView errView = new errView();
+			errView.getLblNewLabel().setText("Cập nhật thành công");
+
+			mainView.setVisible(true);
+			errView.setVisible(true);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			mainView mainView = new mainView();
+			mainView.setTabNhanVien();
+			errView errView = new errView();
+			errView.getLblNewLabel().setText("Cập nhật thất bại");
+
+			mainView.setVisible(true);
+			errView.setVisible(true);
 
 			// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
 			// đang trực thuộc phòng ban này!");
