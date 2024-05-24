@@ -127,7 +127,7 @@ public class capNhatTrinhDoView extends JDialog {
 			}
 			formPanel.add(capBacComboBox);
 		} else {
-			String cb[] = { "A1", "A1", "B1", "B2", "C1", "C2" };
+			String cb[] = { "A1", "A2", "B1", "B2", "C1", "C2" };
 			capBacComboBox = new JComboBox(cb);
 			capBacComboBox.setBounds(210, 185, 98, 21);
 			if (nhanVien_kyNang.getCapBacKyNang().equals("A1") && nhanVien_kyNang.getTenKyNang().equals("Tiếng anh")) {

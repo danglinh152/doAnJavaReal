@@ -201,7 +201,7 @@ INSERT INTO KYNANG VALUES (my_sequence_kynang.NEXTVAL, 'ngoại ngữ');
 
 --Trigger M?i nhân viên không có quá 10 k? n?ng
 CREATE OR REPLACE TRIGGER TRG_NV_KN
-BEFORE INSERT OR UPDATE ON NHANVIEN_KYNANG
+BEFORE INSERT ON NHANVIEN_KYNANG
 FOR EACH ROW
 DECLARE count_skill NUMBER;
 BEGIN
@@ -221,7 +221,26 @@ END;
 -- N?u tháng có 31 ng� y: không ???c quá 31 ng� y
 -- N?u tháng 2: không ???c quá 29 ng� y
 CREATE OR REPLACE TRIGGER TG_2
-BEFORE INSERT OR UPDATE ON CHAMCONG
+BEFORE INSERT ON CHAMCONG
+    FOR EACH ROW
+    BEGIN
+        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC > 30 OR :NEW.SONGAYDITRE > 30 OR :NEW.SONGAYNGHI > 30)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC > 31 OR :NEW.SONGAYDITRE > 31 OR :NEW.SONGAYNGHI > 31)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC = 2 AND (:NEW.SONGAYLAMVIEC > 29 OR :NEW.SONGAYDITRE > 29 OR :NEW.SONGAYNGHI > 29)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANH CONG');
+        END IF;
+    END;   
+/
+--S? ng� y ?i l� m, ?i tr?, v?ng không ???c quá
+-- N?u tháng có 30 ng� y: không ???c quá 30 ng� y
+-- N?u tháng có 31 ng� y: không ???c quá 31 ng� y
+-- N?u tháng 2: không ???c quá 29 ng� y
+CREATE OR REPLACE TRIGGER TG_2
+BEFORE UPDATE ON CHAMCONG
     FOR EACH ROW
     BEGIN
         IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC > 30 OR :NEW.SONGAYDITRE > 30 OR :NEW.SONGAYNGHI > 30)) THEN
@@ -238,7 +257,7 @@ BEFORE INSERT OR UPDATE ON CHAMCONG
     
 --Thu?c tính NGSINH c?a NHANVIEN ph?i nh? h?n ho?c b?ng ng� y hi?n t?i
 CREATE OR REPLACE TRIGGER TG_3
-BEFORE INSERT OR UPDATE ON NHANVIEN
+BEFORE INSERT ON NHANVIEN
     FOR EACH ROW
     BEGIN
         IF(:NEW.NGSINH > SYSDATE) THEN
@@ -247,7 +266,19 @@ BEFORE INSERT OR UPDATE ON NHANVIEN
             DBMS_OUTPUT.PUT_LINE('THANHCONG');
         END IF;
     END;
-/            
+/        
+--Thu?c tính NGSINH c?a NHANVIEN ph?i nh? h?n ho?c b?ng ng� y hi?n t?i
+CREATE OR REPLACE TRIGGER TG_3
+BEFORE UPDATE ON NHANVIEN
+    FOR EACH ROW
+    BEGIN
+        IF(:NEW.NGSINH > SYSDATE) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANHCONG');
+        END IF;
+    END;
+/        
             
 
 
