@@ -7,11 +7,11 @@ public interface DAOinterface<T> {
 
 	public ArrayList<T> selectAll();
 
-	public int insertT(T t);
+	public int insertT(T t) throws Exception;
 
-	public int updateT(T t);
+	public int updateT(T t) throws Exception;
 
-	public int deleteT(T t);
+	public int deleteT(T t) throws Exception;
 
 	public int seq_num();
 }

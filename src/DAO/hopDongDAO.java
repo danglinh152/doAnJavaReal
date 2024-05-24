@@ -54,88 +54,69 @@ public class hopDongDAO implements DAOinterface<hopDong> {
 	}
 
 	@Override
-	public int insertT(hopDong t) {
+	public int insertT(hopDong t) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "INSERT INTO HOPDONG VALUES (my_sequence_hopdong.NEXTVAL, ?, ?, ?)";
-			PreparedStatement st = c.prepareStatement(sql);
-			// st.setInt(1, t.getMaHD());
-			st.setInt(1, t.getNhanVien().getMaNV());
-			st.setDate(2, t.getNgayBDHD());
-			st.setDate(3, t.getNgayKTHD());
-			st.execute();
-			cnt = 1;
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-//			errView errView = new errView();
-//			errView.setVisible(true);
-			// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
-			// đang trực thuộc phòng ban này!");
-		}
+		String sql = "INSERT INTO HOPDONG VALUES (my_sequence_hopdong.NEXTVAL, ?, ?, ?)";
+		PreparedStatement st = c.prepareStatement(sql);
+		// st.setInt(1, t.getMaHD());
+		st.setInt(1, t.getNhanVien().getMaNV());
+		st.setDate(2, t.getNgayBDHD());
+		st.setDate(3, t.getNgayKTHD());
+		st.execute();
+		cnt = 1;
+
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 
 	@Override
-	public int updateT(hopDong t) {
+	public int updateT(hopDong t) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public int updateT(int manv, int mahd, Date ngbd, Date ngkt) {
+	public int updateT(int manv, int mahd, Date ngbd, Date ngkt) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "UPDATE HOPDONG SET NGAYBDHD = ?, NGAYKTHD = ?" + "WHERE MANV = ? AND MAHD = ?";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(3, manv);
-			st.setInt(4, mahd);
-			st.setDate(1, ngbd);
-			st.setDate(2, ngkt);
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			st.execute();
-			cnt = 1;
+		String sql = "UPDATE HOPDONG SET NGAYBDHD = ?, NGAYKTHD = ?" + "WHERE MANV = ? AND MAHD = ?";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(3, manv);
+		st.setInt(4, mahd);
+		st.setDate(1, ngbd);
+		st.setDate(2, ngkt);
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-//			errView errView = new errView();
-//			errView.setVisible(true);
-			// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
-			// đang trực thuộc phòng ban này!");
-		}
+		st.execute();
+		cnt = 1;
+
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 
 	@Override
-	public int deleteT(hopDong t) {
+	public int deleteT(hopDong t) throws Exception {
 		// TODO Auto-generated method stub
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "DELETE FROM HOPDONG WHERE MAHD = ?";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getMaHD());
-			if (st.execute()) {
-				cnt = 1;
-			} else {
-				cnt = 0;
-			}
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-//			errView errView = new errView();
-//			errView.setVisible(true);
-//			errView.getLblNewLabel().setText("Không thể xóa hợp đồng vì có nhân viên đang trực thuộc phòng ban này!");
+		String sql = "DELETE FROM HOPDONG WHERE MAHD = ?";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, t.getMaHD());
+		if (st.execute()) {
+			cnt = 1;
+		} else {
+			cnt = 0;
 		}
+
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 

@@ -131,14 +131,21 @@ public class chamCongController implements ActionListener, KeyListener {
 //		double soGioTangCa = Double.parseDouble(String.valueOf(rowData[5]));
 //		int soNgayDiTre = Integer.parseInt(String.valueOf(rowData[6]));
 
-			chamCongDAO.getInstance().deleteT(maCC);
-			errView errView = new errView();
-			ArrayList<nhanVien> arr_nv = nhanVienDAO.getInstance().selectAll();
-			ArrayList<chamCongClass> arr_cc = chamCongDAO.getInstance().selectAll();
+			try {
+				chamCongDAO.getInstance().deleteT(maCC);
+				errView errView = new errView();
+				ArrayList<nhanVien> arr_nv = nhanVienDAO.getInstance().selectAll();
+				ArrayList<chamCongClass> arr_cc = chamCongDAO.getInstance().selectAll();
 
-			changeTableData(arr_cc, arr_nv);
-			errView.getLblNewLabel().setText("Xóa thành công!");
-			errView.setVisible(true);
+				changeTableData(arr_cc, arr_nv);
+				errView.getLblNewLabel().setText("Xóa thành công!");
+				errView.setVisible(true);
+			} catch (Exception e2) {
+				// TODO: handle exception
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Xóa thất bại!");
+				errView.setVisible(true);
+			}
 		}
 
 	}

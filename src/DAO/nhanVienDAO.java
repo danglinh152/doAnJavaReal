@@ -798,7 +798,7 @@ public class nhanVienDAO implements DAOinterface<nhanVien> {
 			// TODO Auto-generated catch block
 			errView errView = new errView();
 			errView.setVisible(true);
-			errView.getLblNewLabel().setText("Không thể xóa nhân viên là trưởng phòng trong công ty!");
+			errView.getLblNewLabel().setText("Không thể xóa nhân viên!");
 		}
 		return cnt;
 	}

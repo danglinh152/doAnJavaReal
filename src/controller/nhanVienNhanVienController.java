@@ -142,7 +142,17 @@ public class nhanVienNhanVienController implements ActionListener, MouseListener
 			int maYC = Integer
 					.parseInt((String) model.getValueAt(nhanVienViewNhanVien.getTable().getSelectedRows()[0], 0));
 			yeuCau yeuCau = new yeuCau(maYC, 0, "", false);
-			yeuCauDAO.getInstance().deleteT(yeuCau);
+			try {
+				yeuCauDAO.getInstance().deleteT(yeuCau);
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Xóa Thành Công");
+				errView.setVisible(true);
+			} catch (Exception e2) {
+				// TODO: handle exception
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Xóa Thất Bại");
+				errView.setVisible(true);
+			}
 			ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance()
 					.selectAll(this.nhanVienViewNhanVien.getTaiKhoan().getNhanVien().getMaNV());
 			changeTableData(arr_yc);

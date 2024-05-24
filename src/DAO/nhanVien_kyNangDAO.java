@@ -56,72 +56,59 @@ public class nhanVien_kyNangDAO implements DAOinterface<nhanVien_kyNang> {
 	}
 
 	@Override
-	public int insertT(nhanVien_kyNang t) {
+	public int insertT(nhanVien_kyNang t) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "INSERT INTO nhanVien_kyNang VALUES (?, ?, ?)";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getMaKN());
-			st.setInt(2, t.getMaNV());
-			st.setString(3, t.getCapBacKyNang());
-			st.execute();
-			cnt = 1;
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		String sql = "INSERT INTO nhanVien_kyNang VALUES (?, ?, ?)";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, t.getMaKN());
+		st.setInt(2, t.getMaNV());
+		st.setString(3, t.getCapBacKyNang());
+		st.execute();
+		cnt = 1;
 
-		}
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 
 	@Override
-	public int updateT(nhanVien_kyNang t) {
+	public int updateT(nhanVien_kyNang t) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "UPDATE NHANVIEN_KYNANG SET CAPBAC = ?" + " WHERE MANV = ? AND MAKN = ?";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setString(1, t.getCapBacKyNang());
-			st.setInt(2, t.getMaNV());
-			st.setInt(3, t.getMaKN());
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			st.execute();
-			cnt = 1;
+		String sql = "UPDATE NHANVIEN_KYNANG SET CAPBAC = ?" + " WHERE MANV = ? AND MAKN = ?";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setString(1, t.getCapBacKyNang());
+		st.setInt(2, t.getMaNV());
+		st.setInt(3, t.getMaKN());
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-//			errView errView = new errView();
-//			errView.setVisible(true);
-			// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
-			// đang trực thuộc phòng ban này!");
-		}
+		st.execute();
+		cnt = 1;
+
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 
 	@Override
-	public int deleteT(nhanVien_kyNang t) {
+	public int deleteT(nhanVien_kyNang t) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "DELETE FROM NHANVIEN_KYNANG WHERE MANV = ? AND MAKN = ?";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getMaNV());
-			st.setInt(2, t.getMaKN());
-			st.execute();
-			cnt = 1;
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		String sql = "DELETE FROM NHANVIEN_KYNANG WHERE MANV = ? AND MAKN = ?";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, t.getMaNV());
+		st.setInt(2, t.getMaKN());
+		st.execute();
+		cnt = 1;
 
-		}
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 

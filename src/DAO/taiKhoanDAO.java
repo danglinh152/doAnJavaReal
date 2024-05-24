@@ -168,78 +168,65 @@ public class taiKhoanDAO implements DAOinterface<taiKhoan> {
 	}
 
 	@Override
-	public int insertT(taiKhoan t) {
+	public int insertT(taiKhoan t) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "INSERT INTO TAIKHOAN VALUES (my_sequence_taikhoan.NEXTVAL, ?, ?, ?, ?)";
-			PreparedStatement st = c.prepareStatement(sql);
-			// st.setInt(1, t.getMaTK());
-			st.setInt(1, t.getNhanVien().getMaNV());
-			st.setString(2, t.getTenTK());
-			st.setString(3, t.getMatKhau());
-			st.setString(4, t.getLoaiTK());
-			st.execute();
-			cnt = 1;
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-//			errView errView = new errView();
-//			errView.setVisible(true);
-			// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
-			// đang trực thuộc phòng ban này!");
-		}
+		String sql = "INSERT INTO TAIKHOAN VALUES (my_sequence_taikhoan.NEXTVAL, ?, ?, ?, ?)";
+		PreparedStatement st = c.prepareStatement(sql);
+		// st.setInt(1, t.getMaTK());
+		st.setInt(1, t.getNhanVien().getMaNV());
+		st.setString(2, t.getTenTK());
+		st.setString(3, t.getMatKhau());
+		st.setString(4, t.getLoaiTK());
+		st.execute();
+		cnt = 1;
+
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 
 	@Override
-	public int updateT(taiKhoan t) {
+	public int updateT(taiKhoan t) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "UPDATE TAIKHOAN SET TENTK = ?, MATKHAU = ?, LOAITAIKHOAN = ?" + " WHERE MATK = ?";
-			PreparedStatement st = c.prepareStatement(sql);
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			st.setString(1, t.getTenTK());
-			st.setString(2, t.getMatKhau());
-			st.setString(3, t.getLoaiTK());
-			st.setInt(4, t.getMaTK());
+		String sql = "UPDATE TAIKHOAN SET TENTK = ?, MATKHAU = ?, LOAITAIKHOAN = ?" + " WHERE MATK = ?";
+		PreparedStatement st = c.prepareStatement(sql);
 
-			st.execute();
-			cnt = 1;
+		st.setString(1, t.getTenTK());
+		st.setString(2, t.getMatKhau());
+		st.setString(3, t.getLoaiTK());
+		st.setInt(4, t.getMaTK());
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		st.execute();
+		cnt = 1;
 
-		}
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 
 	@Override
-	public int deleteT(taiKhoan t) {
+	public int deleteT(taiKhoan t) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "DELETE FROM TAIKHOAN WHERE MATK = ?";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getMaTK());
-			if (st.execute()) {
-				cnt = 1;
-			} else {
-				cnt = 0;
-			}
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-
+		String sql = "DELETE FROM TAIKHOAN WHERE MATK = ?";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, t.getMaTK());
+		if (st.execute()) {
+			cnt = 1;
+		} else {
+			cnt = 0;
 		}
+
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 

@@ -31,9 +31,15 @@ public class nhanVien_phongBan_chamCong {
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 
-				nhanVien_phongBan_chamCongClass nhanVien_phongBan_chamCongClass = new nhanVien_phongBan_chamCongClass(
-						rs.getInt("MAPB"), rs.getString("TENPB"), rs.getInt("MATRUONGPHONG"), rs.getInt("TOTAL"),
-						phongBanDAO.getInstance().luongTrungBinh(rs.getInt("MAPB")));
+				nhanVien_phongBan_chamCongClass nhanVien_phongBan_chamCongClass = null;
+				try {
+					nhanVien_phongBan_chamCongClass = new nhanVien_phongBan_chamCongClass(rs.getInt("MAPB"),
+							rs.getString("TENPB"), rs.getInt("MATRUONGPHONG"), rs.getInt("TOTAL"),
+							phongBanDAO.getInstance().luongTrungBinh(rs.getInt("MAPB")));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				arr_nhanVien_phongBan_chamCongClass.add(nhanVien_phongBan_chamCongClass);
 			}
 			databaseConnection.closeDatabaseConnection(c);

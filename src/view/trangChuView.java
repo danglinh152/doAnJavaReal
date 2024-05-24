@@ -91,8 +91,12 @@ public class trangChuView {
 
 			// Tạo một đối tượng Color với giá trị RGB ngẫu nhiên
 			Color randomColor = new Color(r, g, b);
-			pieChart1.addData(new ModelPieChart(arr_pb.get(i).getTenPB(),
-					phongBanDAO.getInstance().totalNhanVien(arr_pb.get(i).getMaPB()), randomColor));
+			try {
+				pieChart1.addData(new ModelPieChart(arr_pb.get(i).getTenPB(),
+						phongBanDAO.getInstance().totalNhanVien(arr_pb.get(i).getMaPB()), randomColor));
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 
 		}
 		panel_1.setLayout(null);
@@ -115,7 +119,12 @@ public class trangChuView {
 			Color randomColor = new Color(r, g, b);
 
 			chart.addLegend(arr_pb.get(i).getTenPB(), randomColor);
-			luongTrungBinh[i] = phongBanDAO.getInstance().luongTrungBinh(arr_pb.get(i).getMaPB());
+			try {
+				luongTrungBinh[i] = phongBanDAO.getInstance().luongTrungBinh(arr_pb.get(i).getMaPB());
+			} catch (Exception e) {
+				// TODO: handle exception
+				luongTrungBinh[i] = 0;
+			}
 		}
 
 //		chart.addLegend("Marketing", new Color(245, 189, 135));

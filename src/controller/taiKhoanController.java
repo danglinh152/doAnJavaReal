@@ -83,9 +83,9 @@ public class taiKhoanController implements ActionListener, KeyListener {
 			int maNV = Integer.parseInt(String.valueOf(rowData[1]));
 			nhanVien nhanVien = nhanVienDAO.getInstance()
 					.selectByID(new nhanVien(maNV, "", "", null, "", "", "", "", "", null));
-			String tenTK = String.valueOf(rowData[2]);
-			String matKhau = String.valueOf(rowData[3]);
-			String loaiTaiKhoan = String.valueOf(rowData[4]);
+			String tenTK = String.valueOf(rowData[3]);
+			String matKhau = String.valueOf(rowData[4]);
+			String loaiTaiKhoan = String.valueOf(rowData[5]);
 			taiKhoan taiKhoan = new taiKhoan(maTK, nhanVien, tenTK, matKhau, loaiTaiKhoan);
 			new capNhatTaiKhoanView(taiKhoan);
 		} else if (e.getActionCommand().equals("Xóa")) {

@@ -398,106 +398,89 @@ public class phongBanDAO implements DAOinterface<phongBan> {
 	}
 
 	@Override
-	public int insertT(phongBan t) {
+	public int insertT(phongBan t) throws Exception {
 		// TODO Auto-generated method stub
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, ?, ?, ?, ?)";
-			PreparedStatement st = c.prepareStatement(sql);
-			if (t.getMaTruongPhong() == 0 || t.getNgNhanChuc() == null) {
-				// st.setInt(1, t.getMaPB());
-				st.setString(1, t.getTenPB());
-				st.setDate(2, t.getNgThanhLap());
-				st.setObject(3, null);
-				st.setDate(4, null);
-			} else {
-				// st.setInt(1, t.getMaPB());
-				st.setString(1, t.getTenPB());
-				st.setDate(2, t.getNgThanhLap());
-				st.setInt(3, t.getMaTruongPhong());
-				st.setDate(4, t.getNgNhanChuc());
-			}
-			if (st.execute()) {
-				cnt = 1;
-			} else {
-				cnt = 0;
-			}
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
-			errView errView = new errView();
-			errView.getLblNewLabel().setText("Thêm thất bại");
-			errView.setVisible(true);
+		String sql = "INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, ?, ?, ?, ?)";
+		PreparedStatement st = c.prepareStatement(sql);
+		if (t.getMaTruongPhong() == 0 || t.getNgNhanChuc() == null) {
+			// st.setInt(1, t.getMaPB());
+			st.setString(1, t.getTenPB());
+			st.setDate(2, t.getNgThanhLap());
+			st.setObject(3, null);
+			st.setDate(4, null);
+		} else {
+			// st.setInt(1, t.getMaPB());
+			st.setString(1, t.getTenPB());
+			st.setDate(2, t.getNgThanhLap());
+			st.setInt(3, t.getMaTruongPhong());
+			st.setDate(4, t.getNgNhanChuc());
 		}
+		if (st.execute()) {
+			cnt = 1;
+		} else {
+			cnt = 0;
+		}
+
 		return cnt;
 
 	}
 
 	@Override
-	public int updateT(phongBan t) {
+	public int updateT(phongBan t) throws Exception {
 		// TODO Auto-generated method stub
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "UPDATE PHONGBAN SET TENPB = ?, NGTHANHLAP = ?, MATRUONGPHONG = ?, NGAYNHANCHUC = ?"
-					+ "WHERE MAPB = ?";
-			PreparedStatement st = c.prepareStatement(sql);
-			if (t.getMaTruongPhong() != 0 || t.getNgNhanChuc() != null) {
-				st.setString(1, t.getTenPB());
-				st.setDate(2, t.getNgThanhLap());
-				st.setInt(3, t.getMaTruongPhong());
-				st.setDate(4, t.getNgNhanChuc());
-				st.setInt(5, t.getMaPB());
-			} else {
-				st.setString(1, t.getTenPB());
-				st.setDate(2, t.getNgThanhLap());
-				st.setObject(3, null);
-				st.setObject(4, null);
-				st.setInt(5, t.getMaPB());
-			}
-			if (st.execute()) {
-				cnt = 1;
-			} else {
-				cnt = 0;
-			}
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
-			// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
-			// đang trực thuộc phòng ban này!");
+		String sql = "UPDATE PHONGBAN SET TENPB = ?, NGTHANHLAP = ?, MATRUONGPHONG = ?, NGAYNHANCHUC = ?"
+				+ "WHERE MAPB = ?";
+		PreparedStatement st = c.prepareStatement(sql);
+		if (t.getMaTruongPhong() != 0 || t.getNgNhanChuc() != null) {
+			st.setString(1, t.getTenPB());
+			st.setDate(2, t.getNgThanhLap());
+			st.setInt(3, t.getMaTruongPhong());
+			st.setDate(4, t.getNgNhanChuc());
+			st.setInt(5, t.getMaPB());
+		} else {
+			st.setString(1, t.getTenPB());
+			st.setDate(2, t.getNgThanhLap());
+			st.setObject(3, null);
+			st.setObject(4, null);
+			st.setInt(5, t.getMaPB());
 		}
+		if (st.execute()) {
+			cnt = 1;
+		} else {
+			cnt = 0;
+		}
+
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 
 	@Override
-	public int deleteT(phongBan t) {
+	public int deleteT(phongBan t) throws Exception {
 		// TODO Auto-generated method stub
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "DELETE FROM PHONGBAN WHERE MAPB = ?";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getMaPB());
-			if (st.execute()) {
-				cnt = 1;
-			} else {
-				cnt = 0;
-			}
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-
+		String sql = "DELETE FROM PHONGBAN WHERE MAPB = ?";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, t.getMaPB());
+		if (st.execute()) {
+			cnt = 1;
+		} else {
+			cnt = 0;
 		}
+
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 
@@ -523,49 +506,43 @@ public class phongBanDAO implements DAOinterface<phongBan> {
 		return cnt;
 	}
 
-	public double luongTrungBinh(int maPhongBan) {
+	public double luongTrungBinh(int maPhongBan) throws Exception {
 		double total = 0;
 		int maNV = 0;
 		double soNhanVien = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "SELECT * FROM NHANVIEN NV\r\n" + "INNER JOIN CHAMCONG CC ON NV.MANV = CC.MANV\r\n"
-					+ "INNER JOIN PHONGBAN PB ON PB.MAPB = NV.MAPB WHERE PB.MAPB = ?";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, maPhongBan);
-			ResultSet rs = st.executeQuery();
-			while (rs.next()) {
-				maNV = rs.getInt("MANV");
-				total += nhanVienDAO.getInstance().tinhLuongTBNhanVien(maNV);
-				soNhanVien += 1;
-			}
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Connection c = databaseConnection.getDatabaseConnection();
+
+		String sql = "SELECT * FROM NHANVIEN NV\r\n" + "INNER JOIN CHAMCONG CC ON NV.MANV = CC.MANV\r\n"
+				+ "INNER JOIN PHONGBAN PB ON PB.MAPB = NV.MAPB WHERE PB.MAPB = ?";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, maPhongBan);
+		ResultSet rs = st.executeQuery();
+		while (rs.next()) {
+			maNV = rs.getInt("MANV");
+			total += nhanVienDAO.getInstance().tinhLuongTBNhanVien(maNV);
+			soNhanVien += 1;
 		}
+		databaseConnection.closeDatabaseConnection(c);
+
 		return (total / soNhanVien);
 	}
 
-	public int totalNhanVien(int maPhongBanPara) {
+	public int totalNhanVien(int maPhongBanPara) throws Exception {
 		int total = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "SELECT COUNT(*) AS TOTAL\n" + "FROM NHANVIEN NV\n"
-					+ "INNER JOIN PHONGBAN PB ON PB.MAPB = NV.MAPB\n" + "WHERE PB.MAPB = ?\n" + "GROUP BY PB.MAPB";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, maPhongBanPara);
-			ResultSet rs = st.executeQuery();
-			while (rs.next()) {
-				total = rs.getInt("TOTAL");
-			}
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Connection c = databaseConnection.getDatabaseConnection();
+
+		String sql = "SELECT COUNT(*) AS TOTAL\n" + "FROM NHANVIEN NV\n"
+				+ "INNER JOIN PHONGBAN PB ON PB.MAPB = NV.MAPB\n" + "WHERE PB.MAPB = ?\n" + "GROUP BY PB.MAPB";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, maPhongBanPara);
+		ResultSet rs = st.executeQuery();
+		while (rs.next()) {
+			total = rs.getInt("TOTAL");
 		}
+		databaseConnection.closeDatabaseConnection(c);
+
 		return total;
 	}
 

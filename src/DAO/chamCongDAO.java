@@ -147,84 +147,71 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 	}
 
 	@Override
-	public int insertT(chamCongClass t) {
+	public int insertT(chamCongClass t) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
-			String sql = "INSERT INTO CHAMCONG VALUES (my_sequence_chamcong.NEXTVAL, ?, ?, ?, ?, ?, ?)";
-			PreparedStatement st = c.prepareStatement(sql);
-			// st.setInt(1, t.getMaCC());
-			st.setInt(1, t.getMaNV());
-			st.setInt(2, t.getThangLamViec());
-			st.setInt(3, t.getSoNgayLamViec());
-			st.setInt(4, t.getSoNgayNghi());
-			st.setDouble(5, t.getSoGioTangCa());
-			st.setInt(6, t.getSoNgayDiTre());
-			st.execute();
-			cnt = 1;
+		Connection c = databaseConnection.getDatabaseConnection();
+		String sql = "INSERT INTO CHAMCONG VALUES (my_sequence_chamcong.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+		PreparedStatement st = c.prepareStatement(sql);
+		// st.setInt(1, t.getMaCC());
+		st.setInt(1, t.getMaNV());
+		st.setInt(2, t.getThangLamViec());
+		st.setInt(3, t.getSoNgayLamViec());
+		st.setInt(4, t.getSoNgayNghi());
+		st.setDouble(5, t.getSoGioTangCa());
+		st.setInt(6, t.getSoNgayDiTre());
+		st.execute();
+		cnt = 1;
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		databaseConnection.closeDatabaseConnection(c);
+
+		// TODO Auto-generated catch block
+
 //			errView errView = new errView();
 //			errView.setVisible(true);
-			// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
-			// đang trực thuộc phòng ban này!");
-		}
+		// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
+		// đang trực thuộc phòng ban này!");
 		return cnt;
 	}
 
 	@Override
-	public int updateT(chamCongClass t) {
+	public int updateT(chamCongClass t) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "UPDATE CHAMCONG SET THANGLAMVIEC = ?, SONGAYLAMVIEC = ?, SONGAYNGHI = ?, SOGIOTANGCA = ?, SONGAYDITRE = ?"
-					+ "WHERE MACC = ?";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getThangLamViec());
-			st.setInt(2, t.getSoNgayLamViec());
-			st.setInt(3, t.getSoNgayNghi());
-			st.setDouble(4, t.getSoGioTangCa());
-			st.setInt(5, t.getSoNgayDiTre());
-			st.setInt(6, t.getMaCC());
-			st.execute();
-			cnt = 1;
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String sql = "UPDATE CHAMCONG SET THANGLAMVIEC = ?, SONGAYLAMVIEC = ?, SONGAYNGHI = ?, SOGIOTANGCA = ?, SONGAYDITRE = ?"
+				+ "WHERE MACC = ?";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, t.getThangLamViec());
+		st.setInt(2, t.getSoNgayLamViec());
+		st.setInt(3, t.getSoNgayNghi());
+		st.setDouble(4, t.getSoGioTangCa());
+		st.setInt(5, t.getSoNgayDiTre());
+		st.setInt(6, t.getMaCC());
+		st.execute();
+		cnt = 1;
 
-			// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
-			// đang trực thuộc phòng ban này!");
-		}
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 
-	public int deleteT(int macc) {
+	public int deleteT(int macc) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "DELETE FROM CHAMCONG WHERE MACC = ?";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, macc);
-			if (st.execute()) {
-				cnt = 1;
-			} else {
-				cnt = 0;
-			}
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			errView errView = new errView();
-			errView.setVisible(true);
-			errView.getLblNewLabel().setText("Không thể xóa chấm công này!");
+		String sql = "DELETE FROM CHAMCONG WHERE MACC = ?";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, macc);
+		if (st.execute()) {
+			cnt = 1;
+		} else {
+			cnt = 0;
 		}
+
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 

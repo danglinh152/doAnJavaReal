@@ -1,6 +1,7 @@
 package controller;
 
 import view.capNhatPhongBanView;
+import view.errView;
 import view.phongBanView;
 import view.themPhongBanView;
 
@@ -86,7 +87,18 @@ public class phongBanController implements ActionListener, MouseListener, KeyLis
 
 			int maPB = Integer.parseInt((String) model.getValueAt(phongBanView.getTable().getSelectedRows()[0], 0));
 			phongBan pb_tmp = new phongBan(maPB, "", null, 0, null);
-			phongBanDAO.getInstance().deleteT(pb_tmp);
+			try {
+				phongBanDAO.getInstance().deleteT(pb_tmp);
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Xóa Thành Công");
+				errView.setVisible(true);
+			} catch (Exception e2) {
+				// TODO: handle exception
+
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Xóa Thất Bại");
+				errView.setVisible(true);
+			}
 			ArrayList<phongBan> phongBanData = phongBanDAO.getInstance().selectSortByMAPBASC();
 			phongBanView.setPhongBanData(phongBanData);
 			changeTableData(phongBanView.getPhongBanData());

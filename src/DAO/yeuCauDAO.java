@@ -223,36 +223,33 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 	}
 
 	@Override
-	public int insertT(yeuCau t) {
+	public int insertT(yeuCau t) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "INSERT INTO YEUCAU VALUES (my_sequence_yeucau.NEXTVAL, ?, ?, ?)";
-			PreparedStatement st = c.prepareStatement(sql);
-			// st.setInt(1, t.getMaYC());
-			st.setInt(1, t.getMaNV());
-			st.setString(2, t.getNoiDung());
-			if (t.isTrangThai()) {
-				st.setInt(3, 1);
-			} else {
-				st.setInt(3, 0);
-			}
-			st.execute();
-			cnt = 1;
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Connection c = databaseConnection.getDatabaseConnection();
+
+		String sql = "INSERT INTO YEUCAU VALUES (my_sequence_yeucau.NEXTVAL, ?, ?, ?)";
+		PreparedStatement st = c.prepareStatement(sql);
+		// st.setInt(1, t.getMaYC());
+		st.setInt(1, t.getMaNV());
+		st.setString(2, t.getNoiDung());
+		if (t.isTrangThai()) {
+			st.setInt(3, 1);
+		} else {
+			st.setInt(3, 0);
 		}
+		st.execute();
+		cnt = 1;
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 
 	@Override
-	public int updateT(yeuCau t) {
+	public int updateT(yeuCau t) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
+
+		Connection c = databaseConnection.getDatabaseConnection();
 
 //			String sql = "UPDATE YEUCAU SET TRANGTHAI = 1 WHERE MAYC = ?";
 //			PreparedStatement st = c.prepareStatement(sql);
@@ -262,64 +259,53 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 //			} else {
 //				cnt = 0;
 //			}
-			// System.out.println(t.getMaNV() + " " + t.getMaYC());
-			String sql = " Begin quanly_pro(?); end; ";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getMaYC());
-			st.execute();
-			cnt = 1;
+		// System.out.println(t.getMaNV() + " " + t.getMaYC());
+		String sql = " Begin quanly_pro(?); end; ";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, t.getMaYC());
+		st.execute();
+		cnt = 1;
 
-			// databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			errView errView = new errView();
-			errView.getLblNewLabel().setText("Không thể duyệt lúc này!");
-			errView.setVisible(true);
-		}
+		// databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 
-	public int updateYeuCau(yeuCau t) {
+	public int updateYeuCau(yeuCau t) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = " begin nhanvien_pro(?, ?, ?); end;";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getMaNV());
-			st.setInt(2, t.getMaYC());
-			st.setString(3, t.getNoiDung());
-			st.execute();
-			cnt = 1;
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			// databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		String sql = " begin nhanvien_pro(?, ?, ?); end;";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, t.getMaNV());
+		st.setInt(2, t.getMaYC());
+		st.setString(3, t.getNoiDung());
+		st.execute();
+		cnt = 1;
 
-		}
+		// databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 
 	@Override
-	public int deleteT(yeuCau t) {
+	public int deleteT(yeuCau t) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "DELETE FROM YEUCAU WHERE MAYC = ?";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setInt(1, t.getMaYC());
-			if (st.execute()) {
-				cnt = 1;
-			} else {
-				cnt = 0;
-			}
+		Connection c = databaseConnection.getDatabaseConnection();
 
-			databaseConnection.closeDatabaseConnection(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-
+		String sql = "DELETE FROM YEUCAU WHERE MAYC = ?";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, t.getMaYC());
+		if (st.execute()) {
+			cnt = 1;
+		} else {
+			cnt = 0;
 		}
+
+		databaseConnection.closeDatabaseConnection(c);
+
 		return cnt;
 	}
 
