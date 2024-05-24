@@ -99,7 +99,7 @@ create table kynang (
 makn            number(4),
 tenkn           nvarchar2(20) not null,
 constraint kynang_pk primary key (makn),
-constraint kynang_ck check (tenkn in (N'tin học', N'ngoại ngữ')),
+constraint kynang_ck check (tenkn in (N'tin học', N'tiếng anh')),
 constraint tenkn_uk unique (tenkn)
 );
 /
@@ -186,7 +186,7 @@ INSERT INTO TAIKHOAN VALUES (my_sequence_taikhoan.NEXTVAL, 1, 'admin', 'admin', 
 INSERT INTO TAIKHOAN VALUES (my_sequence_taikhoan.NEXTVAL, 2, 'honloa', 'cc', 'nhân viên');
 
 INSERT INTO KYNANG VALUES (my_sequence_kynang.NEXTVAL, 'tin học');
-INSERT INTO KYNANG VALUES (my_sequence_kynang.NEXTVAL, 'ngoại ngữ');
+INSERT INTO KYNANG VALUES (my_sequence_kynang.NEXTVAL, 'tiếng anh');
 
 
 
@@ -220,7 +220,7 @@ END;
 -- N?u tháng có 30 ng� y: không ???c quá 30 ng� y
 -- N?u tháng có 31 ng� y: không ???c quá 31 ng� y
 -- N?u tháng 2: không ???c quá 29 ng� y
-CREATE OR REPLACE TRIGGER TG_2
+CREATE OR REPLACE TRIGGER TG_CC_1
 BEFORE INSERT ON CHAMCONG
     FOR EACH ROW
     BEGIN
@@ -239,7 +239,7 @@ BEFORE INSERT ON CHAMCONG
 -- N?u tháng có 30 ng� y: không ???c quá 30 ng� y
 -- N?u tháng có 31 ng� y: không ???c quá 31 ng� y
 -- N?u tháng 2: không ???c quá 29 ng� y
-CREATE OR REPLACE TRIGGER TG_2
+CREATE OR REPLACE TRIGGER TG_CC_2
 BEFORE UPDATE ON CHAMCONG
     FOR EACH ROW
     BEGIN
@@ -256,7 +256,7 @@ BEFORE UPDATE ON CHAMCONG
 /
     
 --Thu?c tính NGSINH c?a NHANVIEN ph?i nh? h?n ho?c b?ng ng� y hi?n t?i
-CREATE OR REPLACE TRIGGER TG_3
+CREATE OR REPLACE TRIGGER TG_NV_1
 BEFORE INSERT ON NHANVIEN
     FOR EACH ROW
     BEGIN
@@ -268,7 +268,7 @@ BEFORE INSERT ON NHANVIEN
     END;
 /        
 --Thu?c tính NGSINH c?a NHANVIEN ph?i nh? h?n ho?c b?ng ng� y hi?n t?i
-CREATE OR REPLACE TRIGGER TG_3
+CREATE OR REPLACE TRIGGER TG_NV_2
 BEFORE UPDATE ON NHANVIEN
     FOR EACH ROW
     BEGIN
@@ -298,7 +298,44 @@ BEGIN
     END IF;
 END;
 /
-
+--S? ng� y ?i l� m, ?i tr?, v?ng không ???c quá
+-- N?u tháng có 30 ng� y: không ???c quá 30 ng� y
+-- N?u tháng có 31 ng� y: không ???c quá 31 ng� y
+-- N?u tháng 2: không ???c quá 29 ng� y
+CREATE OR REPLACE TRIGGER TG_CC_3
+BEFORE INSERT ON CHAMCONG
+    FOR EACH ROW
+    BEGIN
+        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE + :NEW.SOGIOTANGCA/24 > 30)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE + :NEW.SOGIOTANGCA/24 > 31)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC IN (2) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE + :NEW.SOGIOTANGCA/24 > 29)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');     
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANH CONG');
+        END IF;
+    END;   
+/
+--S? ng� y ?i l� m, ?i tr?, v?ng không ???c quá
+-- N?u tháng có 30 ng� y: không ???c quá 30 ng� y
+-- N?u tháng có 31 ng� y: không ???c quá 31 ng� y
+-- N?u tháng 2: không ???c quá 29 ng� y
+CREATE OR REPLACE TRIGGER TG_CC_4
+BEFORE UPDATE ON CHAMCONG
+    FOR EACH ROW
+    BEGIN
+        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE + :NEW.SOGIOTANGCA/24 > 30)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE + :NEW.SOGIOTANGCA/24 > 31)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC IN (2) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE + :NEW.SOGIOTANGCA/24 > 29)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');     
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANH CONG');
+        END IF;
+    END;   
+/
 
 
 
