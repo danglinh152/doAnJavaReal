@@ -106,6 +106,18 @@ public class quenMatKhauView {
 		textField.setBounds(572, 238, 287, 27);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
+
+		JButton btnNewButton_1 = new JButton("Quay lại trang đăng nhập");
+		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_1.addActionListener(ac);
+		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnNewButton_1.setFocusable(false);
+		btnNewButton_1.setFocusPainted(false);
+		btnNewButton_1.setBorderPainted(false);
+		btnNewButton_1.setBorder(null);
+		btnNewButton_1.setBackground(Color.WHITE);
+		btnNewButton_1.setBounds(644, 351, 147, 21);
+		frame.getContentPane().add(btnNewButton_1);
 		frame.setVisible(true);
 	}
 
@@ -152,5 +164,4 @@ public class quenMatKhauView {
 	public void setKe(KeyListener ke) {
 		this.ke = ke;
 	}
-
 }

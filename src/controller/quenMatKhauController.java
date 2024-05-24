@@ -10,6 +10,7 @@ import model.taiKhoan;
 import view.mainView;
 import view.errView;
 import view.errViewQMK;
+import view.loginView;
 import view.quenMatKhauView;
 
 public class quenMatKhauController implements KeyListener, ActionListener {
@@ -38,6 +39,9 @@ public class quenMatKhauController implements KeyListener, ActionListener {
 				errView.getLblNewLabel().setText("Email của nhân viên không tồn tại!");
 				errView.setVisible(true);
 			}
+		} else if (e.getActionCommand().equals("Quay lại trang đăng nhập")) {
+			this.quenMatKhauView.dispose();
+			new loginView();
 		}
 	}
 
