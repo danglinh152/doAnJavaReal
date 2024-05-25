@@ -266,7 +266,7 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 		st.execute();
 		cnt = 1;
 
-		// databaseConnection.closeDatabaseConnection(c);
+		databaseConnection.closeDatabaseConnection(c);
 
 		return cnt;
 	}
@@ -284,7 +284,7 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 		st.execute();
 		cnt = 1;
 
-		// databaseConnection.closeDatabaseConnection(c);
+		databaseConnection.closeDatabaseConnection(c);
 
 		return cnt;
 	}
