@@ -255,12 +255,12 @@ BEFORE UPDATE ON CHAMCONG
     END;   
 /
     
---Thu?c tính NGSINH c?a NHANVIEN ph?i nh? h?n ho?c b?ng ng� y hi?n t?i
+--Thu?c tính NGSINH c?a NHANVIEN phải lớn hơn 18 tuổi
 CREATE OR REPLACE TRIGGER TG_NV_1
 BEFORE INSERT ON NHANVIEN
     FOR EACH ROW
     BEGIN
-        IF(:NEW.NGSINH > SYSDATE) THEN
+        IF(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM :NEW.NGSINH) >= 18) THEN
              RAISE_APPLICATION_ERROR(-20001, 'L?i');
         ELSE
             DBMS_OUTPUT.PUT_LINE('THANHCONG');
@@ -271,7 +271,7 @@ CREATE OR REPLACE TRIGGER TG_NV_2
 BEFORE UPDATE ON NHANVIEN
     FOR EACH ROW
     BEGIN
-        IF(:NEW.NGSINH > SYSDATE) THEN
+        IF(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM :NEW.NGSINH) >= 18) THEN
              RAISE_APPLICATION_ERROR(-20001, 'L?i');
         ELSE
             DBMS_OUTPUT.PUT_LINE('THANHCONG');
@@ -301,18 +301,7 @@ BEFORE UPDATE ON PHONGBAN
     END;
 /        
 
---Thu?c tính NGSINH c?a NHANVIEN ph?i nh? h?n ho?c b?ng ng� y hi?n t?i
-CREATE OR REPLACE TRIGGER TG_NV_3
-BEFORE UPDATE ON NHANVIEN
-    FOR EACH ROW
-    BEGIN
-        IF(:NEW.NGSINH > SYSDATE) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANHCONG');
-        END IF;
-    END;
-/        
+  
             
 
 
@@ -392,7 +381,6 @@ BEFORE UPDATE ON HOPDONG
         END IF;
     END;
 /    
-
 
 
 
