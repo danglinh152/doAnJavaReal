@@ -41,7 +41,7 @@ public class capNhatNhanVienController implements ActionListener, KeyListener {
 						.selectByID(new phongBan(
 								Integer.parseInt((String) this.capNhatNhanVienView.getMaPBComboBox().getSelectedItem()),
 								"", null, 0, null));
-				nhanVienNew = new nhanVien(0, this.capNhatNhanVienView.getTenNVTF().getText(),
+				nhanVienNew = new nhanVien(nhanVien.getMaNV(), this.capNhatNhanVienView.getTenNVTF().getText(),
 						String.valueOf(this.capNhatNhanVienView.getGioiTinhComboBox().getSelectedItem()),
 						Date.valueOf(this.capNhatNhanVienView.getNgSinhTF().getText()),
 						this.capNhatNhanVienView.getSdtTF().getText(), this.capNhatNhanVienView.getEmailTF().getText(),
@@ -58,8 +58,26 @@ public class capNhatNhanVienController implements ActionListener, KeyListener {
 				mainView.setVisible(true);
 				errView.setVisible(true);
 			}
-			nhanVienDAO.getInstance().updateT(nhanVienNew, nhanVien.getMaNV());
-			this.capNhatNhanVienView.dispose();
+
+			try {
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Cập nhật thành công");
+				nhanVienDAO.getInstance().updateAdmin(nhanVienNew);
+				mainView mainView = new mainView();
+				mainView.setTabNhanVien();
+				this.capNhatNhanVienView.dispose();
+				mainView.setVisible(true);
+				errView.setVisible(true);
+			} catch (Exception e2) {
+				// TODO: handle exception
+				mainView mainView = new mainView();
+				mainView.setTabNhanVien();
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Cập nhật thất bại");
+				this.capNhatNhanVienView.dispose();
+				mainView.setVisible(true);
+				errView.setVisible(true);
+			}
 		}
 	}
 
