@@ -98,7 +98,10 @@ public class mainViewNhanVien extends JFrame {
 		tabbedPane.addTab("New tab", null, chamCongViewNhanVien.tab4, null);
 
 		taiKhoanViewNhanVien taiKhoanViewNhanVien = new taiKhoanViewNhanVien(this);
-		tabbedPane.addTab("New tab", null, taiKhoanViewNhanVien.tab7, null);
+		tabbedPane.addTab("New tab", null, taiKhoanViewNhanVien.tab5, null);
+
+		thongTinViewNhanVien thongTinViewNhanVien = new thongTinViewNhanVien(this);
+		tabbedPane.addTab("New tab", null, thongTinViewNhanVien.tab7, null);
 
 		JButton btnNewButton = new JButton("TRANG CHỦ");
 		btnNewButton.setOpaque(false);
@@ -160,7 +163,7 @@ public class mainViewNhanVien extends JFrame {
 		btnChmCng.setBounds(0, 149, 218, 50);
 		panel.add(btnChmCng);
 
-		JButton btnTiKhon = new JButton("TÀI KHOẢN");
+		JButton btnTiKhon = new JButton("THÔNG TIN");
 		btnTiKhon.setOpaque(false);
 		btnTiKhon.setFocusTraversalKeysEnabled(false);
 		btnTiKhon.setFocusPainted(false);
@@ -168,7 +171,7 @@ public class mainViewNhanVien extends JFrame {
 		btnTiKhon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnTiKhon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tabbedPane.setSelectedIndex(3);
+				tabbedPane.setSelectedIndex(4);
 			}
 		});
 		btnTiKhon.setIcon(new ImageIcon(mainViewNhanVien.class.getResource("/img/account.png")));
@@ -177,7 +180,7 @@ public class mainViewNhanVien extends JFrame {
 		btnTiKhon.setFocusable(false);
 		btnTiKhon.setBorder(null);
 		btnTiKhon.setBackground(new Color(255, 255, 255));
-		btnTiKhon.setBounds(0, 209, 218, 50);
+		btnTiKhon.setBounds(0, 264, 218, 50);
 		panel.add(btnTiKhon);
 
 		JButton btnngXut = new JButton("ĐĂNG XUẤT");
@@ -195,6 +198,27 @@ public class mainViewNhanVien extends JFrame {
 		btnngXut.setBackground(new Color(102, 205, 170));
 		btnngXut.setBounds(0, 400, 218, 47);
 		panel.add(btnngXut);
+
+		JButton btnTiKhon_1 = new JButton("TÀI KHOẢN");
+		btnTiKhon_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnTiKhon_1.setIcon(new ImageIcon(mainViewNhanVien.class.getResource("/img/skills.png")));
+		btnTiKhon_1.setOpaque(false);
+		btnTiKhon_1.setIconTextGap(8);
+		btnTiKhon_1.setForeground(Color.BLACK);
+		btnTiKhon_1.setFont(new Font("Dialog", Font.BOLD, 14));
+		btnTiKhon_1.setFocusable(false);
+		btnTiKhon_1.setFocusTraversalKeysEnabled(false);
+		btnTiKhon_1.setFocusPainted(false);
+		btnTiKhon_1.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
+		btnTiKhon_1.setBackground(Color.WHITE);
+		btnTiKhon_1.setBounds(0, 197, 218, 50);
+		btnTiKhon_1.addActionListener(ac);
+		btnTiKhon_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tabbedPane.setSelectedIndex(3);
+			}
+		});
+		panel.add(btnTiKhon_1);
 
 		JLabel lblNewLabel = new JLabel("HRM SOFTWARE");
 		lblNewLabel.setVerticalTextPosition(SwingConstants.TOP);
@@ -242,6 +266,10 @@ public class mainViewNhanVien extends JFrame {
 	}
 
 	public void setTabTaiKhoan() {
+		tabbedPane.setSelectedIndex(4);
+	}
+
+	public void setTabThongTin() {
 		tabbedPane.setSelectedIndex(3);
 	}
 

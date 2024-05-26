@@ -210,6 +210,27 @@ public class taiKhoanDAO implements DAOinterface<taiKhoan> {
 		return cnt;
 	}
 
+	public int updateTNhanVien(taiKhoan t) throws Exception {
+		int cnt = 0;
+
+		Connection c = databaseConnection.getDatabaseConnection();
+
+		String sql = "UPDATE TAIKHOAN SET TENTK = ?, MATKHAU = ?, LOAITAIKHOAN = ?" + " WHERE MATK = ?";
+		PreparedStatement st = c.prepareStatement(sql);
+
+		st.setString(1, t.getTenTK());
+		st.setString(2, t.getMatKhau());
+		st.setString(3, t.getLoaiTK());
+		st.setInt(4, t.getMaTK());
+
+		st.execute();
+		cnt = 1;
+
+		databaseConnection.closeDatabaseConnection(c);
+
+		return cnt;
+	}
+
 	@Override
 	public int deleteT(taiKhoan t) throws Exception {
 		int cnt = 0;

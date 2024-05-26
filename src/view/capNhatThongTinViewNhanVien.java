@@ -51,9 +51,9 @@ public class capNhatThongTinViewNhanVien extends JDialog {
 	private JComboBox gioiTinhComboBox;
 	private JComboBox capBacComboBox;
 	private JComboBox maPBComboBox;
-	private taiKhoanViewNhanVien taiKhoanViewNhanVien;
+	private thongTinViewNhanVien taiKhoanViewNhanVien;
 
-	public capNhatThongTinViewNhanVien(taiKhoanViewNhanVien taiKhoanViewNhanVien_ref, nhanVien nhanVien) {
+	public capNhatThongTinViewNhanVien(thongTinViewNhanVien taiKhoanViewNhanVien_ref, nhanVien nhanVien) {
 		ImageIcon favicon = new ImageIcon(mainView.class.getResource("/img/cc.png"));
 		setIconImage(favicon.getImage());
 		setTitle("HRM_TENPM");
@@ -407,11 +407,11 @@ public class capNhatThongTinViewNhanVien extends JDialog {
 		this.maPBComboBox = maPBComboBox;
 	}
 
-	public taiKhoanViewNhanVien getTaiKhoanViewNhanVien() {
+	public thongTinViewNhanVien getTaiKhoanViewNhanVien() {
 		return taiKhoanViewNhanVien;
 	}
 
-	public void setTaiKhoanViewNhanVien(taiKhoanViewNhanVien taiKhoanViewNhanVien) {
+	public void setTaiKhoanViewNhanVien(thongTinViewNhanVien taiKhoanViewNhanVien) {
 		this.taiKhoanViewNhanVien = taiKhoanViewNhanVien;
 	}
 

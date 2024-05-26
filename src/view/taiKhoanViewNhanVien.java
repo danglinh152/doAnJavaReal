@@ -30,13 +30,14 @@ import javax.swing.table.DefaultTableModel;
 import DAO.taiKhoanDAO;
 import controller.taiKhoanController;
 import controller.taiKhoanNhanVienController;
+import controller.thongTinNhanVienController;
 import model.taiKhoan;
 
 import javax.swing.border.MatteBorder;
 import java.awt.event.ActionEvent;
 
 public class taiKhoanViewNhanVien {
-	public JPanel tab7;
+	public JPanel tab5;
 	private JPanel panel_2;
 	private JPopupMenu popupMenu;
 	private JMenuItem menuItem1;
@@ -50,12 +51,7 @@ public class taiKhoanViewNhanVien {
 	private ArrayList<taiKhoan> taiKhoanData = taiKhoanDAO.getInstance().selectAll();
 	private JTextField textField;
 	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
+	private JButton btnNewButton;
 
 	public taiKhoanViewNhanVien(mainViewNhanVien mainViewNhanVien) {
 
@@ -63,12 +59,12 @@ public class taiKhoanViewNhanVien {
 		ac = new taiKhoanNhanVienController(this);
 		ke = new taiKhoanNhanVienController(this);
 
-		tab7 = new JPanel();
-		tab7.setBorder(new MatteBorder(0, 1, 0, 0, (Color) new Color(0, 0, 0)));
-		tab7.setFocusTraversalPolicyProvider(true);
-		tab7.setFocusable(false);
-		tab7.setBackground(Color.WHITE);
-		tab7.setLayout(null);
+		tab5 = new JPanel();
+		tab5.setBorder(new MatteBorder(0, 1, 0, 0, (Color) new Color(0, 0, 0)));
+		tab5.setFocusTraversalPolicyProvider(true);
+		tab5.setFocusable(false);
+		tab5.setBackground(Color.WHITE);
+		tab5.setLayout(null);
 
 		popupMenu = new JPopupMenu();
 		popupMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -108,10 +104,10 @@ public class taiKhoanViewNhanVien {
 		panel_2.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		panel_2.setBackground(new Color(102, 205, 170));
 		panel_2.setBounds(0, 0, 957, 55);
-		tab7.add(panel_2);
+		tab5.add(panel_2);
 		panel_2.setLayout(null);
 
-		lblNewLabel_3 = new JLabel("THÔNG TIN CÁ NHÂN");
+		lblNewLabel_3 = new JLabel("THÔNG TIN TÀI KHOẢN");
 		lblNewLabel_3.setBounds(54, 10, 903, 45);
 		panel_2.add(lblNewLabel_3);
 		lblNewLabel_3.setForeground(Color.BLACK);
@@ -121,162 +117,56 @@ public class taiKhoanViewNhanVien {
 		lblNewLabel_3.setBorder(null);
 		lblNewLabel_3.setBackground(Color.BLACK);
 
-		JLabel lblNewLabel = new JLabel("NGÀY SINH");
-		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 19));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(250, 285, 125, 29);
-		tab7.add(lblNewLabel);
-
-		JLabel lblNewLabel_1 = new JLabel("SĐT");
-		lblNewLabel_1.setFont(new Font("Arial", Font.BOLD, 19));
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(250, 335, 125, 29);
-		tab7.add(lblNewLabel_1);
-
-		JLabel lblNewLabel_2 = new JLabel("EMAIL");
-		lblNewLabel_2.setFont(new Font("Arial", Font.BOLD, 19));
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setBounds(250, 385, 125, 29);
-		tab7.add(lblNewLabel_2);
-
-		JLabel lblNewLabel_2_1 = new JLabel("ĐỊA CHỈ");
-		lblNewLabel_2_1.setFont(new Font("Arial", Font.BOLD, 19));
-		lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2_1.setBounds(250, 435, 125, 29);
-		tab7.add(lblNewLabel_2_1);
-
-		JLabel lblNewLabel_2_2 = new JLabel("CCCD");
-		lblNewLabel_2_2.setFont(new Font("Arial", Font.BOLD, 19));
-		lblNewLabel_2_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2_2.setBounds(250, 485, 125, 29);
-		tab7.add(lblNewLabel_2_2);
-
-		JLabel lblNewLabel_2_3 = new JLabel("CẤP BẬC");
-		lblNewLabel_2_3.setFont(new Font("Arial", Font.BOLD, 19));
-		lblNewLabel_2_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2_3.setBounds(250, 535, 125, 29);
-		tab7.add(lblNewLabel_2_3);
-
-		JLabel lblNewLabel_2_5 = new JLabel("GIỚI TÍNH");
+		JLabel lblNewLabel_2_5 = new JLabel("MẬT KHẨU");
 		lblNewLabel_2_5.setFont(new Font("Arial", Font.BOLD, 19));
 		lblNewLabel_2_5.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2_5.setBounds(250, 235, 125, 24);
-		tab7.add(lblNewLabel_2_5);
+		lblNewLabel_2_5.setBounds(252, 340, 125, 24);
+		tab5.add(lblNewLabel_2_5);
 
-		JLabel lblNewLabel_2_6 = new JLabel("HỌ TÊN");
+		JLabel lblNewLabel_2_6 = new JLabel("TÀI KHOẢN");
 		lblNewLabel_2_6.setFont(new Font("Arial", Font.BOLD, 19));
 		lblNewLabel_2_6.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2_6.setBounds(250, 185, 125, 29);
-		tab7.add(lblNewLabel_2_6);
+		lblNewLabel_2_6.setBounds(252, 290, 125, 29);
+		tab5.add(lblNewLabel_2_6);
 
 		textField = new JTextField();
-		textField.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getHoTen());
+		textField.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getTenTK());
 		textField.setFocusable(false);
 		textField.setDisabledTextColor(new Color(255, 255, 255));
 		textField.setEditable(false);
 		textField.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		textField.setFont(new Font("Tahoma", Font.ITALIC, 18));
-		textField.setBounds(385, 185, 346, 29);
-		tab7.add(textField);
+		textField.setBounds(387, 290, 346, 29);
+		tab5.add(textField);
 		textField.setColumns(10);
 
 		textField_1 = new JTextField();
-		textField_1.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getGioiTinh());
+		textField_1.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getMatKhau());
 		textField_1.setFocusable(false);
 		textField_1.setDisabledTextColor(new Color(255, 255, 255));
 		textField_1.setEditable(false);
 		textField_1.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		textField_1.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		textField_1.setColumns(10);
-		textField_1.setBounds(385, 230, 346, 29);
-		tab7.add(textField_1);
+		textField_1.setBounds(387, 335, 346, 29);
+		tab5.add(textField_1);
 
-		textField_2 = new JTextField();
-		textField_2.setText(String.valueOf(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getNgSinh()));
-		textField_2.setFocusable(false);
-		textField_2.setDisabledTextColor(new Color(255, 255, 255));
-		textField_2.setEditable(false);
-		textField_2.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
-		textField_2.setFont(new Font("Tahoma", Font.ITALIC, 18));
-		textField_2.setColumns(10);
-		textField_2.setBounds(385, 285, 346, 29);
-		tab7.add(textField_2);
-
-		textField_3 = new JTextField();
-		textField_3.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getSoDienThoai());
-		textField_3.setFocusable(false);
-		textField_3.setDisabledTextColor(new Color(255, 255, 255));
-		textField_3.setEditable(false);
-		textField_3.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
-		textField_3.setFont(new Font("Tahoma", Font.ITALIC, 18));
-		textField_3.setColumns(10);
-		textField_3.setBounds(385, 330, 346, 29);
-		tab7.add(textField_3);
-
-		textField_4 = new JTextField();
-		textField_4.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getEmail());
-		textField_4.setFocusable(false);
-		textField_4.setDisabledTextColor(new Color(255, 255, 255));
-		textField_4.setEditable(false);
-		textField_4.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
-		textField_4.setFont(new Font("Tahoma", Font.ITALIC, 18));
-		textField_4.setColumns(10);
-		textField_4.setBounds(385, 385, 346, 29);
-		tab7.add(textField_4);
-
-		textField_5 = new JTextField();
-		textField_5.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getDiaChi());
-		textField_5.setFocusable(false);
-		textField_5.setDisabledTextColor(new Color(255, 255, 255));
-		textField_5.setEditable(false);
-		textField_5.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
-		textField_5.setFont(new Font("Tahoma", Font.ITALIC, 18));
-		textField_5.setColumns(10);
-		textField_5.setBounds(385, 430, 346, 29);
-		tab7.add(textField_5);
-
-		textField_6 = new JTextField();
-		textField_6.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getCccd());
-		textField_6.setFocusable(false);
-		textField_6.setDisabledTextColor(new Color(255, 255, 255));
-		textField_6.setEditable(false);
-		textField_6.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
-		textField_6.setFont(new Font("Tahoma", Font.ITALIC, 18));
-		textField_6.setColumns(10);
-		textField_6.setBounds(385, 485, 346, 29);
-		tab7.add(textField_6);
-
-		textField_7 = new JTextField();
-		textField_7.setText(this.mainViewNhanVien.getTaiKhoanHienTai().getNhanVien().getCapBac());
-		textField_7.setFocusable(false);
-		textField_7.setDisabledTextColor(new Color(255, 255, 255));
-		textField_7.setEditable(false);
-		textField_7.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
-		textField_7.setFont(new Font("Tahoma", Font.ITALIC, 18));
-		textField_7.setColumns(10);
-		textField_7.setBounds(385, 530, 346, 29);
-		tab7.add(textField_7);
-
-		JButton btnNewButton = new JButton("Cập nhật");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton.setFocusable(false);
-		btnNewButton.addActionListener(ac);
+		btnNewButton = new JButton("Đổi mật khẩu");
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnNewButton.setBounds(634, 595, 97, 29);
-		tab7.add(btnNewButton);
+		btnNewButton.setFocusable(false);
+		btnNewButton.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		btnNewButton.setBounds(585, 400, 97, 29);
+		btnNewButton.addActionListener(ac);
+		tab5.add(btnNewButton);
 	}
 
-	public JPanel gettab7() {
-		return tab7;
+	public JPanel gettab5() {
+		return tab5;
 	}
 
-	public void settab7(JPanel tab7) {
-		this.tab7 = tab7;
+	public void settab5(JPanel tab5) {
+		this.tab5 = tab5;
 	}
 
 	public JPanel getPanel_2() {
@@ -343,14 +233,6 @@ public class taiKhoanViewNhanVien {
 		this.mo = mo;
 	}
 
-	public JPanel getTab7() {
-		return tab7;
-	}
-
-	public void setTab7(JPanel tab7) {
-		this.tab7 = tab7;
-	}
-
 	public KeyListener getKe() {
 		return ke;
 	}
@@ -391,51 +273,4 @@ public class taiKhoanViewNhanVien {
 		this.textField_1 = textField_1;
 	}
 
-	public JTextField getTextField_2() {
-		return textField_2;
-	}
-
-	public void setTextField_2(JTextField textField_2) {
-		this.textField_2 = textField_2;
-	}
-
-	public JTextField getTextField_3() {
-		return textField_3;
-	}
-
-	public void setTextField_3(JTextField textField_3) {
-		this.textField_3 = textField_3;
-	}
-
-	public JTextField getTextField_4() {
-		return textField_4;
-	}
-
-	public void setTextField_4(JTextField textField_4) {
-		this.textField_4 = textField_4;
-	}
-
-	public JTextField getTextField_5() {
-		return textField_5;
-	}
-
-	public void setTextField_5(JTextField textField_5) {
-		this.textField_5 = textField_5;
-	}
-
-	public JTextField getTextField_6() {
-		return textField_6;
-	}
-
-	public void setTextField_6(JTextField textField_6) {
-		this.textField_6 = textField_6;
-	}
-
-	public JTextField getTextField_7() {
-		return textField_7;
-	}
-
-	public void setTextField_7(JTextField textField_7) {
-		this.textField_7 = textField_7;
-	}
 }
