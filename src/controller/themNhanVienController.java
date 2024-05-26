@@ -55,7 +55,7 @@ public class themNhanVienController implements ActionListener, KeyListener {
 				String gioiTinh = String.valueOf(this.themNhanVienView.getGioiTinhComboBox().getSelectedItem());
 				Date ngSinh = Date.valueOf(this.themNhanVienView.getNgSinhTF().getText());
 				String soDienThoai = this.themNhanVienView.getSdtTF().getText();
-				String email = this.themNhanVienView.getSdtTF().getText();
+				String email = this.themNhanVienView.getEmailTF().getText();
 				String diaChi = this.themNhanVienView.getDiaChiTF().getText();
 				String cccd = this.themNhanVienView.getCccdTF().getText();
 				String capBac = String.valueOf(this.themNhanVienView.getCapBacComboBox().getSelectedItem());

@@ -91,13 +91,14 @@ public class yeuCauController implements ActionListener, KeyListener {
 
 				int maYC = Integer.parseInt((String) model.getValueAt(yeuCauView.getTable().getSelectedRows()[0], 0));
 				yeuCau yeuCau = new yeuCau(maYC, 0, "", false);
-				yeuCauDAO.getInstance().updateT(yeuCau);
+				yeuCauDAO.getInstance().updateTdemophantom(yeuCau); // ne
 				ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectSortByMAYCASC();
 				changeTableData(arr_yc);
 			} catch (Exception e2) {
 				// TODO: handle exception
 				errView errView = new errView();
-				errView.getLblNewLabel().setText("Không thể duyệt lúc này!");
+				// errView.getLblNewLabel().setText("Không thể duyệt lúc này!");
+				errView.getLblNewLabel().setText(e2.getMessage());
 				errView.setVisible(true);
 			}
 		}

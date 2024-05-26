@@ -902,7 +902,7 @@ public class nhanVienDAO implements DAOinterface<nhanVien> {
 		double soGioTangCa = 0;
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
-
+			c.setAutoCommit(false);
 			String sql = "SELECT * FROM NHANVIEN NV\n" + "INNER JOIN CHAMCONG CC ON NV.MANV = CC.MANV\n"
 					+ "INNER JOIN PHONGBAN PB ON PB.MAPB = NV.MAPB WHERE NV.MANV = ? AND CC.THANGLAMVIEC = ?";
 			PreparedStatement st = c.prepareStatement(sql);

@@ -28,6 +28,7 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		ArrayList<chamCongClass> chamCongQuery = new ArrayList<>();
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
+			c.setAutoCommit(false);
 			String sql = "SELECT * FROM CHAMCONG CC INNER JOIN NHANVIEN NV ON CC.MANV = NV.MANV WHERE NV.MANV = ? ORDER BY CC.MACC";
 			PreparedStatement st = c.prepareStatement(sql);
 			st.setInt(1, id);
@@ -59,6 +60,7 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		ArrayList<chamCongClass> chamCongQuery = new ArrayList<>();
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
+			c.setAutoCommit(false);
 			String sql = "SELECT * FROM CHAMCONG CC INNER JOIN NHANVIEN NV ON CC.MANV = NV.MANV ORDER BY CC.MACC";
 			PreparedStatement st = c.prepareStatement(sql);
 			ResultSet rs = st.executeQuery();
@@ -88,6 +90,7 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		ArrayList<chamCongClass> chamCongQuery = new ArrayList<>();
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
+			c.setAutoCommit(false);
 			String sql = "SELECT * FROM CHAMCONG CC INNER JOIN NHANVIEN NV ON CC.MANV = NV.MANV WHERE NV.MANV = ? ORDER BY CC.MACC";
 			PreparedStatement st = c.prepareStatement(sql);
 			st.setInt(1, manv);
@@ -120,6 +123,7 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		t = "%" + t + "%";
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
+			c.setAutoCommit(false);
 			String sql = "SELECT * FROM CHAMCONG CC INNER JOIN NHANVIEN NV ON CC.MANV = NV.MANV WHERE UPPER(HOTEN) LIKE ? ORDER BY MACC";
 			PreparedStatement st = c.prepareStatement(sql);
 			st.setString(1, t);
@@ -150,7 +154,9 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 	public int insertT(chamCongClass t) throws Exception {
 		int cnt = 0;
 		Connection c = databaseConnection.getDatabaseConnection();
-		String sql = "INSERT INTO CHAMCONG VALUES (my_sequence_chamcong.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+		c.setAutoCommit(false);
+		c.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+		String sql = "INSERT INTO CHAMCONG VALUES (my_sequence_chamcong.NEXTVAL, ?, ?, ?, ?, ?, ?);";
 		PreparedStatement st = c.prepareStatement(sql);
 		// st.setInt(1, t.getMaCC());
 		st.setInt(1, t.getMaNV());
@@ -178,7 +184,7 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		int cnt = 0;
 
 		Connection c = databaseConnection.getDatabaseConnection();
-
+		c.setAutoCommit(false);
 		String sql = "UPDATE CHAMCONG SET THANGLAMVIEC = ?, SONGAYLAMVIEC = ?, SONGAYNGHI = ?, SOGIOTANGCA = ?, SONGAYDITRE = ?"
 				+ "WHERE MACC = ?";
 		PreparedStatement st = c.prepareStatement(sql);

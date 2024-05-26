@@ -143,7 +143,7 @@ public class nhanVienNhanVienController implements ActionListener, MouseListener
 					.parseInt((String) model.getValueAt(nhanVienViewNhanVien.getTable().getSelectedRows()[0], 0));
 			yeuCau yeuCau = new yeuCau(maYC, 0, "", false);
 			try {
-				yeuCauDAO.getInstance().deleteT(yeuCau);
+				yeuCauDAO.getInstance().deleteTdemo(yeuCau); // ne
 				errView errView = new errView();
 				errView.getLblNewLabel().setText("Xóa Thành Công");
 				errView.setVisible(true);

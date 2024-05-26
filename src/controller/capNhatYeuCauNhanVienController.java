@@ -27,7 +27,8 @@ public class capNhatYeuCauNhanVienController implements ActionListener {
 				boolean trangThai = false;
 
 				yeuCau yeuCau = new yeuCau(mayc, manv, noiDung, trangThai);
-				yeuCauDAO.getInstance().updateYeuCau(yeuCau);
+				System.out.println(yeuCau.getMaYC() + " " + yeuCau.getMaNV() + " " + yeuCau.getNoiDung());
+				yeuCauDAO.getInstance().updateYeuCauNhanVien(yeuCau);
 				mainViewNhanVien mainViewNhanVien = new mainViewNhanVien(this.capNhatYeuCauViewNhanVien.getTkht());
 				mainViewNhanVien.setTabNhanVien();
 				view.errView errView = new errView();
