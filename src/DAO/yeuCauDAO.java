@@ -24,7 +24,7 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "SELECT * FROM YEUCAU ORDER BY MAYC ASC";
+			String sql = "SELECT * FROM YEUCAU ORDER BY MAYC";
 			PreparedStatement st = c.prepareStatement(sql);
 			ResultSet rs = st.executeQuery();
 
@@ -227,7 +227,8 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 		int cnt = 0;
 
 		Connection c = databaseConnection.getDatabaseConnection();
-
+		c.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+		c.setAutoCommit(false);
 		String sql = "INSERT INTO YEUCAU VALUES (my_sequence_yeucau.NEXTVAL, ?, ?, ?)";
 		PreparedStatement st = c.prepareStatement(sql);
 		// st.setInt(1, t.getMaYC());
@@ -240,6 +241,12 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 		}
 		st.execute();
 		cnt = 1;
+		try {
+			Thread.sleep(5000); // Sleep for 5 seconds //demo non repeat
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 		databaseConnection.closeDatabaseConnection(c);
 
 		return cnt;
@@ -270,31 +277,6 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 
 		return cnt;
 	}
-// DEMO LOST UPDATE
-//	public int updateTdemoLU(yeuCau t) throws Exception {
-//		int cnt = 0;
-//
-//		Connection c = databaseConnection.getDatabaseConnection();
-//
-////			String sql = "UPDATE YEUCAU SET TRANGTHAI = 1 WHERE MAYC = ?";
-////			PreparedStatement st = c.prepareStatement(sql);
-////			st.setInt(1, t.getMaYC());
-////			if (st.execute()) {
-////				cnt = 1;
-////			} else {
-////				cnt = 0;
-////			}
-//		// System.out.println(t.getMaNV() + " " + t.getMaYC());
-//		String sql = " Begin quanly_pro(?); end; ";
-//		PreparedStatement st = c.prepareStatement(sql);
-//		st.setInt(1, t.getMaYC());
-//		st.execute();
-//		cnt = 1;
-//
-//		databaseConnection.closeDatabaseConnection(c);
-//
-//		return cnt;
-//	}
 
 	// demo phantom read
 	public int updateTdemophantom(yeuCau t) throws Exception {
@@ -322,6 +304,30 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 		return cnt;
 	}
 
+	public int updateAll() throws Exception {
+		int cnt = 0;
+
+		Connection c = databaseConnection.getDatabaseConnection();
+
+//			String sql = "UPDATE YEUCAU SET TRANGTHAI = 1 WHERE MAYC = ?";
+//			PreparedStatement st = c.prepareStatement(sql);
+//			st.setInt(1, t.getMaYC());
+//			if (st.execute()) {
+//				cnt = 1;
+//			} else {
+//				cnt = 0;
+//			}
+		// System.out.println(t.getMaNV() + " " + t.getMaYC());
+		String sql = "UPDATE YEUCAU SET TRANGTHAI = 1";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.execute();
+		cnt = 1;
+
+		databaseConnection.closeDatabaseConnection(c);
+
+		return cnt;
+	}
+
 	public int updateYeuCauNhanVien(yeuCau t) throws Exception {
 		int cnt = 0;
 
@@ -340,24 +346,51 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 
 		return cnt;
 	}
+
+	// DEMO LOST UPDATE
+	public int updateTdemoLU(yeuCau t) throws Exception {
+		int cnt = 0;
+
+		Connection c = databaseConnection.getDatabaseConnection();
+
+//				String sql = "UPDATE YEUCAU SET TRANGTHAI = 1 WHERE MAYC = ?";
+//				PreparedStatement st = c.prepareStatement(sql);
+//				st.setInt(1, t.getMaYC());
+//				if (st.execute()) {
+//					cnt = 1;
+//				} else {
+//					cnt = 0;
+//				}
+		// System.out.println(t.getMaNV() + " " + t.getMaYC());
+		String sql = " Begin quanly_pro(?); end; ";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, t.getMaYC());
+		st.execute();
+		cnt = 1;
+
+		databaseConnection.closeDatabaseConnection(c);
+
+		return cnt;
+	}
+
 // DEMO LOST UPDATE
-//	public int updateYeuCauNhanViendemo(yeuCau t) throws Exception {
-//		int cnt = 0;
-//
-//		Connection c = databaseConnection.getDatabaseConnection();
-//
-//		String sql = " begin nhanvien_pro(?, ?, ?); end;";
-//		PreparedStatement st = c.prepareStatement(sql);
-//		st.setInt(1, t.getMaNV());
-//		st.setInt(2, t.getMaYC());
-//		st.setString(3, t.getNoiDung());
-//		st.execute();
-//		cnt = 1;
-//
-//		databaseConnection.closeDatabaseConnection(c);
-//
-//		return cnt;
-//	}
+	public int updateYeuCauNhanViendemo(yeuCau t) throws Exception {
+		int cnt = 0;
+
+		Connection c = databaseConnection.getDatabaseConnection();
+
+		String sql = " begin nhanvien_pro(?, ?, ?); end;";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setInt(1, t.getMaNV());
+		st.setInt(2, t.getMaYC());
+		st.setString(3, t.getNoiDung());
+		st.execute();
+		cnt = 1;
+
+		databaseConnection.closeDatabaseConnection(c);
+
+		return cnt;
+	}
 
 	@Override
 	public int deleteT(yeuCau t) throws Exception {

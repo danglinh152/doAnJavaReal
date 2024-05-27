@@ -91,7 +91,19 @@ public class yeuCauController implements ActionListener, KeyListener {
 
 				int maYC = Integer.parseInt((String) model.getValueAt(yeuCauView.getTable().getSelectedRows()[0], 0));
 				yeuCau yeuCau = new yeuCau(maYC, 0, "", false);
-				yeuCauDAO.getInstance().updateTdemophantom(yeuCau); // ne
+				yeuCauDAO.getInstance().updateTdemoLU(yeuCau); // ne
+				ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectSortByMAYCASC();
+				changeTableData(arr_yc);
+			} catch (Exception e2) {
+				// TODO: handle exception
+				errView errView = new errView();
+				// errView.getLblNewLabel().setText("Không thể duyệt lúc này!");
+				errView.getLblNewLabel().setText(e2.getMessage());
+				errView.setVisible(true);
+			}
+		} else if (e.getActionCommand().equals("Duyệt tất cả")) {
+			try {
+				yeuCauDAO.getInstance().updateAll(); // ne
 				ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectSortByMAYCASC();
 				changeTableData(arr_yc);
 			} catch (Exception e2) {
@@ -102,6 +114,7 @@ public class yeuCauController implements ActionListener, KeyListener {
 				errView.setVisible(true);
 			}
 		}
+
 		String thuocTinh = (String) this.yeuCauView.getThuocTinhComboBox().getSelectedItem();
 		String thuTu = (String) this.yeuCauView.getThuTuComboBox().getSelectedItem();
 		if (thuocTinh.equals("Mã Yêu Cầu") && thuTu.equals("Tăng dần")) {

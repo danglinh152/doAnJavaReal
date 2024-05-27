@@ -245,6 +245,17 @@ public class yeuCauView {
 		lblNewLabel.setFont(new Font("JetBrains Mono", Font.PLAIN, 13));
 		lblNewLabel.setBounds(180, 166, 104, 25);
 		tab8.add(lblNewLabel);
+
+		JButton btnNewButton = new JButton("Duyệt tất cả");
+		btnNewButton.setBackground(new Color(255, 255, 255));
+		btnNewButton.setFocusable(false);
+		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+		btnNewButton.setBackground(new Color(255, 255, 255));
+		btnNewButton.setFont(new Font("JetBrains Mono", Font.PLAIN, 15));
+		btnNewButton.setBounds(53, 115, 181, 37);
+		btnNewButton.addActionListener(ac);
+		tab8.add(btnNewButton);
 	}
 
 	public JTextField getTxtTnPhngBan() {
