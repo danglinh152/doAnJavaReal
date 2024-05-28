@@ -41,8 +41,6 @@ import java.awt.Component;
 
 public class chamCongViewNhanVien {
 	public JPanel tab4;
-	private JTextField tenNVTF;
-	private JButton tenNVbutton;
 	private JPanel panel_1;
 	private JPanel panel_2;
 	private JPopupMenu popupMenu;
@@ -186,39 +184,6 @@ public class chamCongViewNhanVien {
 		lblNewLabel_3.setFont(new Font("JetBrains Mono", Font.BOLD, 21));
 		lblNewLabel_3.setBorder(null);
 		lblNewLabel_3.setBackground(Color.BLACK);
-
-		tenNVTF = new JTextField();
-		tenNVTF.addKeyListener(ke);
-		tenNVTF.setFont(new Font("JetBrains Mono", Font.PLAIN, 15));
-		tenNVTF.setBounds(622, 82, 259, 37);
-		tab4.add(tenNVTF);
-		tenNVTF.setColumns(10);
-		tenNVTF.setText("Nhập tên nhân viên");
-		tenNVTF.setForeground(Color.GRAY);
-		tenNVTF.addFocusListener(new java.awt.event.FocusAdapter() {
-			public void focusGained(java.awt.event.FocusEvent evt) {
-				if (tenNVTF.getText().equals("Nhập tên nhân viên")) {
-					tenNVTF.setText("");
-					tenNVTF.setForeground(Color.BLACK);
-				}
-			}
-
-			public void focusLost(java.awt.event.FocusEvent evt) {
-				if (tenNVTF.getText().isEmpty()) {
-					tenNVTF.setText("Nhập tên nhân viên");
-					tenNVTF.setForeground(Color.GRAY);
-				}
-			}
-		});
-
-		tenNVbutton = new JButton("");
-		tenNVbutton.addActionListener(ac);
-		tenNVbutton.setFocusable(false);
-		tenNVbutton.setBorder(null);
-		tenNVbutton.setBackground(new Color(255, 255, 255));
-		tenNVbutton.setIcon(new ImageIcon(mainView.class.getResource("/img/search (1).png")));
-		tenNVbutton.setBounds(891, 82, 33, 37);
-		tab4.add(tenNVbutton);
 	}
 
 	public JPanel getTab4() {
@@ -227,22 +192,6 @@ public class chamCongViewNhanVien {
 
 	public void setTab4(JPanel tab4) {
 		this.tab4 = tab4;
-	}
-
-	public JTextField getTenNVTF() {
-		return tenNVTF;
-	}
-
-	public void setTenNVTF(JTextField tenNVTF) {
-		this.tenNVTF = tenNVTF;
-	}
-
-	public JButton getTenNVbutton() {
-		return tenNVbutton;
-	}
-
-	public void setTenNVbutton(JButton tenNVbutton) {
-		this.tenNVbutton = tenNVbutton;
 	}
 
 	public JPanel getPanel_1() {

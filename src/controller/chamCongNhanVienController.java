@@ -37,16 +37,6 @@ public class chamCongNhanVienController implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		String tennv = chamCongViewNhanVien.getTenNVTF().getText();
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (!tennv.equals("Nhập mã nhân viên") || !tennv.trim().equals("")) {
-
-				ArrayList<chamCongClass> arr_cc = chamCongDAO.getInstance().selectByTENNV(tennv);
-
-				changeTableData(arr_cc);
-			}
-
-		}
 
 	}
 
@@ -72,13 +62,6 @@ public class chamCongNhanVienController implements ActionListener, KeyListener {
 				errView.getLblNewLabel().setText("Xuất file excel thất bại!");
 				errView.setVisible(true);
 
-			}
-		} else if (e.getActionCommand().equals("")) {
-			String tennv = chamCongViewNhanVien.getTenNVTF().getText();
-			if (!tennv.equals("Nhập mã nhân viên") || !tennv.trim().equals("")) {
-				ArrayList<chamCongClass> arr_cc = chamCongDAO.getInstance().selectByTENNV(tennv);
-
-				changeTableData(arr_cc);
 			}
 		}
 	}
