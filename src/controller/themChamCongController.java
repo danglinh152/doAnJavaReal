@@ -49,9 +49,8 @@ public class themChamCongController implements ActionListener, KeyListener {
 				int soNgayNghi = Integer.parseInt(this.themChamCongView.getSoNgayNghiTF().getText());
 				double soGioTangCa = Double.parseDouble(this.themChamCongView.getSoGioTangCaTF().getText());
 				int soNgayDiTre = Integer.parseInt(this.themChamCongView.getSoNgayDiTreTF().getText());
-				chamCongClass chamCongClass = new chamCongClass(0, maNV, hoTen, thangLamViec, soNgayLamViec, soNgayNghi,
+				chamCongClass chamCongClass = new chamCongClass(maNV, hoTen, thangLamViec, soNgayLamViec, soNgayNghi,
 						soGioTangCa, soNgayDiTre);
-				System.out.println(chamCongClass.getMaNV() + " " + chamCongClass.getMaCC());
 				chamCongDAO.getInstance().insertT(chamCongClass);
 				mainView mainView = new mainView();
 				mainView.setTabChamCong();

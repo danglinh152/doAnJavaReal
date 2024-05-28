@@ -142,41 +142,41 @@ public class chamCongView {
 		});
 
 		ArrayList<String[]> data_cc = new ArrayList<>();
-		int size_cc = 8;
+		int size_cc = 7;
 
 		for (int i = 0; i < chamCongData.size(); i++) {
 			String[] tmp = new String[size_cc];
-			tmp[0] = String.valueOf(chamCongData.get(i).getMaCC());
-			tmp[1] = String.valueOf(chamCongData.get(i).getMaNV());
-			tmp[2] = String.valueOf(chamCongData.get(i).getThangLamViec());
-			tmp[3] = String.valueOf(chamCongData.get(i).getSoNgayLamViec());
-			tmp[4] = String.valueOf(chamCongData.get(i).getSoNgayNghi());
-			tmp[5] = String.valueOf(chamCongData.get(i).getSoGioTangCa());
-			tmp[6] = String.valueOf(chamCongData.get(i).getSoNgayDiTre());
+			tmp[0] = String.valueOf(chamCongData.get(i).getMaNV());
+			tmp[1] = String.valueOf(chamCongData.get(i).getThangLamViec());
+			tmp[2] = String.valueOf(chamCongData.get(i).getSoNgayLamViec());
+			tmp[3] = String.valueOf(chamCongData.get(i).getSoNgayNghi());
+			tmp[4] = String.valueOf(chamCongData.get(i).getSoGioTangCa());
+			tmp[5] = String.valueOf(chamCongData.get(i).getSoNgayDiTre());
 
 			DecimalFormat df = new DecimalFormat("#,###");
 			String result = df.format(nhanVienDAO.getInstance().tinhLuongNhanVien(chamCongData.get(i).getMaNV(),
 					chamCongData.get(i).getThangLamViec()));
 			if (result.equals("NaN")) {
-				tmp[7] = "0";
+				tmp[6] = "0";
 			} else {
-				tmp[7] = result;
+				tmp[6] = result;
 			}
 			data_cc.add(tmp);
 		}
 
-		String[] columnNames_cc = { "Mã chấm công", "Mã nhân viên", "Tháng làm việc", "Số ngày làm việc",
-				"Số ngày nghỉ", "Số giờ tăng ca", "Số ngày đi trễ", "Tổng lương" };
+		String[] columnNames_cc = { "Mã nhân viên", "Tháng làm việc", "Số ngày làm việc", "Số ngày nghỉ",
+				"Số giờ tăng ca", "Số ngày đi trễ", "Tổng lương" };
 		tableModel_cc = new DefaultTableModel(columnNames_cc, 0);
 		for (String[] row : data_cc) {
 			tableModel_cc.addRow(row);
 		}
+
 		// table.getTableHeader().addMouseListener(nhanVienController);
 		chamCongtable.setModel(tableModel_cc);
 
 		chamCongtable.setBounds(0, 0, 1, 1);
 
-		chamCongtable.getTableHeader().getColumnModel().getColumn(7).setCellRenderer(new MyCustomRenderer());
+		chamCongtable.getTableHeader().getColumnModel().getColumn(6).setCellRenderer(new MyCustomRenderer());
 		JScrollPane bangChamCongcrollPane_1 = new JScrollPane(chamCongtable);
 		bangChamCongcrollPane_1.setViewportBorder(null);
 		bangChamCongcrollPane_1.setFont(new Font("JetBrains Mono", Font.PLAIN, 18));

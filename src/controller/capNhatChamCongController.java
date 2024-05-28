@@ -41,16 +41,16 @@ public class capNhatChamCongController implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 		if (e.getActionCommand().equals("Cập nhật")) {
 			try {
-				int maCC = Integer.parseInt(this.capNhatChamCongView.getMaCC().getText());
-				int maNV = Integer.parseInt(this.capNhatChamCongView.getMaCC().getText());
+
+				int maNV = Integer.parseInt(this.capNhatChamCongView.getMaNVTF().getText());
 				String hoTen = "";
 				int thangLamViec = Integer.parseInt(this.capNhatChamCongView.getThangLamViecTF().getText());
 				int soNgayLamViec = Integer.parseInt(this.capNhatChamCongView.getSoNgayLamViecTF().getText());
 				int soNgayNghi = Integer.parseInt(this.capNhatChamCongView.getSoNgayNghiTF().getText());
 				double soGioTangCa = Double.parseDouble(this.capNhatChamCongView.getSoGioTangCaTF().getText());
 				int soNgayDiTre = Integer.parseInt(this.capNhatChamCongView.getSoNgayDiTreTF().getText());
-				chamCongClass t = new chamCongClass(maCC, maNV, hoTen, thangLamViec, soNgayLamViec, soNgayNghi,
-						soGioTangCa, soNgayDiTre);
+				chamCongClass t = new chamCongClass(maNV, hoTen, thangLamViec, soNgayLamViec, soNgayNghi, soGioTangCa,
+						soNgayDiTre);
 				chamCongDAO.getInstance().updateT(t);
 				mainView mainView = new mainView();
 				mainView.setTabChamCong();

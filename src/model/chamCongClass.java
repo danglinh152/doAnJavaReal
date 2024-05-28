@@ -1,7 +1,6 @@
 package model;
 
 public class chamCongClass {
-	private int maCC;
 	private int maNV;
 	private String hoTen;
 	private int thangLamViec;
@@ -9,14 +8,6 @@ public class chamCongClass {
 	private int soNgayNghi;
 	private double soGioTangCa;
 	private int soNgayDiTre;
-
-	public int getMaCC() {
-		return maCC;
-	}
-
-	public void setMaCC(int maCC) {
-		this.maCC = maCC;
-	}
 
 	public int getMaNV() {
 		return maNV;
@@ -74,10 +65,9 @@ public class chamCongClass {
 		this.hoTen = hoTen;
 	}
 
-	public chamCongClass(int maCC, int maNV, String hoTen, int thangLamViec, int soNgayLamViec, int soNgayNghi,
+	public chamCongClass(int maNV, String hoTen, int thangLamViec, int soNgayLamViec, int soNgayNghi,
 			double soGioTangCa, int soNgayDiTre) {
 		super();
-		this.maCC = maCC;
 		this.maNV = maNV;
 		this.hoTen = hoTen;
 		this.thangLamViec = thangLamViec;

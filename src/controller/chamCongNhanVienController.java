@@ -89,27 +89,26 @@ public class chamCongNhanVienController implements ActionListener, KeyListener {
 
 		for (int i = 0; i < arr_cc.size(); i++) {
 			String[] tmp = new String[size_cc];
-			tmp[0] = String.valueOf(arr_cc.get(i).getMaCC());
-			tmp[1] = String.valueOf(arr_cc.get(i).getMaNV());
-			tmp[2] = String.valueOf(arr_cc.get(i).getThangLamViec());
-			tmp[3] = String.valueOf(arr_cc.get(i).getSoNgayLamViec());
-			tmp[4] = String.valueOf(arr_cc.get(i).getSoNgayNghi());
-			tmp[5] = String.valueOf(arr_cc.get(i).getSoGioTangCa());
-			tmp[6] = String.valueOf(arr_cc.get(i).getSoNgayDiTre());
+			tmp[0] = String.valueOf(arr_cc.get(i).getMaNV());
+			tmp[1] = String.valueOf(arr_cc.get(i).getThangLamViec());
+			tmp[2] = String.valueOf(arr_cc.get(i).getSoNgayLamViec());
+			tmp[3] = String.valueOf(arr_cc.get(i).getSoNgayNghi());
+			tmp[4] = String.valueOf(arr_cc.get(i).getSoGioTangCa());
+			tmp[5] = String.valueOf(arr_cc.get(i).getSoNgayDiTre());
 
 			DecimalFormat df = new DecimalFormat("#,###");
 			String result = df.format(nhanVienDAO.getInstance().tinhLuongNhanVien(arr_cc.get(i).getMaNV(),
 					arr_cc.get(i).getThangLamViec()));
 			if (result.equals("NaN")) {
-				tmp[7] = "0";
+				tmp[6] = "0";
 			} else {
-				tmp[7] = result;
+				tmp[6] = result;
 			}
 			data_cc.add(tmp);
 		}
 
-		String[] columnNames_cc = { "Mã chấm công", "Mã nhân viên", "Tháng làm việc", "Số ngày làm việc",
-				"Số ngày nghỉ", "Số giờ tăng ca", "Số ngày đi trễ", "Tổng lương" };
+		String[] columnNames_cc = { "Mã nhân viên", "Tháng làm việc", "Số ngày làm việc", "Số ngày nghỉ",
+				"Số giờ tăng ca", "Số ngày đi trễ", "Tổng lương" };
 		chamCongViewNhanVien.setTableModel_cc(new DefaultTableModel(columnNames_cc, 0));
 		for (String[] row : data_cc) {
 			chamCongViewNhanVien.getTableModel_cc().addRow(row);

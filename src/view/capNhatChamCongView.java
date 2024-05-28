@@ -51,9 +51,9 @@ public class capNhatChamCongView extends JDialog {
 		setTitle("HRM_TENPM");
 		ac = new capNhatChamCongController(this);
 
-		maCC = new JTextField();
-		maCC.setText(String.valueOf(chamCongClass.getMaCC()));
-		maCC.setVisible(false);
+//		maCC = new JTextField();
+//	
+//		maCC.setVisible(false);
 
 		getContentPane().setBackground(new Color(255, 255, 255));
 		setBounds(100, 100, 803, 490);
@@ -104,6 +104,7 @@ public class capNhatChamCongView extends JDialog {
 		formPanel.add(soNgayNghi);
 
 		maNVTF = new JTextField();
+		maNVTF.setEditable(false);
 		maNVTF.setBorder(new LineBorder(new Color(0, 0, 0)));
 		maNVTF.setFont(new Font("JetBrains Mono", Font.PLAIN, 15));
 		maNVTF.setBounds(210, 93, 240, 26);
@@ -155,6 +156,7 @@ public class capNhatChamCongView extends JDialog {
 		formPanel.add(soNgayDiTreTF);
 
 		thangLamViecTF = new JTextField();
+		thangLamViecTF.setEditable(false);
 		thangLamViecTF.setFont(new Font("JetBrains Mono", Font.PLAIN, 15));
 		thangLamViecTF.setColumns(10);
 		thangLamViecTF.setBorder(new LineBorder(new Color(0, 0, 0)));

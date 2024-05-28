@@ -29,7 +29,7 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 			c.setAutoCommit(false);
-			String sql = "SELECT * FROM CHAMCONG CC INNER JOIN NHANVIEN NV ON CC.MANV = NV.MANV WHERE NV.MANV = ? ORDER BY CC.MACC";
+			String sql = "SELECT * FROM CHAMCONG CC INNER JOIN NHANVIEN NV ON CC.MANV = NV.MANV WHERE NV.MANV = ? ORDER BY CC.THANGLAMVIEC";
 			PreparedStatement st = c.prepareStatement(sql);
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
@@ -43,8 +43,8 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 				int soNgayNghi = rs.getInt("SONGAYNGHI");
 				double soGioTangCa = rs.getInt("SOGIOTANGCA");
 				int soNgayDiTre = rs.getInt("SONGAYDITRE");
-				chamCongClass chamCongClass = new chamCongClass(maCC, maNV, hoTen, thangLamViec, soNgayLamViec,
-						soNgayNghi, soGioTangCa, soNgayDiTre);
+				chamCongClass chamCongClass = new chamCongClass(maNV, hoTen, thangLamViec, soNgayLamViec, soNgayNghi,
+						soGioTangCa, soNgayDiTre);
 				chamCongQuery.add(chamCongClass);
 			}
 			databaseConnection.closeDatabaseConnection(c);
@@ -61,12 +61,11 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 			c.setAutoCommit(false);
-			String sql = "SELECT * FROM CHAMCONG CC INNER JOIN NHANVIEN NV ON CC.MANV = NV.MANV ORDER BY CC.MACC";
+			String sql = "SELECT * FROM CHAMCONG CC INNER JOIN NHANVIEN NV ON CC.MANV = NV.MANV ORDER BY CC.THANGLAMVIEC";
 			PreparedStatement st = c.prepareStatement(sql);
 			ResultSet rs = st.executeQuery();
 
 			while (rs.next()) {
-				int maCC = rs.getInt("MACC");
 				int maNV = rs.getInt("MANV");
 				String hoTen = rs.getString("HOTEN");
 				int thangLamViec = rs.getInt("THANGLAMVIEC");
@@ -74,8 +73,8 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 				int soNgayNghi = rs.getInt("SONGAYNGHI");
 				double soGioTangCa = rs.getInt("SOGIOTANGCA");
 				int soNgayDiTre = rs.getInt("SONGAYDITRE");
-				chamCongClass chamCongClass = new chamCongClass(maCC, maNV, hoTen, thangLamViec, soNgayLamViec,
-						soNgayNghi, soGioTangCa, soNgayDiTre);
+				chamCongClass chamCongClass = new chamCongClass(maNV, hoTen, thangLamViec, soNgayLamViec, soNgayNghi,
+						soGioTangCa, soNgayDiTre);
 				chamCongQuery.add(chamCongClass);
 			}
 			databaseConnection.closeDatabaseConnection(c);
@@ -91,13 +90,13 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 			c.setAutoCommit(false);
-			String sql = "SELECT * FROM CHAMCONG CC INNER JOIN NHANVIEN NV ON CC.MANV = NV.MANV WHERE NV.MANV = ? ORDER BY CC.MACC";
+			String sql = "SELECT * FROM CHAMCONG CC INNER JOIN NHANVIEN NV ON CC.MANV = NV.MANV WHERE NV.MANV = ? ORDER BY CC.THANGLAMVIEC";
 			PreparedStatement st = c.prepareStatement(sql);
 			st.setInt(1, manv);
 			ResultSet rs = st.executeQuery();
 
 			while (rs.next()) {
-				int maCC = rs.getInt("MACC");
+
 				int maNV = rs.getInt("MANV");
 				String hoTen = rs.getString("HOTEN");
 				int thangLamViec = rs.getInt("THANGLAMVIEC");
@@ -105,8 +104,8 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 				int soNgayNghi = rs.getInt("SONGAYNGHI");
 				double soGioTangCa = rs.getInt("SOGIOTANGCA");
 				int soNgayDiTre = rs.getInt("SONGAYDITRE");
-				chamCongClass chamCongClass = new chamCongClass(maCC, maNV, hoTen, thangLamViec, soNgayLamViec,
-						soNgayNghi, soGioTangCa, soNgayDiTre);
+				chamCongClass chamCongClass = new chamCongClass(maNV, hoTen, thangLamViec, soNgayLamViec, soNgayNghi,
+						soGioTangCa, soNgayDiTre);
 				chamCongQuery.add(chamCongClass);
 			}
 			databaseConnection.closeDatabaseConnection(c);
@@ -124,13 +123,12 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 			c.setAutoCommit(false);
-			String sql = "SELECT * FROM CHAMCONG CC INNER JOIN NHANVIEN NV ON CC.MANV = NV.MANV WHERE UPPER(HOTEN) LIKE ? ORDER BY MACC";
+			String sql = "SELECT * FROM CHAMCONG CC INNER JOIN NHANVIEN NV ON CC.MANV = NV.MANV WHERE UPPER(HOTEN) LIKE ? ORDER BY THANGLAMVIEC";
 			PreparedStatement st = c.prepareStatement(sql);
 			st.setString(1, t);
 			ResultSet rs = st.executeQuery();
 
 			while (rs.next()) {
-				int maCC = rs.getInt("MACC");
 				int maNV = rs.getInt("MANV");
 				String hoTen = rs.getString("HOTEN");
 				int thangLamViec = rs.getInt("THANGLAMVIEC");
@@ -138,8 +136,8 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 				int soNgayNghi = rs.getInt("SONGAYNGHI");
 				double soGioTangCa = rs.getInt("SOGIOTANGCA");
 				int soNgayDiTre = rs.getInt("SONGAYDITRE");
-				chamCongClass chamCongClass = new chamCongClass(maCC, maNV, hoTen, thangLamViec, soNgayLamViec,
-						soNgayNghi, soGioTangCa, soNgayDiTre);
+				chamCongClass chamCongClass = new chamCongClass(maNV, hoTen, thangLamViec, soNgayLamViec, soNgayNghi,
+						soGioTangCa, soNgayDiTre);
 				chamCongQuery.add(chamCongClass);
 			}
 			databaseConnection.closeDatabaseConnection(c);
@@ -156,7 +154,7 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		Connection c = databaseConnection.getDatabaseConnection();
 //		c.setAutoCommit(false);
 //		c.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-		String sql = "INSERT INTO CHAMCONG VALUES (my_sequence_chamcong.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO CHAMCONG VALUES (?, ?, ?, ?, ?, ?)";
 		PreparedStatement st = c.prepareStatement(sql);
 		// st.setInt(1, t.getMaCC());
 		st.setInt(1, t.getMaNV());
@@ -184,16 +182,16 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		int cnt = 0;
 
 		Connection c = databaseConnection.getDatabaseConnection();
-		c.setAutoCommit(false);
-		String sql = "UPDATE CHAMCONG SET THANGLAMVIEC = ?, SONGAYLAMVIEC = ?, SONGAYNGHI = ?, SOGIOTANGCA = ?, SONGAYDITRE = ?"
-				+ "WHERE MACC = ?";
+		String sql = "UPDATE CHAMCONG SET SONGAYLAMVIEC = ?, SONGAYNGHI = ?, SOGIOTANGCA = ?, SONGAYDITRE = ?"
+				+ "WHERE MANV = ? AND THANGLAMVIEC = ?";
 		PreparedStatement st = c.prepareStatement(sql);
-		st.setInt(1, t.getThangLamViec());
-		st.setInt(2, t.getSoNgayLamViec());
-		st.setInt(3, t.getSoNgayNghi());
-		st.setDouble(4, t.getSoGioTangCa());
-		st.setInt(5, t.getSoNgayDiTre());
-		st.setInt(6, t.getMaCC());
+
+		st.setInt(1, t.getSoNgayLamViec());
+		st.setInt(2, t.getSoNgayNghi());
+		st.setDouble(3, t.getSoGioTangCa());
+		st.setInt(4, t.getSoNgayDiTre());
+		st.setInt(5, t.getMaNV());
+		st.setInt(6, t.getThangLamViec());
 		st.execute();
 		cnt = 1;
 
@@ -202,14 +200,15 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 		return cnt;
 	}
 
-	public int deleteT(int macc) throws Exception {
+	public int deleteT(int manv, int thanglamviec) throws Exception {
 		int cnt = 0;
 
 		Connection c = databaseConnection.getDatabaseConnection();
 
-		String sql = "DELETE FROM CHAMCONG WHERE MACC = ?";
+		String sql = "DELETE FROM CHAMCONG WHERE MANV = ? AND THANGLAMVIEC = ?";
 		PreparedStatement st = c.prepareStatement(sql);
-		st.setInt(1, macc);
+		st.setInt(1, manv);
+		st.setInt(2, thanglamviec);
 		if (st.execute()) {
 			cnt = 1;
 		} else {
