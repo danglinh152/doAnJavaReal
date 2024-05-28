@@ -77,7 +77,8 @@ manv            number(4) not null,
 ngaybdhd        date not null,
 ngaykthd        date,
 constraint hopdong_pk primary key (mahd),
-constraint hopdong_fk foreign key (manv) references NHANVIEN (manv)
+constraint hopdong_fk foreign key (manv) references NHANVIEN (manv),
+constraint hopdong_manv_uk unique (manv)
 );
 /
 ALTER TABLE PHONGBAN ADD CONSTRAINT phongban_fk foreign key (matruongphong) references NHANVIEN (manv);
