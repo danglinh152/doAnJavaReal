@@ -362,7 +362,7 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 //					cnt = 0;
 //				}
 		// System.out.println(t.getMaNV() + " " + t.getMaYC());
-		String sql = " Begin quanly_pro(?); end; ";
+		String sql = " Begin pro_duyetYCLU(?); end; ";
 		PreparedStatement st = c.prepareStatement(sql);
 		st.setInt(1, t.getMaYC());
 		st.execute();
@@ -379,7 +379,7 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 
 		Connection c = databaseConnection.getDatabaseConnection();
 
-		String sql = " begin nhanvien_pro(?, ?, ?); end;";
+		String sql = " begin pro_capNhatYCLU(?, ?, ?); end;";
 		PreparedStatement st = c.prepareStatement(sql);
 		st.setInt(1, t.getMaNV());
 		st.setInt(2, t.getMaYC());
@@ -418,7 +418,7 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 
 		Connection c = databaseConnection.getDatabaseConnection();
 
-		String sql = "BEGIN nhanvien_pro_phantom(?); end;";
+		String sql = "BEGIN pro_xoaYCPT(?); end;";
 		PreparedStatement st = c.prepareStatement(sql);
 		st.setInt(1, t.getMaYC());
 		if (st.execute()) {

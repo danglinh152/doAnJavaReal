@@ -10,6 +10,8 @@ public class databaseConnection {
 		try {
 			try {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
+				c.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+				c.setAutoCommit(false);
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
