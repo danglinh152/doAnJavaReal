@@ -127,9 +127,9 @@ songayditre     number(2) not null,
 constraint chamcong_pk primary key (macc),
 constraint chamcong_fk foreign key (manv) references NHANVIEN (manv),
 constraint chamcong_thanglamviec_ck check (thanglamviec >=1 and thanglamviec <= 12),
-constraint chamcong_songaylamviec_ck check (songaylamviec > 0 and songaylamviec <= 31),
-constraint chamcong_songaynghi_ck check (songaynghi > 0 and songaynghi <= 31),
-constraint chamcong_sogiotangca_ck check (sogiotangca > 0 and sogiotangca <= 48)
+constraint chamcong_songaylamviec_ck check (songaylamviec >= 0 and songaylamviec <= 31),
+constraint chamcong_songaynghi_ck check (songaynghi >= 0 and songaynghi <= 31),
+constraint chamcong_sogiotangca_ck check (sogiotangca >= 0 and sogiotangca <= 48)
 );
 /
 
