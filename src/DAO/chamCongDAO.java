@@ -154,9 +154,9 @@ public class chamCongDAO implements DAOinterface<chamCongClass> {
 	public int insertT(chamCongClass t) throws Exception {
 		int cnt = 0;
 		Connection c = databaseConnection.getDatabaseConnection();
-		c.setAutoCommit(false);
-		c.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-		String sql = "INSERT INTO CHAMCONG VALUES (my_sequence_chamcong.NEXTVAL, ?, ?, ?, ?, ?, ?);";
+//		c.setAutoCommit(false);
+//		c.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+		String sql = "INSERT INTO CHAMCONG VALUES (my_sequence_chamcong.NEXTVAL, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement st = c.prepareStatement(sql);
 		// st.setInt(1, t.getMaCC());
 		st.setInt(1, t.getMaNV());
