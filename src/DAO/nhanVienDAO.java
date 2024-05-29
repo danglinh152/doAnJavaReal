@@ -753,41 +753,40 @@ public class nhanVienDAO implements DAOinterface<nhanVien> {
 		return cnt;
 	}
 
-	public int updateT(nhanVien t, int manv) {
+	public int updateT(nhanVien t, int manv) throws Exception {
 		int cnt = 0;
-		try {
-			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "UPDATE NHANVIEN SET HOTEN = ?, GIOITINH = ?, NGSINH = ?, SDT = ?, EMAIL = ?, DIACHI = ?, CCCD = ?, CAPBAC = ?, MAPB = ? WHERE MANV = ?";
-			PreparedStatement st = c.prepareStatement(sql);
-			st.setString(1, t.getHoTen());
-			st.setString(2, t.getGioiTinh());
-			st.setDate(3, t.getNgSinh());
-			st.setString(4, t.getSoDienThoai());
-			st.setString(5, t.getEmail());
-			st.setString(6, t.getDiaChi());
-			st.setString(7, t.getCccd());
-			st.setString(8, t.getCapBac());
-			st.setInt(9, t.getPhongBan().getMaPB());
-			st.setInt(10, manv);
-			st.execute();
-			cnt = 1;
-			databaseConnection.closeDatabaseConnection(c);
+		Connection c = databaseConnection.getDatabaseConnection();
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			mainView mainView = new mainView();
-			mainView.setTabNhanVien();
-			errView errView = new errView();
-			errView.getLblNewLabel().setText("Cập nhật thất bại");
+		String sql = "UPDATE NHANVIEN SET HOTEN = ?, GIOITINH = ?, NGSINH = ?, SDT = ?, EMAIL = ?, DIACHI = ?, CCCD = ?, CAPBAC = ?, MAPB = ? WHERE MANV = ?";
+		PreparedStatement st = c.prepareStatement(sql);
+		st.setString(1, t.getHoTen());
+		st.setString(2, t.getGioiTinh());
+		st.setDate(3, t.getNgSinh());
+		st.setString(4, t.getSoDienThoai());
+		st.setString(5, t.getEmail());
+		st.setString(6, t.getDiaChi());
+		st.setString(7, t.getCccd());
+		st.setString(8, t.getCapBac());
+		st.setInt(9, t.getPhongBan().getMaPB());
+		st.setInt(10, manv);
+		st.execute();
+		cnt = 1;
+		databaseConnection.closeDatabaseConnection(c);
 
-			mainView.setVisible(true);
-			errView.setVisible(true);
+		// TODO Auto-generated catch block
 
-			// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
-			// đang trực thuộc phòng ban này!");
-		}
+//			mainView mainView = new mainView();
+//			mainView.setTabNhanVien();
+//			errView errView = new errView();
+//			errView.getLblNewLabel().setText("Cập nhật thất bại");
+//
+//			mainView.setVisible(true);
+//			errView.setVisible(true);
+
+		// errView.getLblNewLabel().setText("Không thể xóa phòng ban vì có nhân viên
+		// đang trực thuộc phòng ban này!");
+
 		return cnt;
 	}
 

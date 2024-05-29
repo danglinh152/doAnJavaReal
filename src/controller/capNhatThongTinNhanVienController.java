@@ -33,19 +33,20 @@ public class capNhatThongTinNhanVienController implements ActionListener, KeyLis
 			this.capNhatThongTinViewNhanVien.dispose();
 			mainViewNhanVien.setVisible(true);
 		} else if (e.getActionCommand().equals("Cập nhật")) {
-			System.out.println(this.capNhatThongTinViewNhanVien.getTaiKhoanViewNhanVien().getMainViewNhanVien()
-					.getTaiKhoanHienTai().getNhanVien().getPhongBan().getMaPB());
+			String email = "";
+			nhanVien nhanVien = null;
+			phongBan phongBan = null;
+			nhanVien nhanVienNew = null;
 			try {
-				System.out
-						.println(String.valueOf(this.capNhatThongTinViewNhanVien.getMaPBComboBox().getSelectedItem()));
-				String email = this.capNhatThongTinViewNhanVien.getEmailTF().getText();
-				nhanVien nhanVien = nhanVienDAO.getInstance().selectByEmail(email).get(0);
-				phongBan phongBan = phongBanDAO.getInstance()
+
+				email = this.capNhatThongTinViewNhanVien.getEmailTF().getText();
+				nhanVien = nhanVienDAO.getInstance().selectByEmail(email).get(0);
+				phongBan = phongBanDAO.getInstance()
 						.selectByID(new phongBan(
 								Integer.parseInt(
 										(String) this.capNhatThongTinViewNhanVien.getMaPBComboBox().getSelectedItem()),
 								"", null, 0, null));
-				nhanVien nhanVienNew = new nhanVien(0, this.capNhatThongTinViewNhanVien.getTenNVTF().getText(),
+				nhanVienNew = new nhanVien(0, this.capNhatThongTinViewNhanVien.getTenNVTF().getText(),
 						String.valueOf(this.capNhatThongTinViewNhanVien.getGioiTinhComboBox().getSelectedItem()),
 						Date.valueOf(this.capNhatThongTinViewNhanVien.getNgSinhTF().getText()),
 						this.capNhatThongTinViewNhanVien.getSdtTF().getText(),
@@ -54,19 +55,23 @@ public class capNhatThongTinNhanVienController implements ActionListener, KeyLis
 						this.capNhatThongTinViewNhanVien.getCccdTF().getText(),
 						String.valueOf(this.capNhatThongTinViewNhanVien.getCapBacComboBox().getSelectedItem()),
 						phongBan);
-				nhanVienDAO.getInstance().updateT(nhanVienNew, nhanVien.getMaNV());
 
+			} catch (Exception e2) {
+				// TODO: handle exception
+
+			}
+			try {
+				nhanVienDAO.getInstance().updateT(nhanVienNew, nhanVien.getMaNV());
 				errView errView = new errView();
 				errView.getLblNewLabel().setText("Cập nhật thành công, Vui lòng đăng nhập lại");
-
 				this.capNhatThongTinViewNhanVien.dispose();
 				new loginView();
 
 				errView.setVisible(true);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 
-			} catch (Exception e2) {
-				// TODO: handle exception
-				e2.printStackTrace();
 				mainViewNhanVien mainViewNhanVien = new mainViewNhanVien(this.capNhatThongTinViewNhanVien
 						.getTaiKhoanViewNhanVien().getMainViewNhanVien().getTaiKhoanHienTai());
 				mainViewNhanVien.setTabTaiKhoan();
