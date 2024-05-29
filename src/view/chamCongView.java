@@ -267,8 +267,16 @@ public class chamCongView {
 		btnInPhiuChm.addActionListener(ac);
 		btnInPhiuChm.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnInPhiuChm.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnInPhiuChm.setBounds(216, 285, 177, 25);
+		btnInPhiuChm.setBounds(216, 285, 159, 25);
 		panel_1.add(btnInPhiuChm);
+
+		JButton btnXutPdf = new JButton("Xuất PDF");
+		btnXutPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnXutPdf.addActionListener(ac);
+		btnXutPdf.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnXutPdf.setFocusable(false);
+		btnXutPdf.setBounds(385, 285, 113, 25);
+		panel_1.add(btnXutPdf);
 
 		panel_2 = new JPanel();
 		panel_2.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));

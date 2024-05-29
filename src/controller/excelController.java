@@ -82,6 +82,7 @@ public class excelController {
 			FileOutputStream fis = new FileOutputStream(f);
 			workbook.write(fis);
 			fis.close();
+			workbook.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -167,6 +168,7 @@ public class excelController {
 			FileOutputStream fis = new FileOutputStream(f);
 			workbook.write(fis);
 			fis.close();
+			workbook.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

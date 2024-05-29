@@ -75,7 +75,24 @@ public class chamCongController implements ActionListener, KeyListener {
 				errView.setVisible(true);
 
 			}
-		} else if (e.getActionCommand().equals("")) {
+		} else if (e.getActionCommand().equals("Xuất PDF")) {
+			try {
+				pdfController pdf = new pdfController();
+				pdf.exportFileCC();
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Xuất file PDF thành công!");
+				errView.setVisible(true);
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Xuất file PDF thất bại!");
+				errView.setVisible(true);
+
+			}
+		}
+
+		else if (e.getActionCommand().equals("")) {
 			String tennv = chamCongView.getTenNVTF().getText();
 			if (!tennv.equals("Nhập mã nhân viên") || !tennv.trim().equals("")) {
 				ArrayList<nhanVien> arr_nv = nhanVienDAO.getInstance().selectNVCCBYTENNV(tennv);

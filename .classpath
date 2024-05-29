@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="src/lib/poi-ooxml-4.0.1.jar"/>
 	<classpathentry kind="lib" path="src/lib/poi-ooxml-schemas-4.0.1.jar"/>
 	<classpathentry kind="lib" path="src/lib/xmlbeans-3.0.2.jar"/>
+	<classpathentry kind="lib" path="src/lib/itextpdf-5.5.13.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
