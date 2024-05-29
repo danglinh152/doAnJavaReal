@@ -85,21 +85,7 @@ public class nhanVienNhanVienController implements ActionListener, MouseListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getActionCommand().equals("Xuất file excel")) {
-			try {
-				excelController ex = new excelController();
-				ex.exportFileNV();
-				errView errView = new errView();
-				errView.getLblNewLabel().setText("Xuất file excel thành công!");
-				errView.setVisible(true);
-			} catch (Exception e2) {
-				// TODO: handle exception
-				errView errView = new errView();
-				errView.getLblNewLabel().setText("Xuất file excel thất bại!");
-				errView.setVisible(true);
-
-			}
-		} else if (e.getActionCommand().equals("")) {
+		if (e.getActionCommand().equals("")) {
 			String txt = nhanVienViewNhanVien.getTxtTnPhngBan().getText();
 
 			if (txt.equals("") || txt == null) {

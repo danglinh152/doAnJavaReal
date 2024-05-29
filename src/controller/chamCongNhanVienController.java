@@ -52,7 +52,9 @@ public class chamCongNhanVienController implements ActionListener, KeyListener {
 		if (e.getActionCommand().equals("In phiếu chấm công")) {
 			try {
 				excelController ex = new excelController();
-				ex.exportFileCC();
+				ArrayList<chamCongClass> arr_cc = chamCongDAO.getInstance().selectByMANV(
+						this.chamCongViewNhanVien.getMainViewNhanVien().getTaiKhoanHienTai().getNhanVien().getMaNV());
+				ex.exportFileCC(arr_cc);
 				errView errView = new errView();
 				errView.getLblNewLabel().setText("Xuất file excel thành công!");
 				errView.setVisible(true);
@@ -60,6 +62,23 @@ public class chamCongNhanVienController implements ActionListener, KeyListener {
 				// TODO: handle exception
 				errView errView = new errView();
 				errView.getLblNewLabel().setText("Xuất file excel thất bại!");
+				errView.setVisible(true);
+
+			}
+		} else if (e.getActionCommand().equals("Xuất PDF")) {
+			try {
+				pdfController pdf = new pdfController();
+				ArrayList<chamCongClass> arr_cc = chamCongDAO.getInstance().selectAllByID(
+						this.chamCongViewNhanVien.getMainViewNhanVien().getTaiKhoanHienTai().getNhanVien().getMaNV());
+				pdf.exportFileCC(arr_cc);
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Xuất file PDF thành công!");
+				errView.setVisible(true);
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Xuất file PDF thất bại!");
 				errView.setVisible(true);
 
 			}

@@ -19,8 +19,10 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import DAO.chamCongDAO;
 import DAO.nhanVienDAO;
 import DAO.phongBanDAO;
+import model.chamCongClass;
 import model.nhanVien;
 import model.phongBan;
 
@@ -85,7 +87,8 @@ public class nhanVienController implements ActionListener, MouseListener, KeyLis
 		if (e.getActionCommand().equals("Xuất file excel")) {
 			try {
 				excelController ex = new excelController();
-				ex.exportFileNV();
+				ArrayList<nhanVien> arr_nv = nhanVienDAO.getInstance().selectSortByMANVASC();
+				ex.exportFileNV(arr_nv);
 				errView errView = new errView();
 				errView.getLblNewLabel().setText("Xuất file excel thành công!");
 				errView.setVisible(true);
@@ -96,7 +99,25 @@ public class nhanVienController implements ActionListener, MouseListener, KeyLis
 				errView.setVisible(true);
 
 			}
-		} else if (e.getActionCommand().equals("Xóa")) {
+		} else if (e.getActionCommand().equals("Xuất PDF")) {
+			try {
+				pdfController pdf = new pdfController();
+				ArrayList<nhanVien> arr_nv = nhanVienDAO.getInstance().selectAll();
+				pdf.exportFileNV(arr_nv);
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Xuất file PDF thành công!");
+				errView.setVisible(true);
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Xuất file PDF thất bại!");
+				errView.setVisible(true);
+
+			}
+		}
+
+		else if (e.getActionCommand().equals("Xóa")) {
 			TableModel model = nhanVienView.getTable().getModel();
 
 			int maNV = Integer.parseInt((String) model.getValueAt(nhanVienView.getTable().getSelectedRows()[0], 0));

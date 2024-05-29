@@ -263,6 +263,10 @@ public class chamCongView {
 		panel_1.add(lblNewLabel_3_1);
 
 		btnInPhiuChm = new JButton("In phiếu chấm công");
+		btnInPhiuChm.setContentAreaFilled(false);
+		btnInPhiuChm.setBorderPainted(false);
+		btnInPhiuChm.setBackground(new Color(255, 255, 255));
+		btnInPhiuChm.setBorder(null);
 		btnInPhiuChm.setFocusable(false);
 		btnInPhiuChm.addActionListener(ac);
 		btnInPhiuChm.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -271,11 +275,16 @@ public class chamCongView {
 		panel_1.add(btnInPhiuChm);
 
 		JButton btnXutPdf = new JButton("Xuất PDF");
+		btnXutPdf.setBorderPainted(false);
+		btnXutPdf.setContentAreaFilled(false);
+		btnXutPdf.setFocusPainted(false);
+		btnXutPdf.setBackground(new Color(255, 255, 255));
+		btnXutPdf.setBorder(null);
 		btnXutPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnXutPdf.addActionListener(ac);
 		btnXutPdf.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnXutPdf.setFocusable(false);
-		btnXutPdf.setBounds(385, 285, 113, 25);
+		btnXutPdf.setBounds(374, 285, 159, 25);
 		panel_1.add(btnXutPdf);
 
 		panel_2 = new JPanel();

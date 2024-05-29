@@ -58,6 +58,7 @@ public class chamCongViewNhanVien {
 	private KeyListener ke;
 	private mainViewNhanVien mainViewNhanVien;
 	private JButton btnInPhiuChm;
+	private JButton btnInPhiuChm_1;
 
 	public chamCongViewNhanVien(mainViewNhanVien mainViewNhanVien) {
 		this.mainViewNhanVien = mainViewNhanVien;
@@ -161,12 +162,32 @@ public class chamCongViewNhanVien {
 		panel_1.add(lblNewLabel_3_1);
 
 		btnInPhiuChm = new JButton("In phiếu chấm công");
+		btnInPhiuChm.setContentAreaFilled(false);
+		btnInPhiuChm.setBorderPainted(false);
+		btnInPhiuChm.setFocusTraversalKeysEnabled(false);
+		btnInPhiuChm.setFocusPainted(false);
+		btnInPhiuChm.setBackground(new Color(255, 255, 255));
+		btnInPhiuChm.setBorder(null);
 		btnInPhiuChm.setFocusable(false);
 		btnInPhiuChm.addActionListener(ac);
 		btnInPhiuChm.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnInPhiuChm.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnInPhiuChm.setBounds(213, 19, 177, 25);
 		panel_1.add(btnInPhiuChm);
+
+		btnInPhiuChm_1 = new JButton("Xuất PDF");
+		btnInPhiuChm_1.setContentAreaFilled(false);
+		btnInPhiuChm_1.setBorderPainted(false);
+		btnInPhiuChm_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnInPhiuChm_1.setFocusTraversalKeysEnabled(false);
+		btnInPhiuChm_1.setFocusPainted(false);
+		btnInPhiuChm_1.setBackground(new Color(255, 255, 255));
+		btnInPhiuChm_1.setBorder(null);
+		btnInPhiuChm_1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnInPhiuChm_1.addActionListener(ac);
+		btnInPhiuChm_1.setFocusable(false);
+		btnInPhiuChm_1.setBounds(413, 19, 177, 25);
+		panel_1.add(btnInPhiuChm_1);
 
 		panel_2 = new JPanel();
 		panel_2.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));

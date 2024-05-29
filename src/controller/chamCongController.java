@@ -64,7 +64,8 @@ public class chamCongController implements ActionListener, KeyListener {
 		if (e.getActionCommand().equals("In phiếu chấm công")) {
 			try {
 				excelController ex = new excelController();
-				ex.exportFileCC();
+				ArrayList<chamCongClass> arr_cc = chamCongDAO.getInstance().selectAll();
+				ex.exportFileCC(arr_cc);
 				errView errView = new errView();
 				errView.getLblNewLabel().setText("Xuất file excel thành công!");
 				errView.setVisible(true);
@@ -78,7 +79,8 @@ public class chamCongController implements ActionListener, KeyListener {
 		} else if (e.getActionCommand().equals("Xuất PDF")) {
 			try {
 				pdfController pdf = new pdfController();
-				pdf.exportFileCC();
+				ArrayList<chamCongClass> arr_cc = chamCongDAO.getInstance().selectAll();
+				pdf.exportFileCC(arr_cc);
 				errView errView = new errView();
 				errView.getLblNewLabel().setText("Xuất file PDF thành công!");
 				errView.setVisible(true);

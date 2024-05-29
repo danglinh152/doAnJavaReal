@@ -17,7 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class excelController {
-	public void exportFileCC() {
+	public void exportFileCC(ArrayList<chamCongClass> arr_cc) {
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("danhsachchamcong");
 		XSSFRow row = null;
@@ -46,8 +46,6 @@ public class excelController {
 
 		cell = row.createCell(7, CellType.STRING);
 		cell.setCellValue("Tổng lương");
-
-		ArrayList<chamCongClass> arr_cc = chamCongDAO.getInstance().selectAll();
 
 		for (int i = 0; i < arr_cc.size(); i++) {
 			row = sheet.createRow(1 + i);
@@ -88,7 +86,7 @@ public class excelController {
 		}
 	}
 
-	public void exportFileNV() {
+	public void exportFileNV(ArrayList<nhanVien> arr_nv) {
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("danhsachnhanvien");
 		XSSFRow row = null;
@@ -126,8 +124,6 @@ public class excelController {
 
 		cell = row.createCell(9, CellType.STRING);
 		cell.setCellValue("Phòng ban");
-
-		ArrayList<nhanVien> arr_nv = nhanVienDAO.getInstance().selectSortByMANVASC();
 
 		for (int i = 0; i < arr_nv.size(); i++) {
 			row = sheet.createRow(1 + i);

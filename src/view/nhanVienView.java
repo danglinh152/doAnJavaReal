@@ -256,7 +256,7 @@ public class nhanVienView {
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.addActionListener(ac);
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnNewButton.setBounds(395, 116, 131, 37);
+		btnNewButton.setBounds(375, 116, 90, 37);
 		tab3.add(btnNewButton);
 
 		btnXtDuytCp = new JButton("Xét duyệt cấp bậc");
@@ -269,8 +269,22 @@ public class nhanVienView {
 		btnXtDuytCp.setFocusable(false);
 		btnXtDuytCp.setBorder(null);
 		btnXtDuytCp.setBackground(Color.WHITE);
-		btnXtDuytCp.setBounds(250, 115, 131, 37);
+		btnXtDuytCp.setBounds(250, 115, 119, 37);
 		tab3.add(btnXtDuytCp);
+
+		JButton btnXutPdf = new JButton("Xuất PDF");
+		btnXutPdf.setVerifyInputWhenFocusTarget(false);
+		btnXutPdf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnXutPdf.addActionListener(ac);
+		btnXutPdf.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnXutPdf.setFocusable(false);
+		btnXutPdf.setFocusPainted(false);
+		btnXutPdf.setContentAreaFilled(false);
+		btnXutPdf.setBorderPainted(false);
+		btnXutPdf.setBorder(null);
+		btnXutPdf.setBackground(Color.WHITE);
+		btnXutPdf.setBounds(464, 116, 90, 37);
+		tab3.add(btnXutPdf);
 	}
 
 	public JPanel gettab3() {
