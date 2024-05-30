@@ -384,6 +384,18 @@ BEFORE UPDATE ON HOPDONG
         END IF;
     END;
 /
+create or replace TRIGGER TG_LOCK_TABLE_IS
+BEFORE INSERT ON YEUCAU
+BEGIN
+ LOCK TABLE YEUCAU IN SHARE MODE;
+END;
+/
+create or replace TRIGGER TG_LOCK_TABLE_UD
+BEFORE UPDATE ON YEUCAU
+BEGIN
+ LOCK TABLE YEUCAU IN SHARE MODE;
+END;
+/
 create or replace NONEDITIONABLE procedure     SLEEP(n number) is
 begin
   dbms_lock.sleep(n);
