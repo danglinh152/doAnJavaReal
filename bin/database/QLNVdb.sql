@@ -384,6 +384,11 @@ BEFORE UPDATE ON HOPDONG
         END IF;
     END;
 /
+create or replace NONEDITIONABLE procedure     SLEEP(n number) is
+begin
+  dbms_lock.sleep(n);
+end;
+/
 CREATE OR REPLACE PROCEDURE pro_xoaYCPT (MAYCIP IN YEUCAU.MAYC%TYPE) AS
     
 BEGIN
