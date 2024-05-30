@@ -428,6 +428,32 @@ BEGIN
     commit;
 END;
 /
+CREATE OR REPLACE PROCEDURE PRO_CAPNHATYCNONREPEAT(
+    p_MAYC IN YEUCAU.MAYC%TYPE
+)
+IS
+    start_time TIMESTAMP;
+    end_time TIMESTAMP;
+    elapsed_time NUMBER;
+BEGIN
+    start_time := SYSTIMESTAMP;
+    
+    UPDATE YEUCAU
+    SET TRANGTHAI = 1
+    WHERE MAYC = p_MAYC;
+    
+    end_time := SYSTIMESTAMP;
+    elapsed_time := ROUND(EXTRACT(SECOND FROM (end_time - start_time)), 2);
+    
+    IF elapsed_time > 10 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'TIMEOUT BECAUSE TABLE WAS LOCKED ');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END;
+/
 
 
 
