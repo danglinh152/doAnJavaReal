@@ -20,35 +20,37 @@ public class loadingView extends JFrame {
 		setBackground(new Color(255, 255, 255));
 		setTitle("HRM_TENPM");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(420, 391);
+		setSize(393, 443);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
-		panel.setBounds(0, 317, 413, 45);
+		panel.setBounds(0, 374, 379, 34);
 		panel.setLayout(null);
 		getContentPane().add(panel);
 
 		progressBar = new JProgressBar(0, 100);
-		progressBar.setBackground(Color.WHITE);
-		progressBar.setForeground(Color.CYAN);
-		progressBar.setBounds(0, 10, 413, 30);
+		progressBar.setBorderPainted(false);
+		progressBar.setBackground(new Color(255, 255, 255));
+		progressBar.setForeground(new Color(102, 205, 170));
+		progressBar.setBounds(0, 0, 379, 42);
 		panel.add(progressBar);
-		progressBar.setFont(new Font("JetBrains Mono", Font.PLAIN, 15));
+		progressBar.setFont(new Font("Dialog", Font.ITALIC, 15));
 		progressBar.setStringPainted(true);
 		progressBar.setString("Loading...");
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 255, 255));
-		panel_1.setBounds(0, 0, 413, 324);
+		panel_1.setBounds(0, 0, 379, 379);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(0, 0, 379, 379);
+		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblNewLabel.setIcon(new ImageIcon(loadingView.class.getResource("/img/Logo.png")));
-		lblNewLabel.setBounds(0, 0, 403, 324);
+		lblNewLabel.setIcon(new ImageIcon(loadingView.class.getResource("/img/cc.png")));
 		panel_1.add(lblNewLabel);
 
 		startLoading();

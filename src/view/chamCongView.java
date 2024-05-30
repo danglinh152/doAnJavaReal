@@ -329,6 +329,7 @@ public class chamCongView {
 		});
 
 		tenNVbutton = new JButton("");
+		tenNVbutton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tenNVbutton.addActionListener(ac);
 		tenNVbutton.setFocusable(false);
 		tenNVbutton.setBorder(null);

@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
@@ -107,12 +108,19 @@ public class capNhatTrinhDoView extends JDialog {
 
 		String kn[] = { "Tin học", "Tiếng anh" };
 		kyNangComboBox = new JComboBox(kn);
+		kyNangComboBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		kyNangComboBox.setBounds(210, 144, 98, 21);
 		if (nhanVien_kyNang.getTenKyNang().equals("tin học")) {
 			kyNangComboBox.setSelectedIndex(0);
 		} else {
 			kyNangComboBox.setSelectedIndex(1);
 		}
+		kyNangComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updateComboBox2();
+			}
+		});
 		formPanel.add(kyNangComboBox);
 
 		if (String.valueOf(kyNangComboBox.getSelectedItem()).equals("Tin học")) {
@@ -232,6 +240,15 @@ public class capNhatTrinhDoView extends JDialog {
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
 
+	}
+
+	private void updateComboBox2() {
+		String selectedItem = (String) kyNangComboBox.getSelectedItem();
+		if (selectedItem.equals("Tin học")) {
+			capBacComboBox.setModel(new DefaultComboBoxModel<>(new String[] { "A", "B", "C" }));
+		} else if (selectedItem.equals("Tiếng anh")) {
+			capBacComboBox.setModel(new DefaultComboBoxModel<>(new String[] { "A1", "A2", "B1", "B2", "C1", "C2" }));
+		}
 	}
 
 	public JTextField getMaNVTF() {
