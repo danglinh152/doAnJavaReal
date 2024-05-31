@@ -138,22 +138,23 @@ public class yeuCauController implements ActionListener, KeyListener {
 
 	public void changeTableData(ArrayList<yeuCau> newArr) {
 		ArrayList<String[]> data = new ArrayList<>();
-		int size = 3;
+		int size = 4;
 
 		for (int i = 0; i < newArr.size(); i++) {
 			String[] tmp = new String[size];
 			tmp[0] = String.valueOf(newArr.get(i).getMaYC());
-			tmp[1] = String.valueOf(newArr.get(i).getNoiDung());
+			tmp[1] = String.valueOf(newArr.get(i).getMaNV());
+			tmp[2] = String.valueOf(newArr.get(i).getNoiDung());
 			if (newArr.get(i).isTrangThai()) {
-				tmp[2] = "Đã được duyệt";
+				tmp[3] = "Đã được duyệt";
 			} else {
-				tmp[2] = "Chưa được duyệt";
+				tmp[3] = "Chưa được duyệt";
 			}
 			data.add(tmp);
 		}
 
 		// Tạo bảng và gắn dữ liệu vào
-		String[] columnNames = { "Mã Yêu Cầu", "Nội Dung", "Trạng Thái" };
+		String[] columnNames = { "Mã Yêu Cầu", "Mã NV", "Nội Dung", "Trạng Thái" };
 		yeuCauView.setTableModel(new DefaultTableModel(columnNames, 0));
 		for (String[] row : data) {
 			yeuCauView.getTableModel().addRow(row);
@@ -161,10 +162,10 @@ public class yeuCauController implements ActionListener, KeyListener {
 
 		yeuCauView.getTable().setModel(yeuCauView.getTableModel());
 
-		yeuCauView.getTable().getColumnModel().getColumn(1).setPreferredWidth(600);
+		yeuCauView.getTable().getColumnModel().getColumn(2).setPreferredWidth(600);
 
 		// Set custom renderer cho cột "Nội Dung"
-		yeuCauView.getTable().getColumnModel().getColumn(1).setCellRenderer(new rendererTableGuiYC());
+		yeuCauView.getTable().getColumnModel().getColumn(2).setCellRenderer(new rendererTableGuiYC());
 
 		// nhanVienViewNhanVien.getTable().setBounds(0, 0, 1, 1);
 	}

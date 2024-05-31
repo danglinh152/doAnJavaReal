@@ -132,16 +132,17 @@ public class yeuCauView {
 		});
 
 		ArrayList<String[]> data = new ArrayList<>();
-		int size = 3;
+		int size = 4;
 
 		for (int i = 0; i < yeuCauData.size(); i++) {
 			String[] tmp = new String[size];
 			tmp[0] = String.valueOf(yeuCauData.get(i).getMaYC());
-			tmp[1] = String.valueOf(yeuCauData.get(i).getNoiDung());
+			tmp[1] = String.valueOf(yeuCauData.get(i).getMaNV());
+			tmp[2] = String.valueOf(yeuCauData.get(i).getNoiDung());
 			if (yeuCauData.get(i).isTrangThai()) {
-				tmp[2] = "Đã được duyệt";
+				tmp[3] = "Đã được duyệt";
 			} else {
-				tmp[2] = "Chưa được duyệt";
+				tmp[3] = "Chưa được duyệt";
 			}
 			data.add(tmp);
 		}
@@ -156,17 +157,17 @@ public class yeuCauView {
 //		table.setModel(tableModel);
 
 		// Tạo bảng và gắn dữ liệu vào
-		String[] columnNames = { "Mã Yêu Cầu", "Nội Dung", "Trạng Thái" };
+		String[] columnNames = { "Mã Yêu Cầu", "Mã NV", "Nội Dung", "Trạng Thái" }; // mã nhân viên
 		tableModel = new DefaultTableModel(columnNames, 0);
 		for (String[] row : data) {
 			tableModel.addRow(row);
 		}
 		table.setModel(tableModel);
 
-		table.getColumnModel().getColumn(1).setPreferredWidth(600);
+		table.getColumnModel().getColumn(2).setPreferredWidth(600);
 
 		// Set custom renderer cho cột "Nội Dung"
-		table.getColumnModel().getColumn(1).setCellRenderer(new rendererTableGuiYC());
+		table.getColumnModel().getColumn(2).setCellRenderer(new rendererTableGuiYC());
 
 		table.setBounds(0, 0, 1, 1);
 		scrollPane = new JScrollPane(table);
