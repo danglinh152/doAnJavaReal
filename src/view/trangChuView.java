@@ -103,7 +103,7 @@ public class trangChuView {
 		panel_1.add(pieChart1);
 
 		chart = new Chart();
-		chart.setBounds(0, 15, 570, 344);
+		chart.setBounds(0, 0, 600, 355);
 
 		double[] luongTrungBinh = new double[arr_pb.size()];
 
@@ -132,7 +132,7 @@ public class trangChuView {
 //		chart.addLegend("Logistic", new Color(189, 135, 245));
 //		chart.addLegend("HR", new Color(139, 229, 222));
 //		chart.addLegend("test", new Color(245, 189, 100));
-		chart.addData(new ModelChart(" ", luongTrungBinh));
+		chart.addData(new ModelChart("                                     ", luongTrungBinh));
 		panel_1.add(chart);
 		tab1.add(panel_1);
 

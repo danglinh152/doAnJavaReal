@@ -26,8 +26,11 @@ public class excelController {
 
 		row = sheet.createRow(0);
 
-		cell = row.createCell(1, CellType.STRING);
+		cell = row.createCell(0, CellType.STRING);
 		cell.setCellValue("Mã nhân viên");
+
+		cell = row.createCell(1, CellType.STRING);
+		cell.setCellValue("Họ tên");
 
 		cell = row.createCell(2, CellType.STRING);
 		cell.setCellValue("Tháng làm việc");
@@ -54,24 +57,27 @@ public class excelController {
 			cell.setCellValue(arr_cc.get(i).getMaNV());
 
 			cell = row.createCell(1, CellType.NUMERIC);
-			cell.setCellValue(arr_cc.get(i).getThangLamViec());
+			cell.setCellValue(arr_cc.get(i).getHoTen());
 
 			cell = row.createCell(2, CellType.NUMERIC);
-			cell.setCellValue(arr_cc.get(i).getSoNgayLamViec());
+			cell.setCellValue(arr_cc.get(i).getThangLamViec());
 
 			cell = row.createCell(3, CellType.NUMERIC);
-			cell.setCellValue(arr_cc.get(i).getSoNgayNghi());
+			cell.setCellValue(arr_cc.get(i).getSoNgayLamViec());
 
 			cell = row.createCell(4, CellType.NUMERIC);
-			cell.setCellValue(arr_cc.get(i).getSoGioTangCa());
+			cell.setCellValue(arr_cc.get(i).getSoNgayNghi());
 
 			cell = row.createCell(5, CellType.NUMERIC);
+			cell.setCellValue(arr_cc.get(i).getSoGioTangCa());
+
+			cell = row.createCell(6, CellType.NUMERIC);
 			cell.setCellValue(arr_cc.get(i).getSoNgayDiTre());
 
 			DecimalFormat df = new DecimalFormat("#,###");
 			String result = df.format(nhanVienDAO.getInstance().tinhLuongNhanVien(arr_cc.get(i).getMaNV(),
 					arr_cc.get(i).getThangLamViec()));
-			cell = row.createCell(6, CellType.NUMERIC);
+			cell = row.createCell(7, CellType.NUMERIC);
 			cell.setCellValue(result);
 		}
 
