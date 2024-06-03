@@ -234,19 +234,13 @@ public class yeuCauDAO implements DAOinterface<yeuCau> {
 		// st.setInt(1, t.getMaYC());
 		st.setInt(1, t.getMaNV());
 		st.setString(2, t.getNoiDung());
-		if (t.isTrangThai()) {
-			st.setInt(3, 1);
-		} else {
-			st.setInt(3, 0);
-		}
+		st.setInt(3, 0);
 		st.execute();
-		try {
-			Thread.sleep(15000); // Sleep for 15 seconds //demo non repeat
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		cnt = 1;
+//		try {
+//			Thread.sleep(15000); // Sleep for 15 seconds //demo non repeat
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 		c.commit();
 		databaseConnection.closeDatabaseConnection(c);
 
