@@ -27,16 +27,15 @@ public class loginController implements KeyListener, ActionListener {
 			String tenDangNhap = loginView.getTextField().getText();
 			String matKhau = loginView.getTextField_1().getText();
 			taiKhoan tk = new taiKhoan(0, null, tenDangNhap, matKhau, "");
-			taiKhoan tkht = taiKhoanDAO.getInstance().selectByID(tk);
+			taiKhoan tkht = taiKhoanDAO.getInstance().selectByID(tk); // truy vấn tài khoản với tendangnhap và matkhau
+
 			if (tkht != null) {
 				if (tkht.getLoaiTK().equals("quản lý")) {
-					System.out.println("ql");
 					loginView.dispose();
-					new mainView();
+					new mainView(); // mainView quản lý
 				} else if (tkht.getLoaiTK().equals("nhân viên")) {
-					System.out.println("nv");
 					loginView.dispose();
-					new mainViewNhanVien(tkht);
+					new mainViewNhanVien(tkht); // mainView nhân viên
 				}
 			} else {
 				view.errView errView = new errView();
@@ -53,7 +52,7 @@ public class loginController implements KeyListener, ActionListener {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent e) { // nhấn nút, nhấn nút enter trên bàn phím
 		// TODO Auto-generated method stub
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			String tenDangNhap = loginView.getTextField().getText();

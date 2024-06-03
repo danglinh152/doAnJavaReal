@@ -56,10 +56,12 @@ public class loadingView extends JFrame {
 		startLoading();
 
 		disposeTimer = new Timer(2100, e -> {
-			dispose();
-			new loginView();
+			dispose(); // hủy cái màn hình hiện tại (màn hình loading)
+			new loginView(); // new 1 cái login View
 
 		});
+		// function viết theo kiểu lambda hết 2.1s thì gọi hàm e
+		
 		disposeTimer.setRepeats(false);
 		disposeTimer.start();
 		this.setVisible(true);
