@@ -114,7 +114,8 @@ public class hopDongController implements ActionListener, KeyListener {
 		} else if (e.getActionCommand().equals("Gửi mail nhắc tới hạn HĐ")) {
 			ArrayList<hopDong> hopDongHetHanData = hopDongDAO.getInstance().selectAllHetHanHopDong();
 			for (int i = 0; i < hopDongHetHanData.size(); i++) {
-				sendMail.sendHetHopDong(hopDongHetHanData.get(i).getNhanVien().getEmail());
+				sendMail.sendHetHopDong(hopDongHetHanData.get(i).getNhanVien().getEmail(),
+						String.valueOf(hopDongHetHanData.get(i).getNgayKTHD()));
 
 			}
 			errView errView = new errView();

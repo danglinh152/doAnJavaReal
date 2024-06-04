@@ -64,8 +64,10 @@ public class sendMail {
 		return str;
 	}
 
-	public static String sendHetHopDong(String to) {
-		str = "Hợp đồng của bạn với công ty sắp hết! Vui lòng liên hệ phòng nhân sự. Trân trọng, TENPM.";
+	public static String sendHetHopDong(String to, String ngayHetHan) {
+		str = "Lưu ý hợp đồng của bạn với công ty sắp hết! Vui lòng liên hệ phòng nhân sự"
+				+ ". Ngày hết hạn hợp đồng của bạn là: " + ngayHetHan
+				+ ". <br> Trân trọng, </br> <br> <b> TENPM. </b> </br>";
 
 		final String user = "22520756@gm.uit.edu.vn";// gmail người gửi
 		final String pass = "agdj nkne hovq ezyf";
