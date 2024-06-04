@@ -520,7 +520,7 @@ INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca
 INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 1,TO_DATE('2022-05-31', 'YYYY-MM-DD'), ADD_MONTHS(SYSDATE, 24));
 INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 2, TO_DATE('2022-05-31', 'YYYY-MM-DD'), TO_DATE('2024-06-6', 'YYYY-MM-DD'));
 INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 3, TO_DATE('2022-05-31', 'YYYY-MM-DD'), TO_DATE('2024-06-5', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 4, TO_DATE('2022-05-31', 'YYYY-MM-DD'), TO_DATE('2022-06-09', 'YYYY-MM-DD'));
+INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 4, TO_DATE('2022-05-31', 'YYYY-MM-DD'), TO_DATE('2022-06-13', 'YYYY-MM-DD'));
 INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 5, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
 INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 6, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
 INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 7, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
