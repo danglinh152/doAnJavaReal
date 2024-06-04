@@ -163,7 +163,6 @@ public class nhanVienController implements ActionListener, MouseListener, KeyLis
 			new themNhanVienView();
 			this.nhanVienView.getMainView().dispose();
 		} else if (e.getActionCommand().equals("Xét duyệt cấp bậc")) {
-			System.out.println("test");
 			new xetDuyetCapBacView();
 			this.nhanVienView.getMainView().dispose();
 		}

@@ -83,7 +83,7 @@ public class trinhDoController implements ActionListener, KeyListener {
 				int maKN = 0;
 				if (tenKN.equals("tin học")) {
 					maKN = 1;
-				} else if (tenKN.equals("ngoại ngữ")) {
+				} else if (tenKN.equals("tiếng anh")) {
 					maKN = 2;
 				}
 				nhanVien_kyNang nvkn = new nhanVien_kyNang(maKN, maNV, "", "", "");
