@@ -11,8 +11,6 @@ public class run {
 			@Override
 			public void run() {
 				new loadingView();
-				;
-				;
 			}
 		});
 	}
