@@ -61,11 +61,11 @@ public class loginController implements KeyListener, ActionListener {
 			taiKhoan tkht = taiKhoanDAO.getInstance().selectByID(tk);
 			if (tkht != null) {
 				if (tkht.getLoaiTK().equals("quản lý")) {
-					System.out.println("ql");
+
 					loginView.dispose();
 					new mainView();
 				} else if (tkht.getLoaiTK().equals("nhân viên")) {
-					System.out.println("nv");
+
 					loginView.dispose();
 					new mainViewNhanVien(tkht);
 				}

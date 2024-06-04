@@ -115,10 +115,11 @@ public class hopDongController implements ActionListener, KeyListener {
 			ArrayList<hopDong> hopDongHetHanData = hopDongDAO.getInstance().selectAllHetHanHopDong();
 			for (int i = 0; i < hopDongHetHanData.size(); i++) {
 				sendMail.sendHetHopDong(hopDongHetHanData.get(i).getNhanVien().getEmail());
-				errView errView = new errView();
-				errView.getLblNewLabel().setText("Gửi mail nhắc thành công");
-				errView.setVisible(true);
+
 			}
+			errView errView = new errView();
+			errView.getLblNewLabel().setText("Gửi mail nhắc thành công");
+			errView.setVisible(true);
 		}
 
 	}

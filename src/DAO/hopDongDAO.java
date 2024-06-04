@@ -205,7 +205,7 @@ public class hopDongDAO implements DAOinterface<hopDong> {
 		try {
 			Connection c = databaseConnection.getDatabaseConnection();
 
-			String sql = "SELECT * FROM HOPDONG WHERE (NGAYKTHD - SYSDATE < 3)";
+			String sql = "SELECT * FROM HOPDONG WHERE (NGAYKTHD - SYSDATE < 10)";
 			PreparedStatement st = c.prepareStatement(sql);
 			ResultSet rs = st.executeQuery();
 
