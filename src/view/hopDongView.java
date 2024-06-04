@@ -29,6 +29,7 @@ import javax.swing.table.DefaultTableModel;
 
 import DAO.hopDongDAO;
 import controller.hopDongController;
+import controller.sendMail;
 import model.hopDong;
 
 import javax.swing.border.MatteBorder;
@@ -51,6 +52,7 @@ public class hopDongView {
 	private KeyListener ke;
 	private ArrayList<hopDong> hopDongData = hopDongDAO.getInstance().selectAll();
 	private mainView mainView;
+	private JButton btnNewButton_2_2;
 
 	public hopDongView(mainView mainView) {
 		this.mainView = mainView;
@@ -213,6 +215,31 @@ public class hopDongView {
 		btnNewButton_2.setBounds(53, 115, 181, 37);
 		btnNewButton_2.addActionListener(ac);
 		tab6.add(btnNewButton_2);
+
+		JButton btnNewButton_2_1 = new JButton("Hợp đồng sắp tới hạn");
+		btnNewButton_2_1.setFocusPainted(false);
+		btnNewButton_2_1.addActionListener(ac);
+		btnNewButton_2_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_2_1.setContentAreaFilled(false);
+		btnNewButton_2_1.setActionCommand("Hợp đồng sắp tới hạn");
+		btnNewButton_2_1.setFont(new Font("Dialog", Font.PLAIN, 15));
+		btnNewButton_2_1.setFocusable(false);
+		btnNewButton_2_1.setBorder(null);
+		btnNewButton_2_1.setBackground(new Color(255, 255, 255));
+		btnNewButton_2_1.setBounds(244, 115, 181, 37);
+		tab6.add(btnNewButton_2_1);
+
+		btnNewButton_2_2 = new JButton("Gửi mail nhắc tới hạn HĐ");
+		btnNewButton_2_2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_2_2.addActionListener(ac);
+		btnNewButton_2_2.setFont(new Font("Dialog", Font.PLAIN, 15));
+		btnNewButton_2_2.setFocusable(false);
+		btnNewButton_2_2.setFocusPainted(false);
+		btnNewButton_2_2.setContentAreaFilled(false);
+		btnNewButton_2_2.setBorder(null);
+		btnNewButton_2_2.setBounds(416, 115, 181, 37);
+		tab6.add(btnNewButton_2_2);
+
 	}
 
 	public JPanel gettab6() {
@@ -358,5 +385,4 @@ public class hopDongView {
 	public void setMainView(mainView mainView) {
 		this.mainView = mainView;
 	}
-
 }

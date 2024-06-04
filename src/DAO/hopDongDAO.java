@@ -200,4 +200,30 @@ public class hopDongDAO implements DAOinterface<hopDong> {
 		return arr_hd;
 	}
 
+	public ArrayList<hopDong> selectAllHetHanHopDong() {
+		ArrayList<hopDong> arr_hd = new ArrayList<>();
+		try {
+			Connection c = databaseConnection.getDatabaseConnection();
+
+			String sql = "SELECT * FROM HOPDONG WHERE (NGAYKTHD - SYSDATE < 3)";
+			PreparedStatement st = c.prepareStatement(sql);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				int maHD = rs.getInt("MAHD");
+				int maNV = rs.getInt("MANV");
+				nhanVien nhanVien = nhanVienDAO.getInstance()
+						.selectByID(new nhanVien(maNV, "", "", null, "", "", "", "", "", null));
+				Date ngayBDHD = rs.getDate("NGAYBDHD");
+				Date ngayKTHD = rs.getDate("NGAYKTHD");
+				hopDong hd = new hopDong(maHD, nhanVien, ngayBDHD, ngayKTHD);
+				arr_hd.add(hd);
+			}
+			databaseConnection.closeDatabaseConnection(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return arr_hd;
+	}
 }

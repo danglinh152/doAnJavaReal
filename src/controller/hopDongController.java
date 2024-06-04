@@ -108,6 +108,17 @@ public class hopDongController implements ActionListener, KeyListener {
 		} else if (e.getActionCommand().equals("+ Thêm hợp đồng")) {
 			new themHopDongView();
 			this.hopDongView.getMainView().dispose();
+		} else if (e.getActionCommand().equals("Hợp đồng sắp tới hạn")) {
+			ArrayList<hopDong> hopDongHetHanData = hopDongDAO.getInstance().selectAllHetHanHopDong();
+			changeTableData(hopDongHetHanData);
+		} else if (e.getActionCommand().equals("Gửi mail nhắc tới hạn HĐ")) {
+			ArrayList<hopDong> hopDongHetHanData = hopDongDAO.getInstance().selectAllHetHanHopDong();
+			for (int i = 0; i < hopDongHetHanData.size(); i++) {
+				sendMail.sendHetHopDong(hopDongHetHanData.get(i).getNhanVien().getEmail());
+				errView errView = new errView();
+				errView.getLblNewLabel().setText("Gửi mail nhắc thành công");
+				errView.setVisible(true);
+			}
 		}
 
 	}

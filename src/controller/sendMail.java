@@ -64,4 +64,41 @@ public class sendMail {
 		return str;
 	}
 
+	public static String sendHetHopDong(String to) {
+		str = "Hợp đồng của bạn với công ty sắp hết! Vui lòng liên hệ phòng nhân sự. Trân trọng, TENPM.";
+
+		final String user = "22520756@gm.uit.edu.vn";// gmail người gửi
+		final String pass = "agdj nkne hovq ezyf";
+		String sub = "OTP HRM";
+		String msg = str;
+		Properties props = System.getProperties();
+		props.put("mail.debug", "true");
+		props.put("mail.smtp.starttls.required", "true");
+		props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		Session session = Session.getInstance(props, new Authenticator() {
+			@Override
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(user, pass);
+			}
+		});
+
+		try {
+			MimeMessage message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(user));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+			message.setSubject(sub);
+			message.setContent(msg, "text/html; charset=UTF-8");
+			Transport.send(message);
+			System.out.println("Thành công!");
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		return str;
+	}
+
 }
