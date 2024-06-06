@@ -53,6 +53,7 @@ public class taiKhoanDAO implements DAOinterface<taiKhoan> {
 				String matKhau = rs.getString("MATKHAU");
 				String loaiTK = rs.getString("LOAITAIKHOAN");
 				tk = new taiKhoan(maTK, nvReal, tenTK, matKhau, loaiTK);
+
 			}
 
 			databaseConnection.closeDatabaseConnection(c);

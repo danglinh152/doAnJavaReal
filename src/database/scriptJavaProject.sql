@@ -724,3 +724,6 @@ INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.N
 INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 18, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
 INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 19, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
 INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 20, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
+
+
+commit;
