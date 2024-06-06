@@ -65,7 +65,7 @@ constraint nhanvien_fk foreign key (MAPB) references PHONGBAN (MAPB),
 constraint nhanvien_sdt_uk unique (SDT),
 constraint nhanvien_email_uk unique (EMAIL),
 constraint nhanvien_cccd_uk unique (CCCD),
-constraint nhanvien_gioitinh_ck check (gioitinh in ('Nam', N'Nữ'))
+constraint nhanvien_gioitinh_ck check (gioitinh in ('Nam', N'N?'))
 );
 /
 
@@ -90,7 +90,7 @@ loaitaikhoan    nvarchar2(10) not null,
 constraint taikhoan_pk primary key (matk),
 constraint taikhoan_fk foreign key (manv) references NHANVIEN (manv) ,
 constraint taikhoan_tentk_uk unique (tentk),
-constraint taikhoan_loaitk_ck check (loaitaikhoan in (N'quản lý', N'nhân viên'))
+constraint taikhoan_loaitk_ck check (loaitaikhoan in (N'qu?n lý', N'nhân viên'))
 );
 /
 
@@ -98,7 +98,7 @@ create table kynang (
 makn            number(4),
 tenkn           nvarchar2(20) not null,
 constraint kynang_pk primary key (makn),
-constraint kynang_ck check (tenkn in (N'tin học', N'tiếng anh')),
+constraint kynang_ck check (tenkn in (N'tin h?c', N'ti?ng anh')),
 constraint tenkn_uk unique (tenkn)
 );
 /
@@ -237,7 +237,7 @@ constraint nhanvien_fk foreign key (MAPB) references PHONGBAN (MAPB),
 constraint nhanvien_sdt_uk unique (SDT),
 constraint nhanvien_email_uk unique (EMAIL),
 constraint nhanvien_cccd_uk unique (CCCD),
-constraint nhanvien_gioitinh_ck check (gioitinh in ('Nam', N'Nữ'))
+constraint nhanvien_gioitinh_ck check (gioitinh in ('Nam', N'N?'))
 );
 /
 
@@ -262,7 +262,7 @@ loaitaikhoan    nvarchar2(10) not null,
 constraint taikhoan_pk primary key (matk),
 constraint taikhoan_fk foreign key (manv) references NHANVIEN (manv) ,
 constraint taikhoan_tentk_uk unique (tentk),
-constraint taikhoan_loaitk_ck check (loaitaikhoan in (N'quản lý', N'nhân viên'))
+constraint taikhoan_loaitk_ck check (loaitaikhoan in (N'qu?n lý', N'nhân viên'))
 );
 /
 
@@ -270,7 +270,7 @@ create table kynang (
 makn            number(4),
 tenkn           nvarchar2(20) not null,
 constraint kynang_pk primary key (makn),
-constraint kynang_ck check (tenkn in (N'tin học', N'tiếng anh')),
+constraint kynang_ck check (tenkn in (N'tin h?c', N'ti?ng anh')),
 constraint tenkn_uk unique (tenkn)
 );
 /
@@ -342,52 +342,322 @@ INCREMENT BY 1;
 /
 
 
+
+--Trigger M?i nhân viên không có quá 10 k? n?ng
+CREATE OR REPLACE TRIGGER TRG_NV_KN
+BEFORE INSERT ON NHANVIEN_KYNANG
+FOR EACH ROW
+DECLARE count_skill NUMBER;
+BEGIN
+    SELECT COUNT (*)
+    INTO count_skill
+    FROM NHANVIEN_KYNANG 
+    WHERE MANV = :NEW.MANV;
+    
+    IF(count_skill >= 9) THEN
+    DBMS_OUTPUT.PUT_LINE('M?i nhân viên không có quá 9 k? n?ng');
+    ELSE DBMS_OUTPUT.PUT_LINE('Thêm k? n?ng thành công');
+    END IF;
+END;
+/
+--S? ng  y ?i l  m, ?i tr?, v?ng không ???c quá
+-- N?u tháng có 30 ng  y: không ???c quá 30 ng  y
+-- N?u tháng có 31 ng  y: không ???c quá 31 ng  y
+-- N?u tháng 2: không ???c quá 29 ng  y
+CREATE OR REPLACE TRIGGER TG_INSERT_CHAMCONG_1
+BEFORE INSERT ON CHAMCONG
+    FOR EACH ROW
+    BEGIN
+        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC > 30 OR :NEW.SONGAYDITRE > 30 OR :NEW.SONGAYNGHI > 30)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC > 31 OR :NEW.SONGAYDITRE > 31 OR :NEW.SONGAYNGHI > 31)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC = 2 AND (:NEW.SONGAYLAMVIEC > 29 OR :NEW.SONGAYDITRE > 29 OR :NEW.SONGAYNGHI > 29)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANH CONG');
+        END IF;
+    END;   
+/
+--S? ng  y ?i l  m, ?i tr?, v?ng không ???c quá
+-- N?u tháng có 30 ng  y: không ???c quá 30 ng  y
+-- N?u tháng có 31 ng  y: không ???c quá 31 ng  y
+-- N?u tháng 2: không ???c quá 29 ng  y
+CREATE OR REPLACE TRIGGER TG_UPDATE_CHAMCONG_1
+BEFORE UPDATE ON CHAMCONG
+    FOR EACH ROW
+    BEGIN
+        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC > 30 OR :NEW.SONGAYDITRE > 30 OR :NEW.SONGAYNGHI > 30)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC > 31 OR :NEW.SONGAYDITRE > 31 OR :NEW.SONGAYNGHI > 31)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC = 2 AND (:NEW.SONGAYLAMVIEC > 29 OR :NEW.SONGAYDITRE > 29 OR :NEW.SONGAYNGHI > 29)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANH CONG');
+        END IF;
+    END;   
+/
+    
+--Thu?c tính NGSINH c?a NHANVIEN ph?i l?n h?n 18 tu?i
+CREATE OR REPLACE TRIGGER TG_INSERT_NHANVIEN_1
+BEFORE INSERT ON NHANVIEN
+    FOR EACH ROW
+    BEGIN
+        IF(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM :NEW.NGSINH) <= 18) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANHCONG');
+        END IF;
+    END;
+/      
+CREATE OR REPLACE TRIGGER TG_UPDATE_NHANVIEN_1
+BEFORE UPDATE ON NHANVIEN
+    FOR EACH ROW
+    BEGIN
+        IF(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM :NEW.NGSINH) <= 18) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANHCONG');
+        END IF;
+    END;
+/   
+CREATE OR REPLACE TRIGGER TG_INSERT_PHONGBAN_1
+BEFORE INSERT ON PHONGBAN
+    FOR EACH ROW
+    BEGIN
+        IF(:NEW.NGTHANHLAP > SYSDATE) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANHCONG');
+        END IF;
+    END;
+/        
+CREATE OR REPLACE TRIGGER TG_UPDATE_PHONGBAN_1
+BEFORE UPDATE ON PHONGBAN
+    FOR EACH ROW
+    BEGIN
+        IF(:NEW.NGTHANHLAP > SYSDATE) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANHCONG');
+        END IF;
+    END;
+/        
+
+  
+            
+
+
+--trigger m?i phòng ban có t?i ?a 200 nhân viên
+CREATE OR REPLACE TRIGGER TRG_NV_TOIDA
+BEFORE INSERT ON NHANVIEN
+FOR EACH ROW
+DECLARE
+    v_nhanvien_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_nhanvien_count
+    FROM NHANVIEN
+    WHERE MAPB = :NEW.MAPB;
+
+    IF v_nhanvien_count >= 200 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Phòng ban nay da dat so luong toi da.');
+    END IF;
+END;
+/
+--S? ng  y ?i l  m, ?i tr?, v?ng không ???c quá
+-- N?u tháng có 30 ng  y: không ???c quá 30 ng  y
+-- N?u tháng có 31 ng  y: không ???c quá 31 ng  y
+-- N?u tháng 2: không ???c quá 29 ng  y
+CREATE OR REPLACE TRIGGER TG_INSERT_CHAMCONG_2
+BEFORE INSERT ON CHAMCONG
+    FOR EACH ROW
+    BEGIN
+        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 30)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 31)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC IN (2) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 29)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');     
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANH CONG');
+        END IF;
+    END;   
+/
+--S? ng  y ?i l  m, ?i tr?, v?ng không ???c quá
+-- N?u tháng có 30 ng  y: không ???c quá 30 ng  y
+-- N?u tháng có 31 ng  y: không ???c quá 31 ng  y
+-- N?u tháng 2: không ???c quá 29 ng  y
+CREATE OR REPLACE TRIGGER TG_UPDATE_CHAMCONG_2
+BEFORE UPDATE ON CHAMCONG
+    FOR EACH ROW
+    BEGIN
+        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 30)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 31)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSIF(:NEW.THANGLAMVIEC IN (2) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 29)) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');     
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANH CONG');
+        END IF;
+    END;   
+/
+
+
+--ngày b?t ?àu h?p ??ng nhân viên ph?i ?? 18 tu?i
+CREATE OR REPLACE TRIGGER TG_INSERT_HOPDONG_1
+BEFORE INSERT ON HOPDONG
+    FOR EACH ROW
+    DECLARE v_ngsinh DATE;
+    BEGIN
+        SELECT NGSINH INTO v_ngsinh
+        FROM NHANVIEN
+        WHERE MANV = :NEW.MANV;
+        IF(TRUNC(MONTHS_BETWEEN(:NEW.NGAYBDHD, v_ngsinh) / 12) < 18 OR :NEW.NGAYBDHD > :NEW.NGAYKTHD) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANHCONG');
+        END IF;
+    END;
+/        
+CREATE OR REPLACE TRIGGER TG_UPDATE_HOPDONG_1
+BEFORE UPDATE ON HOPDONG
+    FOR EACH ROW
+    DECLARE v_ngsinh DATE;
+    BEGIN
+        SELECT NGSINH INTO v_ngsinh
+        FROM NHANVIEN
+        WHERE :NEW.MANV = MANV;
+        IF(TRUNC(MONTHS_BETWEEN(:NEW.NGAYBDHD, v_ngsinh) / 12) < 18 OR :NEW.NGAYBDHD > :NEW.NGAYKTHD) THEN
+             RAISE_APPLICATION_ERROR(-20001, 'L?i');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('THANHCONG');
+        END IF;
+    END;
+/
+create or replace NONEDITIONABLE procedure     SLEEP(n number) is
+begin
+  dbms_lock.sleep(n);
+end;
+/
+CREATE OR REPLACE PROCEDURE pro_xoaYCPT (MAYCIP IN YEUCAU.MAYC%TYPE) AS
+    
+BEGIN
+    --SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+    DELETE YEUCAU WHERE MAYC = MAYCIP;
+    SYS.SLEEP(10);
+    commit;
+END;
+/
+CREATE OR REPLACE PROCEDURE pro_duyetYCPT (MAYCIP IN YEUCAU.MAYC%TYPE) AS
+    
+BEGIN
+    --SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+    UPDATE YEUCAU SET TRANGTHAI = 1 WHERE MAYC = MAYCIP;
+    SYS.SLEEP(10);
+    commit;
+
+END;
+/
+CREATE OR REPLACE PROCEDURE pro_duyetYCLU (MAYCIP IN YEUCAU.MAYC%TYPE) AS
+
+    
+BEGIN
+    --SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+    UPDATE YEUCAU SET TRANGTHAI = 1 WHERE MAYC = MAYCIP;
+    SYS.SLEEP(10);
+    commit;
+
+END;
+/
+CREATE OR REPLACE PROCEDURE pro_capNhatYCLU (MANVIP IN YEUCAU.MANV%TYPE, MAYCIP IN YEUCAU.MAYC%TYPE, NOIDUNGIP IN YEUCAU.NOIDUNG%TYPE) AS
+    
+BEGIN
+    --SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+    UPDATE YEUCAU SET NOIDUNG = NOIDUNGIP, TRANGTHAI = 0 WHERE MAYC = MAYCIP and MANV = MANVIP;
+    SYS.SLEEP(10);
+    commit;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE PRO_CAPNHATYCNONREPEAT(
+    p_MAYC IN YEUCAU.MAYC%TYPE
+)
+IS
+    start_time TIMESTAMP;
+    end_time TIMESTAMP;
+    elapsed_time NUMBER;
+BEGIN
+    start_time := SYSTIMESTAMP;
+    
+    UPDATE YEUCAU
+    SET TRANGTHAI = 1
+    WHERE MAYC = p_MAYC;
+    
+    end_time := SYSTIMESTAMP;
+    elapsed_time := ROUND(EXTRACT(SECOND FROM (end_time - start_time)), 2);
+    
+    IF elapsed_time > 10 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'TIMEOUT BECAUSE TABLE WAS LOCKED ');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END;
+/
+
+
+
+
+
 --Insert phòng ban
 INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'IT', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
 INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'Marketing', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
-INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'Nhân sự', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
+INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'Nhân s?', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
 INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'CSKH', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
-INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'Kỹ thuật', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
+INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'K? thu?t', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
 INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'Tài chính', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
 
 
 
 
 --insert nhân viên
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Đặng Quang Khánh Linh', 'Nam', '2003-02-15', '0355662648', '22520756@gm.uit.edu.vn', 'Long Thành, Đồng Nai', '075204005999', 'Fresher', 1);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Nguyễn Văn Hòa', 'Nam', '2003-05-13', '0355662777', '22520454@gm.uit.edu.vn', 'Rạch Giá, Kiên Giang', '075204005888', 'Fresher', 1);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Lê Tiến Đạt', 'Nam', '2003-09-13', '0355662757', '22520214@gm.uit.edu.vn', 'Tân Uyên, Bình Dương', '075204015888', 'Fresher', 1);
-INSERT INTO nhanvien  VALUES (my_sequence_nhanvien.NEXTVAL, 'Huỳnh Nhật Duy', 'Nam', TO_DATE('1990-01-01', 'YYYY-MM-DD'), '0901234560', '22520314@gm.uit.edu.vn', 'Hà Nội', '001008786902', 'Fresher', 1);
-INSERT INTO nhanvien  VALUES (my_sequence_nhanvien.NEXTVAL, 'Trần Thị Bích', 'Nữ', TO_DATE('1988-02-02', 'YYYY-MM-DD'), '0901234561', 'tranthibich@example.com', 'Hồ Chí Minh', '001008786982', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES (my_sequence_nhanvien.NEXTVAL, 'Nguyễn Văn Cường', 'Nam', TO_DATE('1991-03-03', 'YYYY-MM-DD'), '0901234562', 'nguyenvancuong@example.com', 'Đà Nẵng', '001005586982', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Phạm Thị Diệu', 'Nữ', TO_DATE('1989-04-04', 'YYYY-MM-DD'), '0901234563', 'phamthidieu@example.com', 'Cần Thơ', '001008799982', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Hoàng Văn Dũng', 'Nam', TO_DATE('1987-05-05', 'YYYY-MM-DD'), '0901234564', 'hoangvandung@example.com', 'Hải Phòng', '001008786900', 'Fresher', 2);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Đặng Thị Hạnh', 'Nữ', TO_DATE('1992-06-06', 'YYYY-MM-DD'), '0901234565', 'dangthihanh@example.com', 'Huế', '001008786901', 'Fresher', 2);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Bùi Văn Khôi', 'Nam', TO_DATE('1993-07-07', 'YYYY-MM-DD'), '0901234566', 'buivankhoi@example.com', 'Vinh', '001008786903', 'Fresher', 3);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Ngô Thị Lan', 'Nữ', TO_DATE('1994-08-08', 'YYYY-MM-DD'), '0901234567', 'ngothilan@example.com', 'Nha Trang', '001008786904', 'Fresher', 3);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Phan Văn Minh', 'Nam', TO_DATE('1988-09-09', 'YYYY-MM-DD'), '0901234568', 'phanvanminh@example.com', 'Quảng Ninh', '001008786905', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Dương Thị Ngọc', 'Nữ', TO_DATE('1989-10-10', 'YYYY-MM-DD'), '0901234569', 'duongthingoc@example.com', 'Bắc Ninh', '001008786906', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Vũ Văn Phong', 'Nam', TO_DATE('1990-11-11', 'YYYY-MM-DD'), '0901234570', 'vuvanphong@example.com', 'Hà Nội', '001008786907', 'Fresher', 3);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Lê Thị Quỳnh', 'Nữ', TO_DATE('1991-12-12', 'YYYY-MM-DD'), '0901234571', 'lethiquynh@example.com', 'Hồ Chí Minh', '001008786909', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Nguyễn Văn Sơn', 'Nam', TO_DATE('1992-01-13', 'YYYY-MM-DD'), '0901234572', 'nguyenvanson@example.com', 'Đà Nẵng', '001008786910', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Trần Thị Thảo', 'Nữ', TO_DATE('1993-02-14', 'YYYY-MM-DD'), '0901234573', 'tranthithao@example.com', 'Cần Thơ', '001008786911', 'Fresher', 5);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Phạm Văn Tâm', 'Nam', TO_DATE('1994-03-15', 'YYYY-MM-DD'), '0901234574', 'phamvantam@example.com', 'Hải Phòng', '001008786912', 'Fresher', 4);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Hoàng Thị Uyên', 'Nữ', TO_DATE('1995-04-16', 'YYYY-MM-DD'), '0901234575', 'hoangthiuyen@example.com', 'Huế', '001008786913', 'Fresher', 4);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Bùi Văn Vinh', 'Nam', TO_DATE('1996-05-17', 'YYYY-MM-DD'), '0901234576', 'buivanvinh@example.com', 'Vinh', '001008786914', 'Fresher', 4);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Ngô Văn Xuyên', 'Nam', TO_DATE('1997-06-18', 'YYYY-MM-DD'), '0901234577', 'ngovanxuyen@example.com', 'Nha Trang', '001008786915', 'Fresher', 2);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Phan Thị Yến', 'Nữ', TO_DATE('1998-07-19', 'YYYY-MM-DD'), '0901234578', 'phanthiyen@example.com', 'Quảng Ninh', '001008786916', 'Fresher', 4);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Dương Văn Khải', 'Nam', TO_DATE('1999-08-20', 'YYYY-MM-DD'), '0901234579', 'duongvankhai@example.com', 'Bắc Ninh', '001008786917', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Vũ Thị Hằng', 'Nữ', TO_DATE('2000-09-21', 'YYYY-MM-DD'), '0901234580', 'vuthihang@example.com', 'Hà Nội', '001008786918', 'Fresher', 1);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Đỗ Văn Bình', 'Nam', TO_DATE('2001-10-22', 'YYYY-MM-DD'), '0901234581', 'dovanbinh@example.com', 'Hồ Chí Minh', '001008786919', 'Fresher', 5);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Lê Thị Hoa', 'Nữ', TO_DATE('2002-11-23', 'YYYY-MM-DD'), '0901234582', 'lethihoa@example.com', 'Đà Nẵng', '001008786920', 'Fresher', 4);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Nguyễn Văn Hùng', 'Nam', TO_DATE('2003-12-24', 'YYYY-MM-DD'), '0901234583', 'nguyenvanhung@example.com', 'Cần Thơ', '001008786921', 'Fresher', 1);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Trần Thị Kim', 'Nữ', TO_DATE('2004-01-25', 'YYYY-MM-DD'), '0901234584', 'tranthikim@example.com', 'Hải Phòng', '001008786922', 'Fresher', 1);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Phạm Văn Long', 'Nam', TO_DATE('2002-02-26', 'YYYY-MM-DD'), '0901234585', 'phamvanlong@example.com', 'Huế', '001008786923', 'Fresher', 2);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Hoàng Thị Mai', 'Nữ', TO_DATE('2002-03-27', 'YYYY-MM-DD'), '0901234586', 'hoangthimai@example.com', 'Vinh', '001008786924', 'Fresher', 3);
+INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, '??ng Quang Khánh Linh', 'Nam', '2003-02-15', '0355662648', '22520756@gm.uit.edu.vn', 'Long Thành, ??ng Nai', '075204005999', 'Fresher', 1);
+INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Nguy?n V?n Hòa', 'Nam', '2003-05-13', '0355662777', '22520454@gm.uit.edu.vn', 'R?ch Giá, Kiên Giang', '075204005888', 'Fresher', 1);
+INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Lê Ti?n ??t', 'Nam', '2003-09-13', '0355662757', '22520214@gm.uit.edu.vn', 'Tân Uyên, Bình D??ng', '075204015888', 'Fresher', 1);
+INSERT INTO nhanvien  VALUES (my_sequence_nhanvien.NEXTVAL, 'Hu?nh Nh?t Duy', 'Nam', TO_DATE('1990-01-01', 'YYYY-MM-DD'), '0901234560', '22520314@gm.uit.edu.vn', 'Hà N?i', '001008786902', 'Fresher', 1);
+INSERT INTO nhanvien  VALUES (my_sequence_nhanvien.NEXTVAL, 'Tr?n Th? Bích', 'N?', TO_DATE('1988-02-02', 'YYYY-MM-DD'), '0901234561', 'tranthibich@example.com', 'H? Chí Minh', '001008786982', 'Fresher', 6);
+INSERT INTO nhanvien  VALUES (my_sequence_nhanvien.NEXTVAL, 'Nguy?n V?n C??ng', 'Nam', TO_DATE('1991-03-03', 'YYYY-MM-DD'), '0901234562', 'nguyenvancuong@example.com', '?à N?ng', '001005586982', 'Fresher', 6);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Ph?m Th? Di?u', 'N?', TO_DATE('1989-04-04', 'YYYY-MM-DD'), '0901234563', 'phamthidieu@example.com', 'C?n Th?', '001008799982', 'Fresher', 6);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Hoàng V?n D?ng', 'Nam', TO_DATE('1987-05-05', 'YYYY-MM-DD'), '0901234564', 'hoangvandung@example.com', 'H?i Phòng', '001008786900', 'Fresher', 2);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, '??ng Th? H?nh', 'N?', TO_DATE('1992-06-06', 'YYYY-MM-DD'), '0901234565', 'dangthihanh@example.com', 'Hu?', '001008786901', 'Fresher', 2);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Bùi V?n Khôi', 'Nam', TO_DATE('1993-07-07', 'YYYY-MM-DD'), '0901234566', 'buivankhoi@example.com', 'Vinh', '001008786903', 'Fresher', 3);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Ngô Th? Lan', 'N?', TO_DATE('1994-08-08', 'YYYY-MM-DD'), '0901234567', 'ngothilan@example.com', 'Nha Trang', '001008786904', 'Fresher', 3);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Phan V?n Minh', 'Nam', TO_DATE('1988-09-09', 'YYYY-MM-DD'), '0901234568', 'phanvanminh@example.com', 'Qu?ng Ninh', '001008786905', 'Fresher', 6);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'D??ng Th? Ng?c', 'N?', TO_DATE('1989-10-10', 'YYYY-MM-DD'), '0901234569', 'duongthingoc@example.com', 'B?c Ninh', '001008786906', 'Fresher', 6);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'V? V?n Phong', 'Nam', TO_DATE('1990-11-11', 'YYYY-MM-DD'), '0901234570', 'vuvanphong@example.com', 'Hà N?i', '001008786907', 'Fresher', 3);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Lê Th? Qu?nh', 'N?', TO_DATE('1991-12-12', 'YYYY-MM-DD'), '0901234571', 'lethiquynh@example.com', 'H? Chí Minh', '001008786909', 'Fresher', 6);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Nguy?n V?n S?n', 'Nam', TO_DATE('1992-01-13', 'YYYY-MM-DD'), '0901234572', 'nguyenvanson@example.com', '?à N?ng', '001008786910', 'Fresher', 6);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Tr?n Th? Th?o', 'N?', TO_DATE('1993-02-14', 'YYYY-MM-DD'), '0901234573', 'tranthithao@example.com', 'C?n Th?', '001008786911', 'Fresher', 5);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Ph?m V?n Tâm', 'Nam', TO_DATE('1994-03-15', 'YYYY-MM-DD'), '0901234574', 'phamvantam@example.com', 'H?i Phòng', '001008786912', 'Fresher', 4);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Hoàng Th? Uyên', 'N?', TO_DATE('1995-04-16', 'YYYY-MM-DD'), '0901234575', 'hoangthiuyen@example.com', 'Hu?', '001008786913', 'Fresher', 4);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Bùi V?n Vinh', 'Nam', TO_DATE('1996-05-17', 'YYYY-MM-DD'), '0901234576', 'buivanvinh@example.com', 'Vinh', '001008786914', 'Fresher', 4);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Ngô V?n Xuyên', 'Nam', TO_DATE('1997-06-18', 'YYYY-MM-DD'), '0901234577', 'ngovanxuyen@example.com', 'Nha Trang', '001008786915', 'Fresher', 2);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Phan Th? Y?n', 'N?', TO_DATE('1998-07-19', 'YYYY-MM-DD'), '0901234578', 'phanthiyen@example.com', 'Qu?ng Ninh', '001008786916', 'Fresher', 4);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'D??ng V?n Kh?i', 'Nam', TO_DATE('1999-08-20', 'YYYY-MM-DD'), '0901234579', 'duongvankhai@example.com', 'B?c Ninh', '001008786917', 'Fresher', 6);
+INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'V? Th? H?ng', 'N?', TO_DATE('2000-09-21', 'YYYY-MM-DD'), '0901234580', 'vuthihang@example.com', 'Hà N?i', '001008786918', 'Fresher', 1);
+INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, '?? V?n Bình', 'Nam', TO_DATE('2001-10-22', 'YYYY-MM-DD'), '0901234581', 'dovanbinh@example.com', 'H? Chí Minh', '001008786919', 'Fresher', 5);
+INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Lê Th? Hoa', 'N?', TO_DATE('2002-11-23', 'YYYY-MM-DD'), '0901234582', 'lethihoa@example.com', '?à N?ng', '001008786920', 'Fresher', 4);
+INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Nguy?n V?n Hùng', 'Nam', TO_DATE('2003-12-24', 'YYYY-MM-DD'), '0901234583', 'nguyenvanhung@example.com', 'C?n Th?', '001008786921', 'Fresher', 1);
+INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Tr?n Th? Kim', 'N?', TO_DATE('2004-01-25', 'YYYY-MM-DD'), '0901234584', 'tranthikim@example.com', 'H?i Phòng', '001008786922', 'Fresher', 1);
+INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Ph?m V?n Long', 'Nam', TO_DATE('2002-02-26', 'YYYY-MM-DD'), '0901234585', 'phamvanlong@example.com', 'Hu?', '001008786923', 'Fresher', 2);
+INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Hoàng Th? Mai', 'N?', TO_DATE('2002-03-27', 'YYYY-MM-DD'), '0901234586', 'hoangthimai@example.com', 'Vinh', '001008786924', 'Fresher', 3);
 
 
 
-INSERT INTO TAIKHOAN VALUES (my_sequence_taikhoan.NEXTVAL, 1, 'admin', 'admin', 'quản lý');
+INSERT INTO TAIKHOAN VALUES (my_sequence_taikhoan.NEXTVAL, 1, 'admin', 'admin', 'qu?n lý');
 INSERT INTO TAIKHOAN VALUES (my_sequence_taikhoan.NEXTVAL, 2, 'vanhoa', '123', 'nhân viên');
 INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
 VALUES (my_sequence_taikhoan.NEXTVAL, 3, 'nhanvien03', 'password03', N'nhân viên');
@@ -399,8 +669,8 @@ INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan)
 VALUES (my_sequence_taikhoan.NEXTVAL, 5, 'nhanvien05', 'password05', N'nhân viên');
 
 
-INSERT INTO KYNANG VALUES (my_sequence_kynang.NEXTVAL, 'tin học');
-INSERT INTO KYNANG VALUES (my_sequence_kynang.NEXTVAL, 'tiếng anh');
+INSERT INTO KYNANG VALUES (my_sequence_kynang.NEXTVAL, 'tin h?c');
+INSERT INTO KYNANG VALUES (my_sequence_kynang.NEXTVAL, 'ti?ng anh');
 
 INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
 VALUES (my_sequence_taikhoan.NEXTVAL, 6, 'nhanvien06', 'password06', N'nhân viên');
@@ -473,7 +743,7 @@ VALUES (my_sequence_taikhoan.NEXTVAL, 29, 'nhanvien29', 'password29', N'nhân vi
 INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
 VALUES (my_sequence_taikhoan.NEXTVAL, 30, 'nhanvien30', 'password30', N'nhân viên');
 
---insert chấm công
+--insert ch?m công
 INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (1, 5, 29, 1, 3, 0);
 INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (2, 5, 29, 1, 5, 1);
 INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (3, 5, 29, 0, 4, 0);
@@ -601,502 +871,26 @@ INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 29, 'B1');
 
 
 --insert yeucau
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 1, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 2, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 3, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 4, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 5, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 6, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 7, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 8, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 9, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 10, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 11, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 12, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 13, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 14, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 15, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 16, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 17, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 18, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 19, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 20, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-
---Trigger M?i nhân viên không có quá 10 k? n?ng
-CREATE OR REPLACE TRIGGER TRG_NV_KN
-BEFORE INSERT ON NHANVIEN_KYNANG
-FOR EACH ROW
-DECLARE count_skill NUMBER;
-BEGIN
-    SELECT COUNT (*)
-    INTO count_skill
-    FROM NHANVIEN_KYNANG 
-    WHERE MANV = :NEW.MANV;
-    
-    IF(count_skill >= 9) THEN
-    DBMS_OUTPUT.PUT_LINE('Mỗi nhân viên không có quá 9 kỹ năng');
-    ELSE DBMS_OUTPUT.PUT_LINE('Thêm kỹ năng thành công');
-    END IF;
-END;
-/
---S? ng  y ?i l  m, ?i tr?, v?ng không ???c quá
--- N?u tháng có 30 ng  y: không ???c quá 30 ng  y
--- N?u tháng có 31 ng  y: không ???c quá 31 ng  y
--- N?u tháng 2: không ???c quá 29 ng  y
-CREATE OR REPLACE TRIGGER TG_CC_1
-BEFORE INSERT ON CHAMCONG
-    FOR EACH ROW
-    BEGIN
-        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC > 30 OR :NEW.SONGAYDITRE > 30 OR :NEW.SONGAYNGHI > 30)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC > 31 OR :NEW.SONGAYDITRE > 31 OR :NEW.SONGAYNGHI > 31)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC = 2 AND (:NEW.SONGAYLAMVIEC > 29 OR :NEW.SONGAYDITRE > 29 OR :NEW.SONGAYNGHI > 29)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANH CONG');
-        END IF;
-    END;   
-/
---S? ng  y ?i l  m, ?i tr?, v?ng không ???c quá
--- N?u tháng có 30 ng  y: không ???c quá 30 ng  y
--- N?u tháng có 31 ng  y: không ???c quá 31 ng  y
--- N?u tháng 2: không ???c quá 29 ng  y
-CREATE OR REPLACE TRIGGER TG_CC_2
-BEFORE UPDATE ON CHAMCONG
-    FOR EACH ROW
-    BEGIN
-        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC > 30 OR :NEW.SONGAYDITRE > 30 OR :NEW.SONGAYNGHI > 30)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC > 31 OR :NEW.SONGAYDITRE > 31 OR :NEW.SONGAYNGHI > 31)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC = 2 AND (:NEW.SONGAYLAMVIEC > 29 OR :NEW.SONGAYDITRE > 29 OR :NEW.SONGAYNGHI > 29)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANH CONG');
-        END IF;
-    END;   
-/
-    
---Thu?c tính NGSINH c?a NHANVIEN phải lớn hơn 18 tuổi
-CREATE OR REPLACE TRIGGER TG_NV_1
-BEFORE INSERT ON NHANVIEN
-    FOR EACH ROW
-    BEGIN
-        IF(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM :NEW.NGSINH) <= 18) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANHCONG');
-        END IF;
-    END;
-/      
-CREATE OR REPLACE TRIGGER TG_NV_2
-BEFORE UPDATE ON NHANVIEN
-    FOR EACH ROW
-    BEGIN
-        IF(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM :NEW.NGSINH) <= 18) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANHCONG');
-        END IF;
-    END;
-/   
-CREATE OR REPLACE TRIGGER TG_PB_1
-BEFORE INSERT ON PHONGBAN
-    FOR EACH ROW
-    BEGIN
-        IF(:NEW.NGTHANHLAP > SYSDATE) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANHCONG');
-        END IF;
-    END;
-/        
-CREATE OR REPLACE TRIGGER TG_PB_2
-BEFORE UPDATE ON PHONGBAN
-    FOR EACH ROW
-    BEGIN
-        IF(:NEW.NGTHANHLAP > SYSDATE) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANHCONG');
-        END IF;
-    END;
-/        
-
-  
-            
-
-
---trigger m?i phòng ban có t?i ?a 200 nhân viên
-CREATE OR REPLACE TRIGGER TRG_NV_TOIDA
-BEFORE INSERT ON NHANVIEN
-FOR EACH ROW
-DECLARE
-    v_nhanvien_count NUMBER;
-BEGIN
-    SELECT COUNT(*) INTO v_nhanvien_count
-    FROM NHANVIEN
-    WHERE MAPB = :NEW.MAPB;
-
-    IF v_nhanvien_count >= 200 THEN
-        RAISE_APPLICATION_ERROR(-20001, 'Phòng ban nay da dat so luong toi da.');
-    END IF;
-END;
-/
---S? ng  y ?i l  m, ?i tr?, v?ng không ???c quá
--- N?u tháng có 30 ng  y: không ???c quá 30 ng  y
--- N?u tháng có 31 ng  y: không ???c quá 31 ng  y
--- N?u tháng 2: không ???c quá 29 ng  y
-CREATE OR REPLACE TRIGGER TG_CC_3
-BEFORE INSERT ON CHAMCONG
-    FOR EACH ROW
-    BEGIN
-        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 30)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 31)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC IN (2) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 29)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');     
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANH CONG');
-        END IF;
-    END;   
-/
---S? ng  y ?i l  m, ?i tr?, v?ng không ???c quá
--- N?u tháng có 30 ng  y: không ???c quá 30 ng  y
--- N?u tháng có 31 ng  y: không ???c quá 31 ng  y
--- N?u tháng 2: không ???c quá 29 ng  y
-CREATE OR REPLACE TRIGGER TG_CC_4
-BEFORE UPDATE ON CHAMCONG
-    FOR EACH ROW
-    BEGIN
-        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 30)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 31)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC IN (2) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 29)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');     
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANH CONG');
-        END IF;
-    END;   
-/
---ngày bắt đàu hợp đồng nhân viên phải đủ 18 tuổi
-CREATE OR REPLACE TRIGGER TG_HD_3
-BEFORE INSERT ON HOPDONG
-    FOR EACH ROW
-    DECLARE v_ngsinh DATE;
-    BEGIN
-        SELECT NGSINH INTO v_ngsinh
-        FROM NHANVIEN
-        WHERE MANV = :NEW.MANV;
-        IF(TRUNC(MONTHS_BETWEEN(:NEW.NGAYBDHD, v_ngsinh) / 12) < 18) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'Lỗi');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANHCONG');
-        END IF;
-    END;
-/        
-CREATE OR REPLACE TRIGGER TG_HD_4
-BEFORE UPDATE ON HOPDONG
-    FOR EACH ROW
-    DECLARE v_ngsinh DATE;
-    BEGIN
-        SELECT NGSINH INTO v_ngsinh
-        FROM NHANVIEN
-        WHERE :NEW.MANV = MANV;
-        IF(TRUNC(MONTHS_BETWEEN(:NEW.NGAYBDHD, v_ngsinh) / 12) < 18) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'Lỗi');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANHCONG');
-        END IF;
-    END;
-/
-create or replace NONEDITIONABLE procedure     SLEEP(n number) is
-begin
-  dbms_lock.sleep(n);
-end;
-/
-CREATE OR REPLACE PROCEDURE pro_xoaYCPT (MAYCIP IN YEUCAU.MAYC%TYPE) AS
-    
-BEGIN
-    --SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-    DELETE YEUCAU WHERE MAYC = MAYCIP;
-    SYS.SLEEP(10);
-    commit;
-END;
-/
-CREATE OR REPLACE PROCEDURE pro_duyetYCPT (MAYCIP IN YEUCAU.MAYC%TYPE) AS
-    
-BEGIN
-    --SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-    UPDATE YEUCAU SET TRANGTHAI = 1 WHERE MAYC = MAYCIP;
-    SYS.SLEEP(10);
-    commit;
-
-END;
-/
-CREATE OR REPLACE PROCEDURE pro_duyetYCLU (MAYCIP IN YEUCAU.MAYC%TYPE) AS
-
-    
-BEGIN
-    --SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-    UPDATE YEUCAU SET TRANGTHAI = 1 WHERE MAYC = MAYCIP;
-    SYS.SLEEP(10);
-    commit;
-
-END;
-/
-CREATE OR REPLACE PROCEDURE pro_capNhatYCLU (MANVIP IN YEUCAU.MANV%TYPE, MAYCIP IN YEUCAU.MAYC%TYPE, NOIDUNGIP IN YEUCAU.NOIDUNG%TYPE) AS
-    
-BEGIN
-    --SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-    UPDATE YEUCAU SET NOIDUNG = NOIDUNGIP, TRANGTHAI = 0 WHERE MAYC = MAYCIP and MANV = MANVIP;
-    SYS.SLEEP(10);
-    commit;
-END;
-/
-
-
-
-
---Trigger M?i nhân viên không có quá 10 k? n?ng
-CREATE OR REPLACE TRIGGER TRG_NV_KN
-BEFORE INSERT ON NHANVIEN_KYNANG
-FOR EACH ROW
-DECLARE count_skill NUMBER;
-BEGIN
-    SELECT COUNT (*)
-    INTO count_skill
-    FROM NHANVIEN_KYNANG 
-    WHERE MANV = :NEW.MANV;
-    
-    IF(count_skill >= 9) THEN
-    DBMS_OUTPUT.PUT_LINE('Mỗi nhân viên không có quá 9 kỹ năng');
-    ELSE DBMS_OUTPUT.PUT_LINE('Thêm kỹ năng thành công');
-    END IF;
-END;
-/
---S? ng  y ?i l  m, ?i tr?, v?ng không ???c quá
--- N?u tháng có 30 ng  y: không ???c quá 30 ng  y
--- N?u tháng có 31 ng  y: không ???c quá 31 ng  y
--- N?u tháng 2: không ???c quá 29 ng  y
-CREATE OR REPLACE TRIGGER TG_CC_1
-BEFORE INSERT ON CHAMCONG
-    FOR EACH ROW
-    BEGIN
-        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC > 30 OR :NEW.SONGAYDITRE > 30 OR :NEW.SONGAYNGHI > 30)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC > 31 OR :NEW.SONGAYDITRE > 31 OR :NEW.SONGAYNGHI > 31)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC = 2 AND (:NEW.SONGAYLAMVIEC > 29 OR :NEW.SONGAYDITRE > 29 OR :NEW.SONGAYNGHI > 29)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANH CONG');
-        END IF;
-    END;   
-/
---S? ng  y ?i l  m, ?i tr?, v?ng không ???c quá
--- N?u tháng có 30 ng  y: không ???c quá 30 ng  y
--- N?u tháng có 31 ng  y: không ???c quá 31 ng  y
--- N?u tháng 2: không ???c quá 29 ng  y
-CREATE OR REPLACE TRIGGER TG_CC_2
-BEFORE UPDATE ON CHAMCONG
-    FOR EACH ROW
-    BEGIN
-        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC > 30 OR :NEW.SONGAYDITRE > 30 OR :NEW.SONGAYNGHI > 30)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC > 31 OR :NEW.SONGAYDITRE > 31 OR :NEW.SONGAYNGHI > 31)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC = 2 AND (:NEW.SONGAYLAMVIEC > 29 OR :NEW.SONGAYDITRE > 29 OR :NEW.SONGAYNGHI > 29)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANH CONG');
-        END IF;
-    END;   
-/
-    
---Thu?c tính NGSINH c?a NHANVIEN phải lớn hơn 18 tuổi
-CREATE OR REPLACE TRIGGER TG_NV_1
-BEFORE INSERT ON NHANVIEN
-    FOR EACH ROW
-    BEGIN
-        IF(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM :NEW.NGSINH) <= 18) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANHCONG');
-        END IF;
-    END;
-/      
-CREATE OR REPLACE TRIGGER TG_NV_2
-BEFORE UPDATE ON NHANVIEN
-    FOR EACH ROW
-    BEGIN
-        IF(EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM :NEW.NGSINH) <= 18) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANHCONG');
-        END IF;
-    END;
-/   
-CREATE OR REPLACE TRIGGER TG_PB_1
-BEFORE INSERT ON PHONGBAN
-    FOR EACH ROW
-    BEGIN
-        IF(:NEW.NGTHANHLAP > SYSDATE) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANHCONG');
-        END IF;
-    END;
-/        
-CREATE OR REPLACE TRIGGER TG_PB_2
-BEFORE UPDATE ON PHONGBAN
-    FOR EACH ROW
-    BEGIN
-        IF(:NEW.NGTHANHLAP > SYSDATE) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANHCONG');
-        END IF;
-    END;
-/        
-
-  
-            
-
-
---trigger m?i phòng ban có t?i ?a 200 nhân viên
-CREATE OR REPLACE TRIGGER TRG_NV_TOIDA
-BEFORE INSERT ON NHANVIEN
-FOR EACH ROW
-DECLARE
-    v_nhanvien_count NUMBER;
-BEGIN
-    SELECT COUNT(*) INTO v_nhanvien_count
-    FROM NHANVIEN
-    WHERE MAPB = :NEW.MAPB;
-
-    IF v_nhanvien_count >= 200 THEN
-        RAISE_APPLICATION_ERROR(-20001, 'Phòng ban nay da dat so luong toi da.');
-    END IF;
-END;
-/
---S? ng  y ?i l  m, ?i tr?, v?ng không ???c quá
--- N?u tháng có 30 ng  y: không ???c quá 30 ng  y
--- N?u tháng có 31 ng  y: không ???c quá 31 ng  y
--- N?u tháng 2: không ???c quá 29 ng  y
-CREATE OR REPLACE TRIGGER TG_CC_3
-BEFORE INSERT ON CHAMCONG
-    FOR EACH ROW
-    BEGIN
-        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 30)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 31)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC IN (2) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 29)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');     
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANH CONG');
-        END IF;
-    END;   
-/
---S? ng  y ?i l  m, ?i tr?, v?ng không ???c quá
--- N?u tháng có 30 ng  y: không ???c quá 30 ng  y
--- N?u tháng có 31 ng  y: không ???c quá 31 ng  y
--- N?u tháng 2: không ???c quá 29 ng  y
-CREATE OR REPLACE TRIGGER TG_CC_4
-BEFORE UPDATE ON CHAMCONG
-    FOR EACH ROW
-    BEGIN
-        IF(:NEW.THANGLAMVIEC IN (4, 6, 9, 11) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 30)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC IN (1, 3, 5, 7, 8, 10, 12) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 31)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');
-        ELSIF(:NEW.THANGLAMVIEC IN (2) AND (:NEW.SONGAYLAMVIEC + :NEW.SONGAYNGHI + :NEW.SONGAYDITRE  > 29)) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'L?i');     
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANH CONG');
-        END IF;
-    END;   
-/
---ngày bắt đàu hợp đồng nhân viên phải đủ 18 tuổi
-CREATE OR REPLACE TRIGGER TG_HD_3
-BEFORE INSERT ON HOPDONG
-    FOR EACH ROW
-    DECLARE v_ngsinh DATE;
-    BEGIN
-        SELECT NGSINH INTO v_ngsinh
-        FROM NHANVIEN
-        WHERE MANV = :NEW.MANV;
-        IF(TRUNC(MONTHS_BETWEEN(:NEW.NGAYBDHD, v_ngsinh) / 12) < 18) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'Lỗi');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANHCONG');
-        END IF;
-    END;
-/        
-CREATE OR REPLACE TRIGGER TG_HD_4
-BEFORE UPDATE ON HOPDONG
-    FOR EACH ROW
-    DECLARE v_ngsinh DATE;
-    BEGIN
-        SELECT NGSINH INTO v_ngsinh
-        FROM NHANVIEN
-        WHERE :NEW.MANV = MANV;
-        IF(TRUNC(MONTHS_BETWEEN(:NEW.NGAYBDHD, v_ngsinh) / 12) < 18) THEN
-             RAISE_APPLICATION_ERROR(-20001, 'Lỗi');
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('THANHCONG');
-        END IF;
-    END;
-/
-create or replace NONEDITIONABLE procedure     SLEEP(n number) is
-begin
-  dbms_lock.sleep(n);
-end;
-/
-CREATE OR REPLACE PROCEDURE pro_xoaYCPT (MAYCIP IN YEUCAU.MAYC%TYPE) AS
-    
-BEGIN
-    --SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-    DELETE YEUCAU WHERE MAYC = MAYCIP;
-    SYS.SLEEP(10);
-    commit;
-END;
-/
-CREATE OR REPLACE PROCEDURE pro_duyetYCPT (MAYCIP IN YEUCAU.MAYC%TYPE) AS
-    
-BEGIN
-    --SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-    UPDATE YEUCAU SET TRANGTHAI = 1 WHERE MAYC = MAYCIP;
-    SYS.SLEEP(10);
-    commit;
-
-END;
-/
-CREATE OR REPLACE PROCEDURE pro_duyetYCLU (MAYCIP IN YEUCAU.MAYC%TYPE) AS
-
-    
-BEGIN
-    --SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-    UPDATE YEUCAU SET TRANGTHAI = 1 WHERE MAYC = MAYCIP;
-    SYS.SLEEP(10);
-    commit;
-
-END;
-/
-CREATE OR REPLACE PROCEDURE pro_capNhatYCLU (MANVIP IN YEUCAU.MANV%TYPE, MAYCIP IN YEUCAU.MAYC%TYPE, NOIDUNGIP IN YEUCAU.NOIDUNG%TYPE) AS
-    
-BEGIN
-    --SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-    UPDATE YEUCAU SET NOIDUNG = NOIDUNGIP, TRANGTHAI = 0 WHERE MAYC = MAYCIP and MANV = MANVIP;
-    SYS.SLEEP(10);
-    commit;
-END;
-/
-
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 1, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 2, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 3, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 4, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 5, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 6, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 7, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 8, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 9, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 10, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 11, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 12, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 13, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 14, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 15, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 16, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 17, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 18, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 19, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
+INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 20, 'Xin ngh? phép ngày 31/05/2024 v?i lí do b? ?m', 0);
 
 
 
