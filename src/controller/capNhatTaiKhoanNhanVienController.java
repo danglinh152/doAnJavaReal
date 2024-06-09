@@ -14,6 +14,7 @@ import view.capNhatTaiKhoanView;
 import view.errView;
 import view.loginView;
 import view.mainView;
+import view.mainViewNhanVien;
 
 public class capNhatTaiKhoanNhanVienController implements ActionListener {
 	private capNhatTaiKhoanNhanVienView capNhatTaiKhoanNhanVienView;
@@ -46,26 +47,28 @@ public class capNhatTaiKhoanNhanVienController implements ActionListener {
 				// TODO: handle exception
 				e2.printStackTrace();
 
-				mainView mainView = new mainView();
-				mainView.setTabTaiKhoan();
+				mainViewNhanVien mainViewNhanVien = new mainViewNhanVien(
+						taiKhoanDAO.getInstance().selectByMATK(this.capNhatTaiKhoanNhanVienView.getMaTK()));
+				mainViewNhanVien.setTabThongTin();
 				errView errView = new errView();
 				errView.getLblNewLabel().setText("Lỗi cập nhật");
 
 				this.capNhatTaiKhoanNhanVienView.dispose();
 
-				mainView.setVisible(true);
+				mainViewNhanVien.setVisible(true);
 				errView.setVisible(true);
 			}
 
 		} else if (e.getActionCommand().equals("Hủy"))
 
 		{
-			mainView mainView = new mainView();
-			mainView.setTabTaiKhoan();
+			mainViewNhanVien mainViewNhanVien = new mainViewNhanVien(
+					taiKhoanDAO.getInstance().selectByMATK(this.capNhatTaiKhoanNhanVienView.getMaTK()));
+			mainViewNhanVien.setTabThongTin();
 
 			this.capNhatTaiKhoanNhanVienView.dispose();
 
-			mainView.setVisible(true);
+			mainViewNhanVien.setVisible(true);
 		}
 	}
 }

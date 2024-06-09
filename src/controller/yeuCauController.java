@@ -77,7 +77,7 @@ public class yeuCauController implements ActionListener, KeyListener {
 
 				int maYC = Integer.parseInt((String) model.getValueAt(yeuCauView.getTable().getSelectedRows()[0], 0));
 				yeuCau yeuCau = new yeuCau(maYC, 0, "", false);
-				yeuCauDAO.getInstance().updateT(yeuCau); // ne
+				yeuCauDAO.getInstance().updateTdemophantom(yeuCau); // ne
 				ArrayList<yeuCau> arr_yc = yeuCauDAO.getInstance().selectSortByMAYCASC();
 				changeTableData(arr_yc);
 			} catch (Exception e2) {
