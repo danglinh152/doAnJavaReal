@@ -497,6 +497,91 @@ RAISE;
 end;
 /
 
+CREATE OR REPLACE PROCEDURE update_capbac AS
+BEGIN
+    -- Update CAPBAC to Junior
+    UPDATE NHANVIEN n
+    SET n.CAPBAC = 'Junior'
+    WHERE n.CAPBAC = 'Fresher'
+    AND EXISTS (
+        SELECT *
+        FROM HOPDONG h
+        WHERE h.MANV = n.MANV
+        AND MONTHS_BETWEEN(SYSDATE, h.NGAYBDHD) >= 24
+    )
+    AND EXISTS (
+        SELECT *
+        FROM NHANVIEN_KYNANG nk
+        WHERE nk.MANV = n.MANV
+        AND nk.MAKN = 2  -- English skill
+        AND nk.CAPBAC >= 'B1'
+    )
+    AND EXISTS (
+        SELECT *
+        FROM NHANVIEN_KYNANG nk
+        WHERE nk.MANV = n.MANV
+        AND nk.MAKN = 1  -- Computer skill
+        AND nk.CAPBAC >= 'B'
+    );
+
+    -- Update CAPBAC to Senior
+    UPDATE NHANVIEN n
+    SET n.CAPBAC = 'Senior'
+    WHERE n.CAPBAC = 'Junior'
+    AND EXISTS (
+        SELECT *
+        FROM HOPDONG h
+        WHERE h.MANV = n.MANV
+        AND MONTHS_BETWEEN(SYSDATE, h.NGAYBDHD) >= 60
+    )
+    AND EXISTS (
+        SELECT *
+        FROM NHANVIEN_KYNANG nk
+        WHERE nk.MANV = n.MANV
+        AND nk.MAKN = 2  -- English skill
+        AND nk.CAPBAC >= 'B2'
+    )
+    AND EXISTS (
+        SELECT *
+        FROM NHANVIEN_KYNANG nk
+        WHERE nk.MANV = n.MANV
+        AND nk.MAKN = 1  -- Computer skill
+        AND nk.CAPBAC >= 'C'
+    );
+
+    -- Update CAPBAC to Leader
+    UPDATE NHANVIEN n
+    SET n.CAPBAC = 'Leader'
+    WHERE n.CAPBAC = 'Senior'
+    AND EXISTS (
+        SELECT *
+        FROM HOPDONG h
+        WHERE h.MANV = n.MANV
+        AND MONTHS_BETWEEN(SYSDATE, h.NGAYBDHD) >= 84
+    )
+    AND EXISTS (
+        SELECT *
+        FROM NHANVIEN_KYNANG nk
+        WHERE nk.MANV = n.MANV
+        AND nk.MAKN = 2  -- English skill
+        AND nk.CAPBAC >= 'B2'
+    )
+    AND EXISTS (
+        SELECT *
+        FROM NHANVIEN_KYNANG nk
+        WHERE nk.MANV = n.MANV
+        AND nk.MAKN = 1  -- Computer skill
+        AND nk.CAPBAC >= 'C'
+    );
+
+    COMMIT;
+END;
+/
+
+
+
+
+
 
 
 
