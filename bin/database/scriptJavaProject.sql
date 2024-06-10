@@ -1,26 +1,35 @@
-drop table chamcong
+DROP TABLE chamcong
 /
-drop table nhanvien_kynang
+
+DROP TABLE nhanvien_kynang
 /
-drop table kynang
+
+DROP TABLE kynang
 /
-drop table taikhoan
+
+DROP TABLE taikhoan
 /
-drop table hopdong
+
+DROP TABLE hopdong
 /
-alter table nhanvien
-drop constraint nhanvien_fk
+
+ALTER TABLE nhanvien DROP CONSTRAINT nhanvien_fk
 /
-alter table phongban
-drop constraint phongban_fk
+
+ALTER TABLE phongban DROP CONSTRAINT phongban_fk
 /
-drop table phongban
+
+DROP TABLE phongban
 /
-drop table yeucau
+
+DROP TABLE yeucau
 /
-drop table nhanvien
+
+DROP TABLE nhanvien
 /
-ALTER SESSION set NLS_DATE_FORMAT = 'YYYY-MM-DD';
+
+ALTER SESSION SET nls_date_format = 'YYYY-MM-DD';
+
 set feedback ON
 set serveroutput on;
 /
@@ -371,6 +380,54 @@ begin
   dbms_lock.sleep(n);
 end;
 /
+CREATE OR REPLACE PROCEDURE totalSalary (
+    p_MANV IN CHAMCONG.MANV%TYPE,
+    p_THANGLAMVIEC IN CHAMCONG.THANGLAMVIEC%TYPE,
+    p_TongLuong OUT NUMBER
+) IS
+    v_SoNgayLamViec CHAMCONG.SONGAYLAMVIEC%TYPE;
+    v_SoNgayNghi CHAMCONG.SONGAYNGHI%TYPE;
+    v_SoGioTangCa CHAMCONG.SOGIOTANGCA%TYPE;
+    v_SoNgayDiTre CHAMCONG.SONGAYDITRE%TYPE;
+    v_CapBac NHANVIEN.CAPBAC%TYPE;
+    v_HeSoLuong NUMBER;
+BEGIN
+    -- Lấy thông tin từ bảng CHAMCONG
+    SELECT SONGAYLAMVIEC, SONGAYNGHI, SOGIOTANGCA, SONGAYDITRE
+    INTO v_SoNgayLamViec, v_SoNgayNghi, v_SoGioTangCa, v_SoNgayDiTre
+    FROM CHAMCONG
+    WHERE MANV = p_MANV AND THANGLAMVIEC = p_THANGLAMVIEC;
+
+    -- Lấy thông tin từ bảng NHANVIEN
+    SELECT CAPBAC
+    INTO v_CapBac
+    FROM NHANVIEN
+    WHERE MANV = p_MANV;
+
+    -- Xác định hệ số lương dựa trên cấp bậc
+    IF v_CapBac = 'Leader' THEN
+        v_HeSoLuong := 1.75;
+    ELSIF v_CapBac = 'Senior' THEN
+        v_HeSoLuong := 1.5;
+    ELSIF v_CapBac = 'Junior' THEN
+        v_HeSoLuong := 1.3;
+    ELSE
+        v_HeSoLuong := 1.0;
+    END IF;
+
+    -- Tính tổng lương
+    p_TongLuong := (v_SoNgayLamViec * 300000 * v_HeSoLuong) +
+                   (v_SoNgayDiTre * 0.85 * 100000 * v_HeSoLuong) +
+                   (v_SoGioTangCa * 50000 * v_HeSoLuong);
+
+    -- Nếu có ngày đi trễ, trừ 15% lương của ngày hôm đó
+    IF v_SoNgayDiTre >= 1 THEN
+        p_TongLuong := p_TongLuong - (v_SoNgayDiTre * 0.15 * 300000 * v_HeSoLuong);
+    ELSIF v_SoNgayDiTre >= 4 THEN
+        p_TongLuong := p_TongLuong * 0.85;
+    END IF;
+END;
+/
 CREATE OR REPLACE PROCEDURE pro_xoaYCPT (MAYCIP IN YEUCAU.MAYC%TYPE) AS
     
 BEGIN
@@ -433,9 +490,11 @@ BEGIN
     END IF;
 EXCEPTION
     WHEN OTHERS THEN
-        ROLLBACK;
-        RAISE;
-END;
+ROLLBACK;
+
+RAISE;
+
+end;
 /
 
 
@@ -446,167 +505,1346 @@ END;
 
 
 --Insert phòng ban
-INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'IT', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
-INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'Marketing', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
-INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'Nhân sự', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
-INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'CSKH', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
-INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'Kỹ thuật', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
-INSERT INTO PHONGBAN VALUES (my_sequence_phongban.NEXTVAL, 'Tài chính', TO_DATE('2024-05-23', 'YYYY-MM-DD'), null, null);
+INSERT INTO phongban VALUES (
+    my_sequence_phongban.NEXTVAL,
+    'IT',
+    TO_DATE('2024-05-23', 'YYYY-MM-DD'),
+    NULL,
+    NULL
+);
+
+INSERT INTO phongban VALUES (
+    my_sequence_phongban.NEXTVAL,
+    'Marketing',
+    TO_DATE('2024-05-23', 'YYYY-MM-DD'),
+    NULL,
+    NULL
+);
+
+INSERT INTO phongban VALUES (
+    my_sequence_phongban.NEXTVAL,
+    'Nhân sự',
+    TO_DATE('2024-05-23', 'YYYY-MM-DD'),
+    NULL,
+    NULL
+);
+
+INSERT INTO phongban VALUES (
+    my_sequence_phongban.NEXTVAL,
+    'CSKH',
+    TO_DATE('2024-05-23', 'YYYY-MM-DD'),
+    NULL,
+    NULL
+);
+
+INSERT INTO phongban VALUES (
+    my_sequence_phongban.NEXTVAL,
+    'Kỹ thuật',
+    TO_DATE('2024-05-23', 'YYYY-MM-DD'),
+    NULL,
+    NULL
+);
+
+INSERT INTO phongban VALUES (
+    my_sequence_phongban.NEXTVAL,
+    'Tài chính',
+    TO_DATE('2024-05-23', 'YYYY-MM-DD'),
+    NULL,
+    NULL
+);
 
 
 
 
 --insert nhân viên
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Đặng Quang Khánh Linh', 'Nam', '2003-02-15', '0355662648', '22520756@gm.uit.edu.vn', 'Long Thành, Đồng Nai', '075204005999', 'Fresher', 1);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Nguyễn Văn Hòa', 'Nam', '2003-05-13', '0355662777', '22520454@gm.uit.edu.vn', 'Rạch Giá, Kiên Giang', '075204005888', 'Fresher', 1);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Lê Tiến Đạt', 'Nam', '2003-09-13', '0355662757', '22520214@gm.uit.edu.vn', 'Tân Uyên, Bình Dương', '075204015888', 'Fresher', 1);
-INSERT INTO nhanvien  VALUES (my_sequence_nhanvien.NEXTVAL, 'Huỳnh Nhật Duy', 'Nam', TO_DATE('1990-01-01', 'YYYY-MM-DD'), '0901234560', '22520314@gm.uit.edu.vn', 'Hà Nội', '001008786902', 'Fresher', 1);
-INSERT INTO nhanvien  VALUES (my_sequence_nhanvien.NEXTVAL, 'Trần Thị Bích', 'Nữ', TO_DATE('1988-02-02', 'YYYY-MM-DD'), '0901234561', 'tranthibich@example.com', 'Hồ Chí Minh', '001008786982', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES (my_sequence_nhanvien.NEXTVAL, 'Nguyễn Văn Cường', 'Nam', TO_DATE('1991-03-03', 'YYYY-MM-DD'), '0901234562', 'nguyenvancuong@example.com', 'Đà Nẵng', '001005586982', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Phạm Thị Diệu', 'Nữ', TO_DATE('1989-04-04', 'YYYY-MM-DD'), '0901234563', 'phamthidieu@example.com', 'Cần Thơ', '001008799982', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Hoàng Văn Dũng', 'Nam', TO_DATE('1987-05-05', 'YYYY-MM-DD'), '0901234564', 'hoangvandung@example.com', 'Hải Phòng', '001008786900', 'Fresher', 2);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Đặng Thị Hạnh', 'Nữ', TO_DATE('1992-06-06', 'YYYY-MM-DD'), '0901234565', 'dangthihanh@example.com', 'Huế', '001008786901', 'Fresher', 2);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Bùi Văn Khôi', 'Nam', TO_DATE('1993-07-07', 'YYYY-MM-DD'), '0901234566', 'buivankhoi@example.com', 'Vinh', '001008786903', 'Fresher', 3);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Ngô Thị Lan', 'Nữ', TO_DATE('1994-08-08', 'YYYY-MM-DD'), '0901234567', 'ngothilan@example.com', 'Nha Trang', '001008786904', 'Fresher', 3);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Phan Văn Minh', 'Nam', TO_DATE('1988-09-09', 'YYYY-MM-DD'), '0901234568', 'phanvanminh@example.com', 'Quảng Ninh', '001008786905', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Dương Thị Ngọc', 'Nữ', TO_DATE('1989-10-10', 'YYYY-MM-DD'), '0901234569', 'duongthingoc@example.com', 'Bắc Ninh', '001008786906', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Vũ Văn Phong', 'Nam', TO_DATE('1990-11-11', 'YYYY-MM-DD'), '0901234570', 'vuvanphong@example.com', 'Hà Nội', '001008786907', 'Fresher', 3);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Lê Thị Quỳnh', 'Nữ', TO_DATE('1991-12-12', 'YYYY-MM-DD'), '0901234571', 'lethiquynh@example.com', 'Hồ Chí Minh', '001008786909', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Nguyễn Văn Sơn', 'Nam', TO_DATE('1992-01-13', 'YYYY-MM-DD'), '0901234572', 'nguyenvanson@example.com', 'Đà Nẵng', '001008786910', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Trần Thị Thảo', 'Nữ', TO_DATE('1993-02-14', 'YYYY-MM-DD'), '0901234573', 'tranthithao@example.com', 'Cần Thơ', '001008786911', 'Fresher', 5);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Phạm Văn Tâm', 'Nam', TO_DATE('1994-03-15', 'YYYY-MM-DD'), '0901234574', 'phamvantam@example.com', 'Hải Phòng', '001008786912', 'Fresher', 4);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Hoàng Thị Uyên', 'Nữ', TO_DATE('1995-04-16', 'YYYY-MM-DD'), '0901234575', 'hoangthiuyen@example.com', 'Huế', '001008786913', 'Fresher', 4);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Bùi Văn Vinh', 'Nam', TO_DATE('1996-05-17', 'YYYY-MM-DD'), '0901234576', 'buivanvinh@example.com', 'Vinh', '001008786914', 'Fresher', 4);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Ngô Văn Xuyên', 'Nam', TO_DATE('1997-06-18', 'YYYY-MM-DD'), '0901234577', 'ngovanxuyen@example.com', 'Nha Trang', '001008786915', 'Fresher', 2);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Phan Thị Yến', 'Nữ', TO_DATE('1998-07-19', 'YYYY-MM-DD'), '0901234578', 'phanthiyen@example.com', 'Quảng Ninh', '001008786916', 'Fresher', 4);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Dương Văn Khải', 'Nam', TO_DATE('1999-08-20', 'YYYY-MM-DD'), '0901234579', 'duongvankhai@example.com', 'Bắc Ninh', '001008786917', 'Fresher', 6);
-INSERT INTO nhanvien  VALUES(my_sequence_nhanvien.NEXTVAL, 'Vũ Thị Hằng', 'Nữ', TO_DATE('2000-09-21', 'YYYY-MM-DD'), '0901234580', 'vuthihang@example.com', 'Hà Nội', '001008786918', 'Fresher', 1);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Đỗ Văn Bình', 'Nam', TO_DATE('2001-10-22', 'YYYY-MM-DD'), '0901234581', 'dovanbinh@example.com', 'Hồ Chí Minh', '001008786919', 'Fresher', 5);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Lê Thị Hoa', 'Nữ', TO_DATE('2002-11-23', 'YYYY-MM-DD'), '0901234582', 'lethihoa@example.com', 'Đà Nẵng', '001008786920', 'Fresher', 4);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Nguyễn Văn Hùng', 'Nam', TO_DATE('2003-12-24', 'YYYY-MM-DD'), '0901234583', 'nguyenvanhung@example.com', 'Cần Thơ', '001008786921', 'Fresher', 1);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Trần Thị Kim', 'Nữ', TO_DATE('2004-01-25', 'YYYY-MM-DD'), '0901234584', 'tranthikim@example.com', 'Hải Phòng', '001008786922', 'Fresher', 1);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Phạm Văn Long', 'Nam', TO_DATE('2002-02-26', 'YYYY-MM-DD'), '0901234585', 'phamvanlong@example.com', 'Huế', '001008786923', 'Fresher', 2);
-INSERT INTO NHANVIEN VALUES (my_sequence_nhanvien.NEXTVAL, 'Hoàng Thị Mai', 'Nữ', TO_DATE('2002-03-27', 'YYYY-MM-DD'), '0901234586', 'hoangthimai@example.com', 'Vinh', '001008786924', 'Fresher', 3);
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Đặng Quang Khánh Linh',
+    'Nam',
+    '2003-02-15',
+    '0355662648',
+    '22520756@gm.uit.edu.vn',
+    'Long Thành, Đồng Nai',
+    '075204005999',
+    'Fresher',
+    1
+);
 
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Nguyễn Văn Hòa',
+    'Nam',
+    '2003-05-13',
+    '0355662777',
+    '22520454@gm.uit.edu.vn',
+    'Rạch Giá, Kiên Giang',
+    '075204005888',
+    'Fresher',
+    1
+);
 
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Lê Tiến Đạt',
+    'Nam',
+    '2003-09-13',
+    '0355662757',
+    '22520214@gm.uit.edu.vn',
+    'Tân Uyên, Bình Dương',
+    '075204015888',
+    'Fresher',
+    1
+);
 
-INSERT INTO TAIKHOAN VALUES (my_sequence_taikhoan.NEXTVAL, 1, 'admin', 'admin', 'quản lý');
-INSERT INTO TAIKHOAN VALUES (my_sequence_taikhoan.NEXTVAL, 2, 'vanhoa', '123', 'nhân viên');
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 3, 'nhanvien03', 'password03', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Huỳnh Nhật Duy',
+    'Nam',
+    TO_DATE('1990-01-01', 'YYYY-MM-DD'),
+    '0901234560',
+    '22520314@gm.uit.edu.vn',
+    'Hà Nội',
+    '001008786902',
+    'Fresher',
+    1
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 4, 'nhanvien04', 'password04', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Trần Thị Bích',
+    'Nữ',
+    TO_DATE('1988-02-02', 'YYYY-MM-DD'),
+    '0901234561',
+    'tranthibich@example.com',
+    'Hồ Chí Minh',
+    '001008786982',
+    'Fresher',
+    6
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 5, 'nhanvien05', 'password05', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Nguyễn Văn Cường',
+    'Nam',
+    TO_DATE('1991-03-03', 'YYYY-MM-DD'),
+    '0901234562',
+    'nguyenvancuong@example.com',
+    'Đà Nẵng',
+    '001005586982',
+    'Fresher',
+    6
+);
 
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Phạm Thị Diệu',
+    'Nữ',
+    TO_DATE('1989-04-04', 'YYYY-MM-DD'),
+    '0901234563',
+    'phamthidieu@example.com',
+    'Cần Thơ',
+    '001008799982',
+    'Fresher',
+    6
+);
 
-INSERT INTO KYNANG VALUES (my_sequence_kynang.NEXTVAL, 'tin học');
-INSERT INTO KYNANG VALUES (my_sequence_kynang.NEXTVAL, 'tiếng anh');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Hoàng Văn Dũng',
+    'Nam',
+    TO_DATE('1987-05-05', 'YYYY-MM-DD'),
+    '0901234564',
+    'hoangvandung@example.com',
+    'Hải Phòng',
+    '001008786900',
+    'Fresher',
+    2
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 6, 'nhanvien06', 'password06', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Đặng Thị Hạnh',
+    'Nữ',
+    TO_DATE('1992-06-06', 'YYYY-MM-DD'),
+    '0901234565',
+    'dangthihanh@example.com',
+    'Huế',
+    '001008786901',
+    'Fresher',
+    2
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 7, 'nhanvien07', 'password07', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Bùi Văn Khôi',
+    'Nam',
+    TO_DATE('1993-07-07', 'YYYY-MM-DD'),
+    '0901234566',
+    'buivankhoi@example.com',
+    'Vinh',
+    '001008786903',
+    'Fresher',
+    3
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 8, 'nhanvien08', 'password08', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Ngô Thị Lan',
+    'Nữ',
+    TO_DATE('1994-08-08', 'YYYY-MM-DD'),
+    '0901234567',
+    'ngothilan@example.com',
+    'Nha Trang',
+    '001008786904',
+    'Fresher',
+    3
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 9, 'nhanvien09', 'password09', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Phan Văn Minh',
+    'Nam',
+    TO_DATE('1988-09-09', 'YYYY-MM-DD'),
+    '0901234568',
+    'phanvanminh@example.com',
+    'Quảng Ninh',
+    '001008786905',
+    'Fresher',
+    6
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 10, 'nhanvien10', 'password10', N'nhân viên');
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 11, 'nhanvien11', 'password11', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Dương Thị Ngọc',
+    'Nữ',
+    TO_DATE('1989-10-10', 'YYYY-MM-DD'),
+    '0901234569',
+    'duongthingoc@example.com',
+    'Bắc Ninh',
+    '001008786906',
+    'Fresher',
+    6
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 12, 'nhanvien12', 'password12', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Vũ Văn Phong',
+    'Nam',
+    TO_DATE('1990-11-11', 'YYYY-MM-DD'),
+    '0901234570',
+    'vuvanphong@example.com',
+    'Hà Nội',
+    '001008786907',
+    'Fresher',
+    3
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 13, 'nhanvien13', 'password13', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Lê Thị Quỳnh',
+    'Nữ',
+    TO_DATE('1991-12-12', 'YYYY-MM-DD'),
+    '0901234571',
+    'lethiquynh@example.com',
+    'Hồ Chí Minh',
+    '001008786909',
+    'Fresher',
+    6
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 14, 'nhanvien14', 'password14', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Nguyễn Văn Sơn',
+    'Nam',
+    TO_DATE('1992-01-13', 'YYYY-MM-DD'),
+    '0901234572',
+    'nguyenvanson@example.com',
+    'Đà Nẵng',
+    '001008786910',
+    'Fresher',
+    6
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 15, 'nhanvien15', 'password15', N'nhân viên');
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 16, 'nhanvien16', 'password16', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Trần Thị Thảo',
+    'Nữ',
+    TO_DATE('1993-02-14', 'YYYY-MM-DD'),
+    '0901234573',
+    'tranthithao@example.com',
+    'Cần Thơ',
+    '001008786911',
+    'Fresher',
+    5
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 17, 'nhanvien17', 'password17', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Phạm Văn Tâm',
+    'Nam',
+    TO_DATE('1994-03-15', 'YYYY-MM-DD'),
+    '0901234574',
+    'phamvantam@example.com',
+    'Hải Phòng',
+    '001008786912',
+    'Fresher',
+    4
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 18, 'nhanvien18', 'password18', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Hoàng Thị Uyên',
+    'Nữ',
+    TO_DATE('1995-04-16', 'YYYY-MM-DD'),
+    '0901234575',
+    'hoangthiuyen@example.com',
+    'Huế',
+    '001008786913',
+    'Fresher',
+    4
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 19, 'nhanvien19', 'password19', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Bùi Văn Vinh',
+    'Nam',
+    TO_DATE('1996-05-17', 'YYYY-MM-DD'),
+    '0901234576',
+    'buivanvinh@example.com',
+    'Vinh',
+    '001008786914',
+    'Fresher',
+    4
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 20, 'nhanvien20', 'password20', N'nhân viên');
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 21, 'nhanvien21', 'password21', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Ngô Văn Xuyên',
+    'Nam',
+    TO_DATE('1997-06-18', 'YYYY-MM-DD'),
+    '0901234577',
+    'ngovanxuyen@example.com',
+    'Nha Trang',
+    '001008786915',
+    'Fresher',
+    2
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 22, 'nhanvien22', 'password22', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Phan Thị Yến',
+    'Nữ',
+    TO_DATE('1998-07-19', 'YYYY-MM-DD'),
+    '0901234578',
+    'phanthiyen@example.com',
+    'Quảng Ninh',
+    '001008786916',
+    'Fresher',
+    4
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 23, 'nhanvien23', 'password23', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Dương Văn Khải',
+    'Nam',
+    TO_DATE('1999-08-20', 'YYYY-MM-DD'),
+    '0901234579',
+    'duongvankhai@example.com',
+    'Bắc Ninh',
+    '001008786917',
+    'Fresher',
+    6
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 24, 'nhanvien24', 'password24', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Vũ Thị Hằng',
+    'Nữ',
+    TO_DATE('2000-09-21', 'YYYY-MM-DD'),
+    '0901234580',
+    'vuthihang@example.com',
+    'Hà Nội',
+    '001008786918',
+    'Fresher',
+    1
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 25, 'nhanvien25', 'password25', N'nhân viên');
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 26, 'nhanvien26', 'password26', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Đỗ Văn Bình',
+    'Nam',
+    TO_DATE('2001-10-22', 'YYYY-MM-DD'),
+    '0901234581',
+    'dovanbinh@example.com',
+    'Hồ Chí Minh',
+    '001008786919',
+    'Fresher',
+    5
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 27, 'nhanvien27', 'password27', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Lê Thị Hoa',
+    'Nữ',
+    TO_DATE('2002-11-23', 'YYYY-MM-DD'),
+    '0901234582',
+    'lethihoa@example.com',
+    'Đà Nẵng',
+    '001008786920',
+    'Fresher',
+    4
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 28, 'nhanvien28', 'password28', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Nguyễn Văn Hùng',
+    'Nam',
+    TO_DATE('2003-12-24', 'YYYY-MM-DD'),
+    '0901234583',
+    'nguyenvanhung@example.com',
+    'Cần Thơ',
+    '001008786921',
+    'Fresher',
+    1
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 29, 'nhanvien29', 'password29', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Trần Thị Kim',
+    'Nữ',
+    TO_DATE('2004-01-25', 'YYYY-MM-DD'),
+    '0901234584',
+    'tranthikim@example.com',
+    'Hải Phòng',
+    '001008786922',
+    'Fresher',
+    1
+);
 
-INSERT INTO TAIKHOAN (matk, manv, tentk, matkhau, loaitaikhoan) 
-VALUES (my_sequence_taikhoan.NEXTVAL, 30, 'nhanvien30', 'password30', N'nhân viên');
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Phạm Văn Long',
+    'Nam',
+    TO_DATE('2002-02-26', 'YYYY-MM-DD'),
+    '0901234585',
+    'phamvanlong@example.com',
+    'Huế',
+    '001008786923',
+    'Fresher',
+    2
+);
+
+INSERT INTO nhanvien VALUES (
+    my_sequence_nhanvien.NEXTVAL,
+    'Hoàng Thị Mai',
+    'Nữ',
+    TO_DATE('2002-03-27', 'YYYY-MM-DD'),
+    '0901234586',
+    'hoangthimai@example.com',
+    'Vinh',
+    '001008786924',
+    'Fresher',
+    3
+);
+
+INSERT INTO taikhoan VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    1,
+    'admin',
+    'admin',
+    'quản lý'
+);
+
+INSERT INTO taikhoan VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    2,
+    'vanhoa',
+    '123',
+    'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    3,
+    'nhanvien03',
+    'password03',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    4,
+    'nhanvien04',
+    'password04',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    5,
+    'nhanvien05',
+    'password05',
+    N'nhân viên'
+);
+
+INSERT INTO kynang VALUES (
+    my_sequence_kynang.NEXTVAL,
+    'tin học'
+);
+
+INSERT INTO kynang VALUES (
+    my_sequence_kynang.NEXTVAL,
+    'tiếng anh'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    6,
+    'nhanvien06',
+    'password06',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    7,
+    'nhanvien07',
+    'password07',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    8,
+    'nhanvien08',
+    'password08',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    9,
+    'nhanvien09',
+    'password09',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    10,
+    'nhanvien10',
+    'password10',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    11,
+    'nhanvien11',
+    'password11',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    12,
+    'nhanvien12',
+    'password12',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    13,
+    'nhanvien13',
+    'password13',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    14,
+    'nhanvien14',
+    'password14',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    15,
+    'nhanvien15',
+    'password15',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    16,
+    'nhanvien16',
+    'password16',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    17,
+    'nhanvien17',
+    'password17',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    18,
+    'nhanvien18',
+    'password18',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    19,
+    'nhanvien19',
+    'password19',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    20,
+    'nhanvien20',
+    'password20',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    21,
+    'nhanvien21',
+    'password21',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    22,
+    'nhanvien22',
+    'password22',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    23,
+    'nhanvien23',
+    'password23',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    24,
+    'nhanvien24',
+    'password24',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    25,
+    'nhanvien25',
+    'password25',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    26,
+    'nhanvien26',
+    'password26',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    27,
+    'nhanvien27',
+    'password27',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    28,
+    'nhanvien28',
+    'password28',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    29,
+    'nhanvien29',
+    'password29',
+    N'nhân viên'
+);
+
+INSERT INTO taikhoan (
+    matk,
+    manv,
+    tentk,
+    matkhau,
+    loaitaikhoan
+) VALUES (
+    my_sequence_taikhoan.NEXTVAL,
+    30,
+    'nhanvien30',
+    'password30',
+    N'nhân viên'
+);
 
 --insert chấm công
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (1, 5, 29, 1, 3, 0);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (2, 5, 29, 1, 5, 1);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (3, 5, 29, 0, 4, 0);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (4, 5, 29, 1, 2, 0);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (5, 5, 29, 1, 1, 0);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (6, 5, 29, 0, 3, 0);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (7, 5, 21, 1, 4, 1);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (8, 5, 20, 2, 5, 2);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (9, 5, 23, 0, 2, 1);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (10, 5, 24, 1, 1, 3);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (11, 5, 22, 2, 3, 0);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (12, 5, 29, 0, 4, 1);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (13, 5, 30, 0, 5, 0);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (14, 5, 23, 2, 2, 1);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (15, 5, 29, 0, 10, 0);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (16, 5, 29, 1, 10, 0);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (17, 5, 21, 2, 4, 1);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (18, 5, 20, 0, 5, 2);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (19, 5, 23, 1, 2, 1);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (20, 5, 24, 2, 1, 3);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (21, 5, 22, 1, 3, 0);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (22, 5, 21, 2, 4, 1);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (23, 5, 29, 0, 20, 1);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (24, 5, 23, 1, 2, 1);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (25, 5, 24, 2, 1, 3);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (26, 5, 22, 1, 3, 0);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (27, 5, 21, 2, 4, 1);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (28, 5, 20, 0, 5, 2);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (29, 5, 23, 1, 2, 1);
-INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca, songayditre) VALUES (30, 5, 24, 2, 1, 3);
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    1,
+    5,
+    29,
+    1,
+    3,
+    0
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    2,
+    5,
+    29,
+    1,
+    5,
+    1
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    3,
+    5,
+    29,
+    0,
+    4,
+    0
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    4,
+    5,
+    29,
+    1,
+    2,
+    0
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    5,
+    5,
+    29,
+    1,
+    1,
+    0
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    6,
+    5,
+    29,
+    0,
+    3,
+    0
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    7,
+    5,
+    21,
+    1,
+    4,
+    1
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    8,
+    5,
+    20,
+    2,
+    5,
+    2
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    9,
+    5,
+    23,
+    0,
+    2,
+    1
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    10,
+    5,
+    24,
+    1,
+    1,
+    3
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    11,
+    5,
+    22,
+    2,
+    3,
+    0
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    12,
+    5,
+    29,
+    0,
+    4,
+    1
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    13,
+    5,
+    30,
+    0,
+    5,
+    0
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    14,
+    5,
+    23,
+    2,
+    2,
+    1
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    15,
+    5,
+    29,
+    0,
+    10,
+    0
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    16,
+    5,
+    29,
+    1,
+    10,
+    0
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    17,
+    5,
+    21,
+    2,
+    4,
+    1
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    18,
+    5,
+    20,
+    0,
+    5,
+    2
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    19,
+    5,
+    23,
+    1,
+    2,
+    1
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    20,
+    5,
+    24,
+    2,
+    1,
+    3
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    21,
+    5,
+    22,
+    1,
+    3,
+    0
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    22,
+    5,
+    21,
+    2,
+    4,
+    1
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    23,
+    5,
+    29,
+    0,
+    20,
+    1
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    24,
+    5,
+    23,
+    1,
+    2,
+    1
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    25,
+    5,
+    24,
+    2,
+    1,
+    3
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    26,
+    5,
+    22,
+    1,
+    3,
+    0
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    27,
+    5,
+    21,
+    2,
+    4,
+    1
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    28,
+    5,
+    20,
+    0,
+    5,
+    2
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    29,
+    5,
+    23,
+    1,
+    2,
+    1
+);
+
+INSERT INTO chamcong (
+    manv,
+    thanglamviec,
+    songaylamviec,
+    songaynghi,
+    sogiotangca,
+    songayditre
+) VALUES (
+    30,
+    5,
+    24,
+    2,
+    1,
+    3
+);
 
 
 
@@ -620,110 +1858,1069 @@ INSERT INTO chamcong (manv, thanglamviec, songaylamviec, songaynghi, sogiotangca
 
 
 --insert hopdong
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 1,TO_DATE('2022-05-31', 'YYYY-MM-DD'), ADD_MONTHS(SYSDATE, 24));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 2, TO_DATE('2022-05-31', 'YYYY-MM-DD'), TO_DATE('2024-06-6', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 3, TO_DATE('2022-05-31', 'YYYY-MM-DD'), TO_DATE('2024-06-5', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 4, TO_DATE('2022-05-31', 'YYYY-MM-DD'), TO_DATE('2022-06-13', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 5, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 6, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 7, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 8, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 9, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 10, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 11, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 12, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 13, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 14, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 15, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 16, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 17, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 18, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 19, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 20, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 21,TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 22,TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 23, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 24, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 25, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 26, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 27, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 28, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 29, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
-INSERT INTO hopdong (mahd, manv, ngaybdhd, ngaykthd) VALUES (my_sequence_hopdong.NEXTVAL, 30, TO_DATE('2024-05-31', 'YYYY-MM-DD'), TO_DATE('2026-05-31', 'YYYY-MM-DD'));
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    1,
+    TO_DATE('2022-05-31', 'YYYY-MM-DD'),
+    add_months(sysdate, 24)
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    2,
+    TO_DATE('2022-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2024-06-6', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    3,
+    TO_DATE('2022-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2024-06-5', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    4,
+    TO_DATE('2022-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2022-06-13', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    5,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    6,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    7,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    8,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    9,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    10,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    11,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    12,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    13,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    14,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    15,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    16,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    17,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    18,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    19,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    20,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    21,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    22,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    23,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    24,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    25,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    26,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    27,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    28,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    29,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
+
+INSERT INTO hopdong (
+    mahd,
+    manv,
+    ngaybdhd,
+    ngaykthd
+) VALUES (
+    my_sequence_hopdong.NEXTVAL,
+    30,
+    TO_DATE('2024-05-31', 'YYYY-MM-DD'),
+    TO_DATE('2026-05-31', 'YYYY-MM-DD')
+);
 
 
 
 --insert nhanvien_Kynang
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 1, 'B');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 2, 'B2');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 3, 'B');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 4, 'B2');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 5, 'B');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 6, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 7, 'B');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 8, 'B2');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 9, 'B');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 10, 'C1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 11, 'B');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 12, 'C2');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 13, 'B');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 14, 'A1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 15, 'B');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 16, 'A2');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 17, 'C');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 18, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 19, 'A');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 20, 'B2');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 21, 'B');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 22, 'C1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 23, 'C');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 24, 'C2');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 25, 'B');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 26, 'A1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 27, 'B');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 28, 'A2');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 29, 'C');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 30, 'B1');
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    1,
+    'B'
+);
 
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (1, 2, 'B');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 1, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 3, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 5, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 7, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 9, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 11, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 13, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 15, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 17, 'B');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 19, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 21, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 23, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 25, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 27, 'B1');
-INSERT INTO nhanvien_kynang (makn, manv, capbac) VALUES (2, 29, 'B1');
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    2,
+    'B2'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    3,
+    'B'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    4,
+    'B2'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    5,
+    'B'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    6,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    7,
+    'B'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    8,
+    'B2'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    9,
+    'B'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    10,
+    'C1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    11,
+    'B'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    12,
+    'C2'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    13,
+    'B'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    14,
+    'A1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    15,
+    'B'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    16,
+    'A2'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    17,
+    'C'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    18,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    19,
+    'A'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    20,
+    'B2'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    21,
+    'B'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    22,
+    'C1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    23,
+    'C'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    24,
+    'C2'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    25,
+    'B'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    26,
+    'A1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    27,
+    'B'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    28,
+    'A2'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    29,
+    'C'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    30,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    1,
+    2,
+    'B'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    1,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    3,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    5,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    7,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    9,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    11,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    13,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    15,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    17,
+    'B'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    19,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    21,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    23,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    25,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    27,
+    'B1'
+);
+
+INSERT INTO nhanvien_kynang (
+    makn,
+    manv,
+    capbac
+) VALUES (
+    2,
+    29,
+    'B1'
+);
 
 
 --insert yeucau
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 1, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 2, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 3, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 4, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 5, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 6, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 7, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 8, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 9, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 10, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 11, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 12, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 13, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 14, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 15, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 16, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 17, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 18, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 19, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
-INSERT INTO YEUCAU (mayc, manv, noidung, trangthai) VALUES (my_sequence_yeucau.NEXTVAL, 20, 'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm', 0);
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    1,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
 
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    2,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
 
-commit;
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    3,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    4,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    5,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    6,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    7,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    8,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    9,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    10,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    11,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    12,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    13,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    14,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    15,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    16,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    17,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    18,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    19,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+INSERT INTO yeucau (
+    mayc,
+    manv,
+    noidung,
+    trangthai
+) VALUES (
+    my_sequence_yeucau.NEXTVAL,
+    20,
+    'Xin nghỉ phép ngày 31/05/2024 với lí do bị ốm',
+    0
+);
+
+COMMIT;
